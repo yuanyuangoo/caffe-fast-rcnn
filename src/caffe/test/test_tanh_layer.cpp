@@ -5,13 +5,8 @@
 
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
-<<<<<<< HEAD
-#include "caffe/filler.hpp"
-#include "caffe/layers/tanh_layer.hpp"
-=======
 #include "caffe/common_layers.hpp"
 #include "caffe/filler.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "caffe/test/test_caffe_main.hpp"
 #include "caffe/test/test_gradient_check_util.hpp"

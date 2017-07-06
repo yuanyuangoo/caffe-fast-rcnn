@@ -29,16 +29,5 @@ classdef io
       CHECK_FILE_EXIST(mean_proto_file);
       mean_data = caffe_('read_mean', mean_proto_file);
     end
-<<<<<<< HEAD
-    function write_mean(mean_data, mean_proto_file)
-      % write_mean(mean_data, mean_proto_file)
-      %   write image mean data to binaryproto file
-      %   mean_data should be W x H x C with BGR channels
-      CHECK(ischar(mean_proto_file), 'mean_proto_file must be a string');
-      CHECK(isa(mean_data, 'single'), 'mean_data must be a SINGLE matrix');
-      caffe_('write_mean', mean_data, mean_proto_file);
-    end   
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   end
 end

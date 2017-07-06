@@ -1,9 +1,5 @@
 #!/usr/bin/env sh
 # This script converts the mnist data into leveldb format.
-<<<<<<< HEAD
-set -e
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 EXAMPLES=./build/examples/siamese
 DATA=./data/mnist

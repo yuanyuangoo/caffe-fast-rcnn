@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-#include <boost/thread.hpp>
-=======
 #include <unistd.h>  // for usleep
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "gtest/gtest.h"
 
@@ -68,11 +64,7 @@ TYPED_TEST(BenchmarkTest, TestTimerMilliSeconds) {
   EXPECT_FALSE(timer.running());
   EXPECT_FALSE(timer.has_run_at_least_once());
   timer.Start();
-<<<<<<< HEAD
-  boost::this_thread::sleep(boost::posix_time::milliseconds(300));
-=======
   usleep(300 * 1000);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   EXPECT_GE(timer.MilliSeconds(), 300 - kMillisecondsThreshold);
   EXPECT_LE(timer.MilliSeconds(), 300 + kMillisecondsThreshold);
   EXPECT_TRUE(timer.initted());
@@ -87,11 +79,7 @@ TYPED_TEST(BenchmarkTest, TestTimerSeconds) {
   EXPECT_FALSE(timer.running());
   EXPECT_FALSE(timer.has_run_at_least_once());
   timer.Start();
-<<<<<<< HEAD
-  boost::this_thread::sleep(boost::posix_time::milliseconds(300));
-=======
   usleep(300 * 1000);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   EXPECT_GE(timer.Seconds(), 0.3 - kMillisecondsThreshold / 1000.);
   EXPECT_LE(timer.Seconds(), 0.3 + kMillisecondsThreshold / 1000.);
   EXPECT_TRUE(timer.initted());

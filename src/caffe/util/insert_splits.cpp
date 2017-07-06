@@ -19,15 +19,12 @@ void InsertSplits(const NetParameter& param, NetParameter* param_split) {
   map<pair<int, int>, float> top_idx_to_loss_weight;
   map<pair<int, int>, int> top_idx_to_bottom_split_idx;
   map<int, string> layer_idx_to_layer_name;
-<<<<<<< HEAD
-=======
   layer_idx_to_layer_name[-1] = "input";
   // Determine the number of times each blob is used as an input (bottom) blob.
   for (int i = 0; i < param.input_size(); ++i) {
     const string& blob_name = param.input(i);
     blob_name_to_last_top_idx[blob_name] = make_pair(-1, i);
   }
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   for (int i = 0; i < param.layer_size(); ++i) {
     const LayerParameter& layer_param = param.layer(i);
     layer_idx_to_layer_name[i] = layer_param.name();
@@ -35,12 +32,7 @@ void InsertSplits(const NetParameter& param, NetParameter* param_split) {
       const string& blob_name = layer_param.bottom(j);
       if (blob_name_to_last_top_idx.find(blob_name) ==
           blob_name_to_last_top_idx.end()) {
-<<<<<<< HEAD
-        LOG(FATAL) << "Unknown bottom blob '" << blob_name << "' (layer '"
-                   << layer_param.name() << "', bottom index " << j << ")";
-=======
         LOG(FATAL) << "Unknown blob input " << blob_name << " to layer " << j;
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
       }
       const pair<int, int>& bottom_idx = make_pair(i, j);
       const pair<int, int>& top_idx = blob_name_to_last_top_idx[blob_name];
@@ -52,11 +44,7 @@ void InsertSplits(const NetParameter& param, NetParameter* param_split) {
       blob_name_to_last_top_idx[blob_name] = make_pair(i, j);
     }
     // A use of a top blob as a loss should be handled similarly to the use of
-<<<<<<< HEAD
-    // a top blob as a bottom blob to another layer.
-=======
     // a top blob as an input (bottom) blob to another layer.
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     const int last_loss =
         std::min(layer_param.loss_weight_size(), layer_param.top_size());
     for (int j = 0; j < last_loss; ++j) {
@@ -68,8 +56,6 @@ void InsertSplits(const NetParameter& param, NetParameter* param_split) {
       }
     }
   }
-<<<<<<< HEAD
-=======
   // Create split layer for any input blobs used by other layer as bottom
   // blobs more than once.
   for (int i = 0; i < param.input_size(); ++i) {
@@ -83,7 +69,6 @@ void InsertSplits(const NetParameter& param, NetParameter* param_split) {
           kZeroLossWeight, split_layer_param);
     }
   }
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   for (int i = 0; i < param.layer_size(); ++i) {
     LayerParameter* layer_param = param_split->add_layer();
     layer_param->CopyFrom(param.layer(i));

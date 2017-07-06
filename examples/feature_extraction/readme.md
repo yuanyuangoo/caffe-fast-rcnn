@@ -51,11 +51,7 @@ Extract Features
 
 Now everything necessary is in place.
 
-<<<<<<< HEAD
-    ./build/tools/extract_features.bin models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel examples/_temp/imagenet_val.prototxt fc7 examples/_temp/features 10 leveldb
-=======
     ./build/tools/extract_features.bin models/bvlc_reference_caffenet/bvlc_reference_caffenet.caffemodel examples/_temp/imagenet_val.prototxt fc7 examples/_temp/features 10 lmdb
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 The name of feature blob that you extract is `fc7`, which represents the highest level feature of the reference model.
 We can use any other layer, as well, such as `conv5` or `pool3`.
@@ -68,11 +64,7 @@ If you meet with the error "Check failed: status.ok() Failed to open leveldb exa
 
     rm -rf examples/_temp/features/
 
-<<<<<<< HEAD
-If you'd like to use the Python wrapper for extracting features, check out the [filter visualization notebook](http://nbviewer.ipython.org/github/BVLC/caffe/blob/master/examples/00-classification.ipynb).
-=======
 If you'd like to use the Python wrapper for extracting features, check out the [layer visualization notebook](http://nbviewer.ipython.org/github/BVLC/caffe/blob/master/examples/filter_visualization.ipynb).
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 Clean Up
 --------

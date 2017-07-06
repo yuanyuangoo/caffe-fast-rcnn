@@ -8,10 +8,7 @@
 #include <string>
 
 #include "caffe/blob.hpp"
-<<<<<<< HEAD
-=======
 #include "caffe/common.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include "caffe/proto/caffe.pb.h"
 #include "caffe/syncedmem.hpp"
 #include "caffe/util/math_functions.hpp"

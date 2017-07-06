@@ -46,13 +46,7 @@ endif()
 # ---[ Set debug postfix
 set(Caffe_DEBUG_POSTFIX "-d")
 
-<<<<<<< HEAD
-set(Caffe_POSTFIX "")
-if(CMAKE_BUILD_TYPE MATCHES "Debug")
-  set(Caffe_POSTFIX ${Caffe_DEBUG_POSTFIX})
-=======
 set(CAffe_POSTFIX "")
 if(CMAKE_BUILD_TYPE MATCHES "Debug")
   set(CAffe_POSTFIX ${Caffe_DEBUG_POSTFIX})
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 endif()

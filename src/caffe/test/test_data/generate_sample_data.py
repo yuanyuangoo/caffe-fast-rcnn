@@ -1,9 +1,5 @@
 """
-<<<<<<< HEAD
-Generate data used in the HDF5DataLayer and GradientBasedSolver tests.
-=======
 Generate data used in the HDF5DataLayer test.
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 """
 import os
 import numpy as np
@@ -11,11 +7,6 @@ import h5py
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
-<<<<<<< HEAD
-# Generate HDF5DataLayer sample_data.h5
-
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 num_cols = 8
 num_rows = 10
 height = 6
@@ -50,44 +41,6 @@ with h5py.File(script_dir + '/sample_data_2_gzip.h5', 'w') as f:
     )
     f.create_dataset(
         'label', data=label,
-<<<<<<< HEAD
-        compression='gzip', compression_opts=1,
-        dtype='uint8',
-    )
-    f.create_dataset(
-        'label2', data=label2,
-        compression='gzip', compression_opts=1,
-        dtype='uint8',
-    )
-
-with open(script_dir + '/sample_data_list.txt', 'w') as f:
-    f.write('src/caffe/test/test_data/sample_data.h5\n')
-    f.write('src/caffe/test/test_data/sample_data_2_gzip.h5\n')
-
-# Generate GradientBasedSolver solver_data.h5
-
-num_cols = 3
-num_rows = 8
-height = 10
-width = 10
-
-data = np.random.randn(num_rows, num_cols, height, width)
-data = data.reshape(num_rows, num_cols, height, width)
-data = data.astype('float32')
-
-targets = np.random.randn(num_rows, 1)
-targets = targets.astype('float32')
-
-print data
-print targets
-
-with h5py.File(script_dir + '/solver_data.h5', 'w') as f:
-    f['data'] = data
-    f['targets'] = targets
-
-with open(script_dir + '/solver_data_list.txt', 'w') as f:
-    f.write('src/caffe/test/test_data/solver_data.h5\n')
-=======
         compression='gzip', compression_opts=1
     )
     f.create_dataset(
@@ -98,4 +51,3 @@ with open(script_dir + '/solver_data_list.txt', 'w') as f:
 with open(script_dir + '/sample_data_list.txt', 'w') as f:
     f.write(script_dir + '/sample_data.h5\n')
     f.write(script_dir + '/sample_data_2_gzip.h5\n')
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9

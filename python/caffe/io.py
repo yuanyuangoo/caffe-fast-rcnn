@@ -20,28 +20,6 @@ def blobproto_to_array(blob, return_diff=False):
     Convert a blob proto to an array. In default, we will just return the data,
     unless return_diff is True, in which case we will return the diff.
     """
-<<<<<<< HEAD
-    # Read the data into an array
-    if return_diff:
-        data = np.array(blob.diff)
-    else:
-        data = np.array(blob.data)
-
-    # Reshape the array
-    if blob.HasField('num') or blob.HasField('channels') or blob.HasField('height') or blob.HasField('width'):
-        # Use legacy 4D shape
-        return data.reshape(blob.num, blob.channels, blob.height, blob.width)
-    else:
-        return data.reshape(blob.shape.dim)
-
-def array_to_blobproto(arr, diff=None):
-    """Converts a N-dimensional array to blob proto. If diff is given, also
-    convert the diff. You need to make sure that arr and diff have the same
-    shape, and this function does not do sanity check.
-    """
-    blob = caffe_pb2.BlobProto()
-    blob.shape.dim.extend(arr.shape)
-=======
     if return_diff:
         return np.array(blob.diff).reshape(
             blob.num, blob.channels, blob.height, blob.width)
@@ -59,18 +37,13 @@ def array_to_blobproto(arr, diff=None):
         raise ValueError('Incorrect array shape.')
     blob = caffe_pb2.BlobProto()
     blob.num, blob.channels, blob.height, blob.width = arr.shape
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     blob.data.extend(arr.astype(float).flat)
     if diff is not None:
         blob.diff.extend(diff.astype(float).flat)
     return blob
 
 
-<<<<<<< HEAD
-def arraylist_to_blobprotovector_str(arraylist):
-=======
 def arraylist_to_blobprotovecor_str(arraylist):
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     """Converts a list of arrays to a serialized blobprotovec, which could be
     then passed to a network for processing.
     """
@@ -87,11 +60,7 @@ def blobprotovector_str_to_arraylist(str):
     return [blobproto_to_array(blob) for blob in vec.blobs]
 
 
-<<<<<<< HEAD
-def array_to_datum(arr, label=None):
-=======
 def array_to_datum(arr, label=0):
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     """Converts a 3-dimensional array to datum. If the array has dtype uint8,
     the output data will be encoded as a string. Otherwise, the output data
     will be stored in float format.
@@ -103,14 +72,8 @@ def array_to_datum(arr, label=0):
     if arr.dtype == np.uint8:
         datum.data = arr.tostring()
     else:
-<<<<<<< HEAD
-        datum.float_data.extend(arr.astype(float).flat)
-    if label is not None:
-        datum.label = label
-=======
         datum.float_data.extend(arr.flat)
     datum.label = label
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     return datum
 
 
@@ -212,15 +175,9 @@ class Transformer:
         if raw_scale is not None:
             decaf_in /= raw_scale
         if channel_swap is not None:
-<<<<<<< HEAD
-            decaf_in = decaf_in[np.argsort(channel_swap), :, :]
-        if transpose is not None:
-            decaf_in = decaf_in.transpose(np.argsort(transpose))
-=======
             decaf_in = decaf_in[channel_swap, :, :]
         if transpose is not None:
             decaf_in = decaf_in.transpose([transpose[t] for t in transpose])
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
         return decaf_in
 
     def set_transpose(self, in_, order):
@@ -332,11 +289,7 @@ def load_image(filename, color=True):
         of size (H x W x 3) in RGB or
         of size (H x W x 1) in grayscale.
     """
-<<<<<<< HEAD
-    img = skimage.img_as_float(skimage.io.imread(filename, as_grey=not color)).astype(np.float32)
-=======
     img = skimage.img_as_float(skimage.io.imread(filename)).astype(np.float32)
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     if img.ndim == 2:
         img = img[:, :, np.newaxis]
         if color:
@@ -376,11 +329,7 @@ def resize_image(im, new_dims, interp_order=1):
             return ret
     else:
         # ndimage interpolates anything but more slowly.
-<<<<<<< HEAD
-        scale = tuple(np.array(new_dims, dtype=float) / np.array(im.shape[:2]))
-=======
         scale = tuple(np.array(new_dims) / np.array(im.shape[:2]))
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
         resized_im = zoom(im, scale + (1,), order=interp_order)
     return resized_im.astype(np.float32)
 

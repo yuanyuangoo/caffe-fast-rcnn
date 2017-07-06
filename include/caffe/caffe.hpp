@@ -10,20 +10,10 @@
 #include "caffe/layer.hpp"
 #include "caffe/layer_factory.hpp"
 #include "caffe/net.hpp"
-<<<<<<< HEAD
-#include "caffe/parallel.hpp"
-#include "caffe/proto/caffe.pb.h"
-#include "caffe/solver.hpp"
-#include "caffe/solver_factory.hpp"
-#include "caffe/util/benchmark.hpp"
-#include "caffe/util/io.hpp"
-#include "caffe/util/upgrade_proto.hpp"
-=======
 #include "caffe/proto/caffe.pb.h"
 #include "caffe/solver.hpp"
 #include "caffe/util/benchmark.hpp"
 #include "caffe/util/io.hpp"
 #include "caffe/vision_layers.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #endif  // CAFFE_CAFFE_HPP_

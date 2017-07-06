@@ -197,19 +197,6 @@ void caffe_sqr<double>(const int n, const double* a, double* y) {
 }
 
 template <>
-<<<<<<< HEAD
-void caffe_sqrt<float>(const int n, const float* a, float* y) {
-  vsSqrt(n, a, y);
-}
-
-template <>
-void caffe_sqrt<double>(const int n, const double* a, double* y) {
-  vdSqrt(n, a, y);
-}
-
-template <>
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 void caffe_exp<float>(const int n, const float* a, float* y) {
   vsExp(n, a, y);
 }
@@ -362,8 +349,6 @@ template
 double caffe_cpu_dot<double>(const int n, const double* x, const double* y);
 
 template <>
-<<<<<<< HEAD
-=======
 int caffe_cpu_hamming_distance<float>(const int n, const float* x,
                                   const float* y) {
   int dist = 0;
@@ -386,7 +371,6 @@ int caffe_cpu_hamming_distance<double>(const int n, const double* x,
 }
 
 template <>
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 float caffe_cpu_asum<float>(const int n, const float* x) {
   return cblas_sasum(n, x, 1);
 }

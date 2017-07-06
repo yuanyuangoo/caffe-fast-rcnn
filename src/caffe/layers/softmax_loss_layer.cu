@@ -2,14 +2,9 @@
 #include <cfloat>
 #include <vector>
 
-<<<<<<< HEAD
-#include "caffe/layers/softmax_loss_layer.hpp"
-#include "caffe/util/math_functions.hpp"
-=======
 #include "caffe/layer.hpp"
 #include "caffe/util/math_functions.hpp"
 #include "caffe/vision_layers.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 
@@ -55,17 +50,6 @@ void SoftmaxWithLossLayer<Dtype>::Forward_gpu(
       outer_num_, dim, inner_num_, has_ignore_label_, ignore_label_, counts);
   Dtype loss;
   caffe_gpu_asum(nthreads, loss_data, &loss);
-<<<<<<< HEAD
-  Dtype valid_count = -1;
-  // Only launch another CUDA kernel if we actually need the count of valid
-  // outputs.
-  if (normalization_ == LossParameter_NormalizationMode_VALID &&
-      has_ignore_label_) {
-    caffe_gpu_asum(nthreads, counts, &valid_count);
-  }
-  top[0]->mutable_cpu_data()[0] = loss / get_normalizer(normalization_,
-                                                        valid_count);
-=======
   if (normalize_) {
     Dtype count;
     caffe_gpu_asum(nthreads, counts, &count);
@@ -74,7 +58,6 @@ void SoftmaxWithLossLayer<Dtype>::Forward_gpu(
     loss /= outer_num_;
   }
   top[0]->mutable_cpu_data()[0] = loss;
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   if (top.size() == 2) {
     top[1]->ShareData(prob_);
   }
@@ -126,19 +109,6 @@ void SoftmaxWithLossLayer<Dtype>::Backward_gpu(const vector<Blob<Dtype>*>& top,
     SoftmaxLossBackwardGPU<Dtype><<<CAFFE_GET_BLOCKS(nthreads),
         CAFFE_CUDA_NUM_THREADS>>>(nthreads, top_data, label, bottom_diff,
         outer_num_, dim, inner_num_, has_ignore_label_, ignore_label_, counts);
-<<<<<<< HEAD
-
-    Dtype valid_count = -1;
-    // Only launch another CUDA kernel if we actually need the count of valid
-    // outputs.
-    if (normalization_ == LossParameter_NormalizationMode_VALID &&
-        has_ignore_label_) {
-      caffe_gpu_asum(nthreads, counts, &valid_count);
-    }
-    const Dtype loss_weight = top[0]->cpu_diff()[0] /
-                              get_normalizer(normalization_, valid_count);
-    caffe_gpu_scal(prob_.count(), loss_weight , bottom_diff);
-=======
     const Dtype loss_weight = top[0]->cpu_diff()[0];
     if (normalize_) {
       Dtype count;
@@ -147,7 +117,6 @@ void SoftmaxWithLossLayer<Dtype>::Backward_gpu(const vector<Blob<Dtype>*>& top,
     } else {
       caffe_gpu_scal(prob_.count(), loss_weight / outer_num_, bottom_diff);
     }
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
 }
 

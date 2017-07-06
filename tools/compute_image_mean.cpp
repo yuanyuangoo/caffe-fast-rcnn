@@ -22,14 +22,7 @@ DEFINE_string(backend, "lmdb",
         "The backend {leveldb, lmdb} containing the images");
 
 int main(int argc, char** argv) {
-<<<<<<< HEAD
-#ifdef USE_OPENCV
   ::google::InitGoogleLogging(argv[0]);
-  // Print output to stderr (while still logging)
-  FLAGS_alsologtostderr = 1;
-=======
-  ::google::InitGoogleLogging(argv[0]);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #ifndef GFLAGS_GFLAGS_H_
   namespace gflags = google;
@@ -71,11 +64,7 @@ int main(int argc, char** argv) {
   for (int i = 0; i < size_in_datum; ++i) {
     sum_blob.add_data(0.);
   }
-<<<<<<< HEAD
-  LOG(INFO) << "Starting iteration";
-=======
   LOG(INFO) << "Starting Iteration";
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   while (cursor->valid()) {
     Datum datum;
     datum.ParseFromString(cursor->value());
@@ -124,15 +113,7 @@ int main(int argc, char** argv) {
     for (int i = 0; i < dim; ++i) {
       mean_values[c] += sum_blob.data(dim * c + i);
     }
-<<<<<<< HEAD
-    LOG(INFO) << "mean_value channel [" << c << "]: " << mean_values[c] / dim;
-  }
-#else
-  LOG(FATAL) << "This tool requires OpenCV; compile with USE_OPENCV.";
-#endif  // USE_OPENCV
-=======
     LOG(INFO) << "mean_value channel [" << c << "]:" << mean_values[c] / dim;
   }
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   return 0;
 }

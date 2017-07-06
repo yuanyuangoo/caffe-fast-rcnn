@@ -1,26 +1,15 @@
-<<<<<<< HEAD
-#include <cmath>
-#include <vector>
-
-#include "caffe/layers/sigmoid_layer.hpp"
-=======
 #include <algorithm>
 #include <cmath>
 #include <vector>
 
 #include "caffe/layer.hpp"
 #include "caffe/vision_layers.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 
 template <typename Dtype>
 inline Dtype sigmoid(Dtype x) {
-<<<<<<< HEAD
-  return 0.5 * tanh(0.5 * x) + 0.5;
-=======
   return 1. / (1. + exp(-x));
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 template <typename Dtype>

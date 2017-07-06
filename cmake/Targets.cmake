@@ -1,19 +1,6 @@
 ################################################################################################
 # Defines global Caffe_LINK flag, This flag is required to prevent linker from excluding
 # some objects which are not addressed directly but are registered via static constructors
-<<<<<<< HEAD
-macro(caffe_set_caffe_link)
-  if(BUILD_SHARED_LIBS)
-    set(Caffe_LINK caffe)
-  else()
-    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-      set(Caffe_LINK -Wl,-force_load caffe)
-    elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-      set(Caffe_LINK -Wl,--whole-archive caffe -Wl,--no-whole-archive)
-    endif()
-  endif()
-endmacro()
-=======
 if(BUILD_SHARED_LIBS)
   set(Caffe_LINK caffe)
 else()
@@ -24,7 +11,6 @@ else()
   endif()
 endif()
 
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 ################################################################################################
 # Convenient command to setup source group for IDEs that support this feature (VS, XCode)
 # Usage:
@@ -101,21 +87,13 @@ function(caffe_pickup_caffe_sources root)
   file(GLOB_RECURSE proto_files ${root}/src/caffe/*.proto)
   list(APPEND srcs ${proto_files})
 
-<<<<<<< HEAD
-  # convert to absolute paths
-=======
   # convet to absolute paths
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   caffe_convert_absolute_paths(srcs)
   caffe_convert_absolute_paths(cuda)
   caffe_convert_absolute_paths(test_srcs)
   caffe_convert_absolute_paths(test_cuda)
 
-<<<<<<< HEAD
-  # propagate to parent scope
-=======
   # propogate to parent scope
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   set(srcs ${srcs} PARENT_SCOPE)
   set(cuda ${cuda} PARENT_SCOPE)
   set(test_srcs ${test_srcs} PARENT_SCOPE)
@@ -123,11 +101,7 @@ function(caffe_pickup_caffe_sources root)
 endfunction()
 
 ################################################################################################
-<<<<<<< HEAD
-# Short command for setting default target properties
-=======
 # Short command for setting defeault target properties
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 # Usage:
 #   caffe_default_properties(<target>)
 function(caffe_default_properties target)
@@ -136,11 +110,7 @@ function(caffe_default_properties target)
     ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib"
     LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/lib"
     RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/bin")
-<<<<<<< HEAD
-  # make sure we build all external dependencies first
-=======
   # make sure we build all external depepdencies first
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   if (DEFINED external_project_dependencies)
     add_dependencies(${target} ${external_project_dependencies})
   endif()

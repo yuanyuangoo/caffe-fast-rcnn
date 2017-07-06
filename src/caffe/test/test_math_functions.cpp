@@ -1,12 +1,8 @@
 #include <stdint.h>  // for uint32_t & uint64_t
 #include <time.h>
-<<<<<<< HEAD
-#include <cmath>  // for std::fabs
-=======
 #include <climits>
 #include <cmath>  // for std::fabs
 #include <cstdlib>  // for rand_r
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "gtest/gtest.h"
 
@@ -45,8 +41,6 @@ class MathFunctionsTest : public MultiDeviceTest<TypeParam> {
     delete blob_top_;
   }
 
-<<<<<<< HEAD
-=======
   // http://en.wikipedia.org/wiki/Hamming_distance
   int ReferenceHammingDistance(const int n, const Dtype* x, const Dtype* y) {
     int dist = 0;
@@ -68,7 +62,6 @@ class MathFunctionsTest : public MultiDeviceTest<TypeParam> {
     return dist;
   }
 
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   Blob<Dtype>* const blob_bottom_;
   Blob<Dtype>* const blob_top_;
 };
@@ -85,8 +78,6 @@ TYPED_TEST(CPUMathFunctionsTest, TestNothing) {
   //   due to the set up overhead.
 }
 
-<<<<<<< HEAD
-=======
 TYPED_TEST(CPUMathFunctionsTest, TestHammingDistance) {
   int n = this->blob_bottom_->count();
   const TypeParam* x = this->blob_bottom_->cpu_data();
@@ -95,7 +86,6 @@ TYPED_TEST(CPUMathFunctionsTest, TestHammingDistance) {
             caffe_cpu_hamming_distance<TypeParam>(n, x, y));
 }
 
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 TYPED_TEST(CPUMathFunctionsTest, TestAsum) {
   int n = this->blob_bottom_->count();
   const TypeParam* x = this->blob_bottom_->cpu_data();
@@ -168,8 +158,6 @@ class GPUMathFunctionsTest : public MathFunctionsTest<GPUDevice<Dtype> > {
 
 TYPED_TEST_CASE(GPUMathFunctionsTest, TestDtypes);
 
-<<<<<<< HEAD
-=======
 // TODO: Fix caffe_gpu_hamming_distance and re-enable this test.
 TYPED_TEST(GPUMathFunctionsTest, DISABLED_TestHammingDistance) {
   int n = this->blob_bottom_->count();
@@ -182,7 +170,6 @@ TYPED_TEST(GPUMathFunctionsTest, DISABLED_TestHammingDistance) {
   EXPECT_EQ(reference_distance, computed_distance);
 }
 
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 TYPED_TEST(GPUMathFunctionsTest, TestAsum) {
   int n = this->blob_bottom_->count();
   const TypeParam* x = this->blob_bottom_->cpu_data();

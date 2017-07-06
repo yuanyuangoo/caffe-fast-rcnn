@@ -9,40 +9,18 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 #include <google/protobuf/text_format.h>
-<<<<<<< HEAD
-
-#if defined(USE_LEVELDB) && defined(USE_LMDB)
 #include <leveldb/db.h>
 #include <leveldb/write_batch.h>
 #include <lmdb.h>
-#endif
-
-=======
-#include <leveldb/db.h>
-#include <leveldb/write_batch.h>
-#include <lmdb.h>
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <stdint.h>
 #include <sys/stat.h>
 
 #include <fstream>  // NOLINT(readability/streams)
 #include <string>
 
-<<<<<<< HEAD
-#include "boost/scoped_ptr.hpp"
-#include "caffe/proto/caffe.pb.h"
-#include "caffe/util/db.hpp"
-#include "caffe/util/format.hpp"
-
-#if defined(USE_LEVELDB) && defined(USE_LMDB)
-
-using namespace caffe;  // NOLINT(build/namespaces)
-using boost::scoped_ptr;
-=======
 #include "caffe/proto/caffe.pb.h"
 
 using namespace caffe;  // NOLINT(build/namespaces)
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 using std::string;
 
 DEFINE_string(backend, "lmdb", "The backend for storing the result");
@@ -82,12 +60,6 @@ void convert_dataset(const char* image_filename, const char* label_filename,
   image_file.read(reinterpret_cast<char*>(&cols), 4);
   cols = swap_endian(cols);
 
-<<<<<<< HEAD
-
-  scoped_ptr<db::DB> db(db::GetDB(db_backend));
-  db->Open(db_path, db::NEW);
-  scoped_ptr<db::Transaction> txn(db->NewTransaction());
-=======
   // lmdb
   MDB_env *mdb_env;
   MDB_dbi mdb_dbi;
@@ -125,17 +97,13 @@ void convert_dataset(const char* image_filename, const char* label_filename,
   } else {
     LOG(FATAL) << "Unknown db backend " << db_backend;
   }
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
   // Storing to db
   char label;
   char* pixels = new char[rows * cols];
   int count = 0;
-<<<<<<< HEAD
-=======
   const int kMaxKeyLength = 10;
   char key_cstr[kMaxKeyLength];
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   string value;
 
   Datum datum;
@@ -149,15 +117,6 @@ void convert_dataset(const char* image_filename, const char* label_filename,
     label_file.read(&label, 1);
     datum.set_data(pixels, rows*cols);
     datum.set_label(label);
-<<<<<<< HEAD
-    string key_str = caffe::format_int(item_id, 8);
-    datum.SerializeToString(&value);
-
-    txn->Put(key_str, value);
-
-    if (++count % 1000 == 0) {
-      txn->Commit();
-=======
     snprintf(key_cstr, kMaxKeyLength, "%08d", item_id);
     datum.SerializeToString(&value);
     string keystr(key_cstr);
@@ -190,18 +149,10 @@ void convert_dataset(const char* image_filename, const char* label_filename,
       } else {
         LOG(FATAL) << "Unknown db backend " << db_backend;
       }
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     }
   }
   // write the last batch
   if (count % 1000 != 0) {
-<<<<<<< HEAD
-      txn->Commit();
-  }
-  LOG(INFO) << "Processed " << count << " files.";
-  delete[] pixels;
-  db->Close();
-=======
     if (db_backend == "leveldb") {  // leveldb
       db->Write(leveldb::WriteOptions(), batch);
       delete batch;
@@ -216,7 +167,6 @@ void convert_dataset(const char* image_filename, const char* label_filename,
     LOG(ERROR) << "Processed " << count << " files.";
   }
   delete[] pixels;
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 int main(int argc, char** argv) {
@@ -224,11 +174,6 @@ int main(int argc, char** argv) {
   namespace gflags = google;
 #endif
 
-<<<<<<< HEAD
-  FLAGS_alsologtostderr = 1;
-
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   gflags::SetUsageMessage("This script converts the MNIST dataset to\n"
         "the lmdb/leveldb format used by Caffe to load data.\n"
         "Usage:\n"
@@ -251,12 +196,3 @@ int main(int argc, char** argv) {
   }
   return 0;
 }
-<<<<<<< HEAD
-#else
-int main(int argc, char** argv) {
-  LOG(FATAL) << "This example requires LevelDB and LMDB; " <<
-  "compile with USE_LEVELDB and USE_LMDB.";
-}
-#endif  // USE_LEVELDB and USE_LMDB
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9

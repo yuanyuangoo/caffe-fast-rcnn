@@ -1,7 +1,7 @@
 #ifndef CAFFE_HDF5_OUTPUT_LAYER_HPP_
 #define CAFFE_HDF5_OUTPUT_LAYER_HPP_
 
-#include "hdf5.h"
+#include "hdf5/serial/hdf5.h"
 
 #include <string>
 #include <vector>
@@ -28,6 +28,8 @@ class HDF5OutputLayer : public Layer<Dtype> {
   virtual ~HDF5OutputLayer();
   virtual void LayerSetUp(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top);
+  // Data layers should be shared by multiple solvers in parallel
+  virtual inline bool ShareInParallel() const { return true; }
   // Data layers have no bottoms, so reshaping is trivial.
   virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top) {}

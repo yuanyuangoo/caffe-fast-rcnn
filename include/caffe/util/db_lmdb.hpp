@@ -1,15 +1,7 @@
-<<<<<<< HEAD
-#ifdef USE_LMDB
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #ifndef CAFFE_UTIL_DB_LMDB_HPP
 #define CAFFE_UTIL_DB_LMDB_HPP
 
 #include <string>
-<<<<<<< HEAD
-#include <vector>
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "lmdb.h"
 
@@ -61,18 +53,6 @@ class LMDBCursor : public Cursor {
 
 class LMDBTransaction : public Transaction {
  public:
-<<<<<<< HEAD
-  explicit LMDBTransaction(MDB_env* mdb_env)
-    : mdb_env_(mdb_env) { }
-  virtual void Put(const string& key, const string& value);
-  virtual void Commit();
-
- private:
-  MDB_env* mdb_env_;
-  vector<string> keys, values;
-
-  void DoubleMapSize();
-=======
   explicit LMDBTransaction(MDB_dbi* mdb_dbi, MDB_txn* mdb_txn)
     : mdb_dbi_(mdb_dbi), mdb_txn_(mdb_txn) { }
   virtual void Put(const string& key, const string& value);
@@ -81,7 +61,6 @@ class LMDBTransaction : public Transaction {
  private:
   MDB_dbi* mdb_dbi_;
   MDB_txn* mdb_txn_;
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
   DISABLE_COPY_AND_ASSIGN(LMDBTransaction);
 };
@@ -110,7 +89,3 @@ class LMDB : public DB {
 }  // namespace caffe
 
 #endif  // CAFFE_UTIL_DB_LMDB_HPP
-<<<<<<< HEAD
-#endif  // USE_LMDB
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9

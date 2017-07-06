@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 #include <cstring>
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <vector>
 
 #include "gtest/gtest.h"
@@ -9,11 +6,7 @@
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/filler.hpp"
-<<<<<<< HEAD
-#include "caffe/layers/slice_layer.hpp"
-=======
 #include "caffe/vision_layers.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "caffe/test/test_caffe_main.hpp"
 #include "caffe/test/test_gradient_check_util.hpp"
@@ -95,24 +88,6 @@ TYPED_TEST(SliceLayerTest, TestSetupChannels) {
   EXPECT_EQ(this->blob_bottom_->width(), this->blob_top_0_->width());
 }
 
-<<<<<<< HEAD
-TYPED_TEST(SliceLayerTest, TestTrivialSlice) {
-  // Test the trivial (single output) "slice" operation --
-  // should be the identity.
-  typedef typename TypeParam::Dtype Dtype;
-  LayerParameter layer_param;
-  SliceLayer<Dtype> layer(layer_param);
-  this->blob_top_vec_0_.resize(1);
-  layer.SetUp(this->blob_bottom_vec_, this->blob_top_vec_0_);
-  ASSERT_EQ(this->blob_bottom_->shape(), this->blob_top_0_->shape());
-  for (int i = 0; i < this->blob_bottom_->count(); ++i) {
-    EXPECT_EQ(this->blob_bottom_->cpu_data()[i],
-              this->blob_top_0_->cpu_data()[i]);
-  }
-}
-
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 TYPED_TEST(SliceLayerTest, TestSliceAcrossNum) {
   typedef typename TypeParam::Dtype Dtype;
   LayerParameter layer_param;
@@ -186,21 +161,6 @@ TYPED_TEST(SliceLayerTest, TestSliceAcrossChannels) {
   }
 }
 
-<<<<<<< HEAD
-TYPED_TEST(SliceLayerTest, TestGradientTrivial) {
-  // Test the trivial (single output) "slice" operation --
-  // should be the identity.
-  typedef typename TypeParam::Dtype Dtype;
-  LayerParameter layer_param;
-  SliceLayer<Dtype> layer(layer_param);
-  GradientChecker<Dtype> checker(1e-2, 1e-3);
-  this->blob_top_vec_0_.resize(1);
-  checker.CheckGradientEltwise(&layer, this->blob_bottom_vec_,
-      this->blob_top_vec_0_);
-}
-
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 TYPED_TEST(SliceLayerTest, TestGradientAcrossNum) {
   typedef typename TypeParam::Dtype Dtype;
   // Gradient checks are slow; reduce blob size.

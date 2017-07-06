@@ -10,24 +10,12 @@
 
 #include "glog/logging.h"
 #include "google/protobuf/text_format.h"
-<<<<<<< HEAD
-#include "stdint.h"
-
-#include "caffe/proto/caffe.pb.h"
-#include "caffe/util/format.hpp"
-#include "caffe/util/math_functions.hpp"
-
-#ifdef USE_LEVELDB
-#include "leveldb/db.h"
-
-=======
 #include "leveldb/db.h"
 #include "stdint.h"
 
 #include "caffe/proto/caffe.pb.h"
 #include "caffe/util/math_functions.hpp"
 
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 uint32_t swap_endian(uint32_t val) {
     val = ((val << 8) & 0xFF00FF00) | ((val >> 8) & 0xFF00FF);
     return (val << 16) | (val >> 16);
@@ -85,11 +73,8 @@ void convert_dataset(const char* image_filename, const char* label_filename,
   char label_i;
   char label_j;
   char* pixels = new char[2 * rows * cols];
-<<<<<<< HEAD
-=======
   const int kMaxKeyLength = 10;
   char key[kMaxKeyLength];
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   std::string value;
 
   caffe::Datum datum;
@@ -112,21 +97,12 @@ void convert_dataset(const char* image_filename, const char* label_filename,
       datum.set_label(0);
     }
     datum.SerializeToString(&value);
-<<<<<<< HEAD
-    std::string key_str = caffe::format_int(itemid, 8);
-    db->Put(leveldb::WriteOptions(), key_str, value);
-  }
-
-  delete db;
-  delete [] pixels;
-=======
     snprintf(key, kMaxKeyLength, "%08d", itemid);
     db->Put(leveldb::WriteOptions(), std::string(key), value);
   }
 
   delete db;
   delete pixels;
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 int main(int argc, char** argv) {
@@ -145,11 +121,3 @@ int main(int argc, char** argv) {
   }
   return 0;
 }
-<<<<<<< HEAD
-#else
-int main(int argc, char** argv) {
-  LOG(FATAL) << "This example requires LevelDB; compile with USE_LEVELDB.";
-}
-#endif  // USE_LEVELDB
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9

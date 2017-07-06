@@ -20,10 +20,6 @@
 
 #include "caffe/proto/caffe.pb.h"
 #include "caffe/util/db.hpp"
-<<<<<<< HEAD
-#include "caffe/util/format.hpp"
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include "caffe/util/io.hpp"
 #include "caffe/util/rng.hpp"
 
@@ -47,14 +43,7 @@ DEFINE_string(encode_type, "",
     "Optional: What type should we encode the image as ('png','jpg',...).");
 
 int main(int argc, char** argv) {
-<<<<<<< HEAD
-#ifdef USE_OPENCV
   ::google::InitGoogleLogging(argv[0]);
-  // Print output to stderr (while still logging)
-  FLAGS_alsologtostderr = 1;
-=======
-  ::google::InitGoogleLogging(argv[0]);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #ifndef GFLAGS_GFLAGS_H_
   namespace gflags = google;
@@ -80,20 +69,10 @@ int main(int argc, char** argv) {
 
   std::ifstream infile(argv[2]);
   std::vector<std::pair<std::string, int> > lines;
-<<<<<<< HEAD
-  std::string line;
-  size_t pos;
-  int label;
-  while (std::getline(infile, line)) {
-    pos = line.find_last_of(' ');
-    label = atoi(line.substr(pos + 1).c_str());
-    lines.push_back(std::make_pair(line.substr(0, pos), label));
-=======
   std::string filename;
   int label;
   while (infile >> filename >> label) {
     lines.push_back(std::make_pair(filename, label));
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
   if (FLAGS_shuffle) {
     // randomly shuffle data
@@ -117,11 +96,8 @@ int main(int argc, char** argv) {
   std::string root_folder(argv[1]);
   Datum datum;
   int count = 0;
-<<<<<<< HEAD
-=======
   const int kMaxKeyLength = 256;
   char key_cstr[kMaxKeyLength];
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   int data_size = 0;
   bool data_size_initialized = false;
 
@@ -152,45 +128,25 @@ int main(int argc, char** argv) {
       }
     }
     // sequential
-<<<<<<< HEAD
-    string key_str = caffe::format_int(line_id, 8) + "_" + lines[line_id].first;
-=======
     int length = snprintf(key_cstr, kMaxKeyLength, "%08d_%s", line_id,
         lines[line_id].first.c_str());
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
     // Put in db
     string out;
     CHECK(datum.SerializeToString(&out));
-<<<<<<< HEAD
-    txn->Put(key_str, out);
-=======
     txn->Put(string(key_cstr, length), out);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
     if (++count % 1000 == 0) {
       // Commit db
       txn->Commit();
       txn.reset(db->NewTransaction());
-<<<<<<< HEAD
-      LOG(INFO) << "Processed " << count << " files.";
-=======
       LOG(ERROR) << "Processed " << count << " files.";
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     }
   }
   // write the last batch
   if (count % 1000 != 0) {
     txn->Commit();
-<<<<<<< HEAD
-    LOG(INFO) << "Processed " << count << " files.";
-  }
-#else
-  LOG(FATAL) << "This tool requires OpenCV; compile with USE_OPENCV.";
-#endif  // USE_OPENCV
-=======
     LOG(ERROR) << "Processed " << count << " files.";
   }
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   return 0;
 }

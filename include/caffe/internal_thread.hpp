@@ -14,34 +14,18 @@ namespace caffe {
 /**
  * Virtual class encapsulate boost::thread for use in base class
  * The child class will acquire the ability to run a single thread,
-<<<<<<< HEAD
- * by reimplementing the virtual function InternalThreadEntry.
-=======
  * by reimplementing the virutal function InternalThreadEntry.
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
  */
 class InternalThread {
  public:
   InternalThread() : thread_() {}
   virtual ~InternalThread();
 
-<<<<<<< HEAD
-  /**
-   * Caffe's thread local state will be initialized using the current
-   * thread values, e.g. device id, solver index etc. The random seed
-   * is initialized using caffe_rng_rand.
-   */
-  void StartInternalThread();
-
-  /** Will not return until the internal thread has exited. */
-  void StopInternalThread();
-=======
   /** Returns true if the thread was successfully started. **/
   bool StartInternalThread();
 
   /** Will not return until the internal thread has exited. */
   bool WaitForInternalThreadToExit();
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
   bool is_started() const;
 
@@ -50,16 +34,6 @@ class InternalThread {
       with the code you want your thread to run. */
   virtual void InternalThreadEntry() {}
 
-<<<<<<< HEAD
-  /* Should be tested when running loops to exit when requested. */
-  bool must_stop();
-
- private:
-  void entry(int device, Caffe::Brew mode, int rand_seed,
-      int solver_count, int solver_rank, bool multiprocess);
-
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   shared_ptr<boost::thread> thread_;
 };
 

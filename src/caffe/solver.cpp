@@ -1,14 +1,5 @@
 #include <cstdio>
 
-<<<<<<< HEAD
-#include <string>
-#include <vector>
-
-#include "caffe/solver.hpp"
-#include "caffe/util/format.hpp"
-#include "caffe/util/hdf5.hpp"
-#include "caffe/util/io.hpp"
-=======
 #include <algorithm>
 #include <string>
 #include <vector>
@@ -22,80 +13,37 @@
 #include "caffe/util/hdf5.hpp"
 #include "caffe/util/io.hpp"
 #include "caffe/util/math_functions.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include "caffe/util/upgrade_proto.hpp"
 
 namespace caffe {
 
-<<<<<<< HEAD
-template<typename Dtype>
-void Solver<Dtype>::SetActionFunction(ActionCallback func) {
-  action_request_function_ = func;
-}
-
-template<typename Dtype>
-SolverAction::Enum Solver<Dtype>::GetRequestedAction() {
-  if (action_request_function_) {
-    // If the external request function has been set, call it.
-    return action_request_function_();
-  }
-  return SolverAction::NONE;
-}
-
-template <typename Dtype>
-Solver<Dtype>::Solver(const SolverParameter& param)
-    : net_(), callbacks_(), requested_early_exit_(false) {
-=======
 template <typename Dtype>
 Solver<Dtype>::Solver(const SolverParameter& param)
     : net_() {
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   Init(param);
 }
 
 template <typename Dtype>
 Solver<Dtype>::Solver(const string& param_file)
-<<<<<<< HEAD
-    : net_(), callbacks_(), requested_early_exit_(false) {
-  SolverParameter param;
-  ReadSolverParamsFromTextFileOrDie(param_file, &param);
-=======
     : net_() {
   SolverParameter param;
   ReadProtoFromTextFileOrDie(param_file, &param);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   Init(param);
 }
 
 template <typename Dtype>
 void Solver<Dtype>::Init(const SolverParameter& param) {
-<<<<<<< HEAD
-  LOG_IF(INFO, Caffe::root_solver()) << "Initializing solver from parameters: "
-    << std::endl << param.DebugString();
-  param_ = param;
-  CHECK_GE(param_.average_loss(), 1) << "average_loss should be non-negative.";
-  CheckSnapshotWritePermissions();
-  if (param_.random_seed() >= 0) {
-    Caffe::set_random_seed(param_.random_seed() + Caffe::solver_rank());
-=======
   LOG(INFO) << "Initializing solver from parameters: " << std::endl
             << param.DebugString();
   param_ = param;
   CHECK_GE(param_.average_loss(), 1) << "average_loss should be non-negative.";
   if (param_.random_seed() >= 0) {
     Caffe::set_random_seed(param_.random_seed());
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
   // Scaffolding code
   InitTrainNet();
   InitTestNets();
-<<<<<<< HEAD
-  if (Caffe::root_solver()) {
-    LOG(INFO) << "Solver scaffolding done.";
-  }
-=======
   LOG(INFO) << "Solver scaffolding done.";
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   iter_ = 0;
   current_step_ = 0;
 }
@@ -111,24 +59,6 @@ void Solver<Dtype>::InitTrainNet() {
       << "one of these fields specifying a train_net: " << field_names;
   NetParameter net_param;
   if (param_.has_train_net_param()) {
-<<<<<<< HEAD
-    LOG_IF(INFO, Caffe::root_solver())
-        << "Creating training net specified in train_net_param.";
-    net_param.CopyFrom(param_.train_net_param());
-  } else if (param_.has_train_net()) {
-    LOG_IF(INFO, Caffe::root_solver())
-        << "Creating training net from train_net file: " << param_.train_net();
-    ReadNetParamsFromTextFileOrDie(param_.train_net(), &net_param);
-  }
-  if (param_.has_net_param()) {
-    LOG_IF(INFO, Caffe::root_solver())
-        << "Creating training net specified in net_param.";
-    net_param.CopyFrom(param_.net_param());
-  }
-  if (param_.has_net()) {
-    LOG_IF(INFO, Caffe::root_solver())
-        << "Creating training net from net file: " << param_.net();
-=======
     LOG(INFO) << "Creating training net specified in train_net_param.";
     net_param.CopyFrom(param_.train_net_param());
   } else if (param_.has_train_net()) {
@@ -142,7 +72,6 @@ void Solver<Dtype>::InitTrainNet() {
   }
   if (param_.has_net()) {
     LOG(INFO) << "Creating training net from net file: " << param_.net();
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     ReadNetParamsFromTextFileOrDie(param_.net(), &net_param);
   }
   // Set the correct NetState.  We start with the solver defaults (lowest
@@ -235,65 +164,26 @@ void Solver<Dtype>::InitTestNets() {
 
 template <typename Dtype>
 void Solver<Dtype>::Step(int iters) {
-<<<<<<< HEAD
-  const int start_iter = iter_;
-  const int stop_iter = iter_ + iters;
-  int average_loss = this->param_.average_loss();
-  losses_.clear();
-  smoothed_loss_ = 0;
-  iteration_timer_.Start();
-=======
   vector<Blob<Dtype>*> bottom_vec;
   const int start_iter = iter_;
   const int stop_iter = iter_ + iters;
   int average_loss = this->param_.average_loss();
   vector<Dtype> losses;
   Dtype smoothed_loss = 0;
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
   while (iter_ < stop_iter) {
     // zero-init the params
     net_->ClearParamDiffs();
     if (param_.test_interval() && iter_ % param_.test_interval() == 0
         && (iter_ > 0 || param_.test_initialization())) {
-<<<<<<< HEAD
-      if (Caffe::root_solver()) {
-        TestAll();
-      }
-      if (requested_early_exit_) {
-        // Break out of the while loop because stop was requested while testing.
-        break;
-      }
-    }
-
-    for (int i = 0; i < callbacks_.size(); ++i) {
-      callbacks_[i]->on_start();
-    }
-=======
       TestAll();
     }
 
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     const bool display = param_.display() && iter_ % param_.display() == 0;
     net_->set_debug_info(display && param_.debug_info());
     // accumulate the loss and gradient
     Dtype loss = 0;
     for (int i = 0; i < param_.iter_size(); ++i) {
-<<<<<<< HEAD
-      loss += net_->ForwardBackward();
-    }
-    loss /= param_.iter_size();
-    // average the loss across iterations for smoothed reporting
-    UpdateSmoothedLoss(loss, start_iter, average_loss);
-    if (display) {
-      float lapse = iteration_timer_.Seconds();
-      float per_s = (iter_ - iterations_last_) / (lapse ? lapse : 1);
-      LOG_IF(INFO, Caffe::root_solver()) << "Iteration " << iter_
-          << " (" << per_s << " iter/s, " << lapse << "s/"
-          << param_.display() << " iters), loss = " << smoothed_loss_;
-      iteration_timer_.Start();
-      iterations_last_ = iter_;
-=======
       loss += net_->ForwardBackward(bottom_vec);
     }
     loss /= param_.iter_size();
@@ -309,7 +199,6 @@ void Solver<Dtype>::Step(int iters) {
     }
     if (display) {
       LOG(INFO) << "Iteration " << iter_ << ", loss = " << smoothed_loss;
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
       const vector<Blob<Dtype>*>& result = net_->output_blobs();
       int score_index = 0;
       for (int j = 0; j < result.size(); ++j) {
@@ -324,67 +213,30 @@ void Solver<Dtype>::Step(int iters) {
             loss_msg_stream << " (* " << loss_weight
                             << " = " << loss_weight * result_vec[k] << " loss)";
           }
-<<<<<<< HEAD
-          LOG_IF(INFO, Caffe::root_solver()) << "    Train net output #"
-=======
           LOG(INFO) << "    Train net output #"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
               << score_index++ << ": " << output_name << " = "
               << result_vec[k] << loss_msg_stream.str();
         }
       }
     }
-<<<<<<< HEAD
-    for (int i = 0; i < callbacks_.size(); ++i) {
-      callbacks_[i]->on_gradients_ready();
-    }
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     ApplyUpdate();
 
     // Increment the internal iter_ counter -- its value should always indicate
     // the number of times the weights have been updated.
     ++iter_;
 
-<<<<<<< HEAD
-    SolverAction::Enum request = GetRequestedAction();
-
-    // Save a snapshot if needed.
-    if ((param_.snapshot()
-         && iter_ % param_.snapshot() == 0
-         && Caffe::root_solver()) ||
-         (request == SolverAction::SNAPSHOT)) {
-      Snapshot();
-    }
-    if (SolverAction::STOP == request) {
-      requested_early_exit_ = true;
-      // Break out of training loop.
-      break;
-    }
-=======
     // Save a snapshot if needed.
     if (param_.snapshot() && iter_ % param_.snapshot() == 0) {
       Snapshot();
     }
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
 }
 
 template <typename Dtype>
 void Solver<Dtype>::Solve(const char* resume_file) {
-<<<<<<< HEAD
-  CHECK(Caffe::root_solver());
   LOG(INFO) << "Solving " << net_->name();
   LOG(INFO) << "Learning Rate Policy: " << param_.lr_policy();
 
-  // Initialize to false every time we start solving.
-  requested_early_exit_ = false;
-
-=======
-  LOG(INFO) << "Solving " << net_->name();
-  LOG(INFO) << "Learning Rate Policy: " << param_.lr_policy();
-
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   if (resume_file) {
     LOG(INFO) << "Restoring previous solver status from " << resume_file;
     Restore(resume_file);
@@ -392,10 +244,6 @@ void Solver<Dtype>::Solve(const char* resume_file) {
 
   // For a network that is trained by the solver, no bottom or top vecs
   // should be given, and we will just provide dummy vecs.
-<<<<<<< HEAD
-  int start_iter = iter_;
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   Step(param_.max_iter() - iter_);
   // If we haven't already, save a snapshot after optimization, unless
   // overridden by setting snapshot_after_train := false
@@ -403,13 +251,6 @@ void Solver<Dtype>::Solve(const char* resume_file) {
       && (!param_.snapshot() || iter_ % param_.snapshot() != 0)) {
     Snapshot();
   }
-<<<<<<< HEAD
-  if (requested_early_exit_) {
-    LOG(INFO) << "Optimization stopped early.";
-    return;
-  }
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   // After the optimization is done, run an additional train and test pass to
   // display the train and test loss/outputs if appropriate (based on the
   // display and test_interval settings, respectively).  Unlike in the rest of
@@ -417,19 +258,9 @@ void Solver<Dtype>::Solve(const char* resume_file) {
   // updated the parameters "max_iter" times -- this final pass is only done to
   // display the loss, which is computed in the forward pass.
   if (param_.display() && iter_ % param_.display() == 0) {
-<<<<<<< HEAD
-    int average_loss = this->param_.average_loss();
-    Dtype loss;
-    net_->Forward(&loss);
-
-    UpdateSmoothedLoss(loss, start_iter, average_loss);
-
-    LOG(INFO) << "Iteration " << iter_ << ", loss = " << smoothed_loss_;
-=======
     Dtype loss;
     net_->ForwardPrefilled(&loss);
     LOG(INFO) << "Iteration " << iter_ << ", loss = " << loss;
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
   if (param_.test_interval() && iter_ % param_.test_interval() == 0) {
     TestAll();
@@ -437,57 +268,22 @@ void Solver<Dtype>::Solve(const char* resume_file) {
   LOG(INFO) << "Optimization Done.";
 }
 
-<<<<<<< HEAD
-template <typename Dtype>
-void Solver<Dtype>::TestAll() {
-  for (int test_net_id = 0;
-       test_net_id < test_nets_.size() && !requested_early_exit_;
-       ++test_net_id) {
-=======
 
 template <typename Dtype>
 void Solver<Dtype>::TestAll() {
   for (int test_net_id = 0; test_net_id < test_nets_.size(); ++test_net_id) {
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     Test(test_net_id);
   }
 }
 
 template <typename Dtype>
 void Solver<Dtype>::Test(const int test_net_id) {
-<<<<<<< HEAD
-  CHECK(Caffe::root_solver());
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   LOG(INFO) << "Iteration " << iter_
             << ", Testing net (#" << test_net_id << ")";
   CHECK_NOTNULL(test_nets_[test_net_id].get())->
       ShareTrainedLayersWith(net_.get());
   vector<Dtype> test_score;
   vector<int> test_score_output_id;
-<<<<<<< HEAD
-  const shared_ptr<Net<Dtype> >& test_net = test_nets_[test_net_id];
-  Dtype loss = 0;
-  for (int i = 0; i < param_.test_iter(test_net_id); ++i) {
-    SolverAction::Enum request = GetRequestedAction();
-    // Check to see if stoppage of testing/training has been requested.
-    while (request != SolverAction::NONE) {
-        if (SolverAction::SNAPSHOT == request) {
-          Snapshot();
-        } else if (SolverAction::STOP == request) {
-          requested_early_exit_ = true;
-        }
-        request = GetRequestedAction();
-    }
-    if (requested_early_exit_) {
-      // break out of test loop.
-      break;
-    }
-
-    Dtype iter_loss;
-    const vector<Blob<Dtype>*>& result =
-        test_net->Forward(&iter_loss);
-=======
   vector<Blob<Dtype>*> bottom_vec;
   const shared_ptr<Net<Dtype> >& test_net = test_nets_[test_net_id];
   Dtype loss = 0;
@@ -495,7 +291,6 @@ void Solver<Dtype>::Test(const int test_net_id) {
     Dtype iter_loss;
     const vector<Blob<Dtype>*>& result =
         test_net->Forward(bottom_vec, &iter_loss);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     if (param_.test_compute_loss()) {
       loss += iter_loss;
     }
@@ -517,13 +312,6 @@ void Solver<Dtype>::Test(const int test_net_id) {
       }
     }
   }
-<<<<<<< HEAD
-  if (requested_early_exit_) {
-    LOG(INFO)     << "Test interrupted.";
-    return;
-  }
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   if (param_.test_compute_loss()) {
     loss /= param_.test_iter(test_net_id);
     LOG(INFO) << "Test loss: " << loss;
@@ -540,25 +328,6 @@ void Solver<Dtype>::Test(const int test_net_id) {
                       << " = " << loss_weight * mean_score << " loss)";
     }
     LOG(INFO) << "    Test net output #" << i << ": " << output_name << " = "
-<<<<<<< HEAD
-              << mean_score << loss_msg_stream.str();
-  }
-}
-
-template <typename Dtype>
-void Solver<Dtype>::Snapshot() {
-  CHECK(Caffe::root_solver());
-  string model_filename;
-  switch (param_.snapshot_format()) {
-  case caffe::SolverParameter_SnapshotFormat_BINARYPROTO:
-    model_filename = SnapshotToBinaryProto();
-    break;
-  case caffe::SolverParameter_SnapshotFormat_HDF5:
-    model_filename = SnapshotToHDF5();
-    break;
-  default:
-    LOG(FATAL) << "Unsupported snapshot format.";
-=======
         << mean_score << loss_msg_stream.str();
   }
 }
@@ -576,43 +345,18 @@ void Solver<Dtype>::Snapshot() {
       break;
     default:
       LOG(FATAL) << "Unsupported snapshot format.";
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
 
   SnapshotSolverState(model_filename);
 }
 
 template <typename Dtype>
-<<<<<<< HEAD
-void Solver<Dtype>::CheckSnapshotWritePermissions() {
-  if (Caffe::root_solver() && param_.snapshot()) {
-    CHECK(param_.has_snapshot_prefix())
-        << "In solver params, snapshot is specified but snapshot_prefix is not";
-    string probe_filename = SnapshotFilename(".tempfile");
-    std::ofstream probe_ofs(probe_filename.c_str());
-    if (probe_ofs.good()) {
-      probe_ofs.close();
-      std::remove(probe_filename.c_str());
-    } else {
-      LOG(FATAL) << "Cannot write to snapshot prefix '"
-          << param_.snapshot_prefix() << "'.  Make sure "
-          << "that the directory exists and is writeable.";
-    }
-  }
-}
-
-template <typename Dtype>
-string Solver<Dtype>::SnapshotFilename(const string extension) {
-  return param_.snapshot_prefix() + "_iter_" + caffe::format_int(iter_)
-    + extension;
-=======
 string Solver<Dtype>::SnapshotFilename(const string extension) {
   string filename(param_.snapshot_prefix());
   const int kBufferSize = 20;
   char iter_str_buffer[kBufferSize];
   snprintf(iter_str_buffer, kBufferSize, "_iter_%d", iter_);
   return filename + iter_str_buffer + extension;
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 template <typename Dtype>
@@ -644,19 +388,6 @@ void Solver<Dtype>::Restore(const char* state_file) {
   }
 }
 
-<<<<<<< HEAD
-template <typename Dtype>
-void Solver<Dtype>::UpdateSmoothedLoss(Dtype loss, int start_iter,
-    int average_loss) {
-  if (losses_.size() < average_loss) {
-    losses_.push_back(loss);
-    int size = losses_.size();
-    smoothed_loss_ = (smoothed_loss_ * (size - 1) + loss) / size;
-  } else {
-    int idx = (iter_ - start_iter) % average_loss;
-    smoothed_loss_ += (loss - losses_[idx]) / average_loss;
-    losses_[idx] = loss;
-=======
 // Return the current learning rate. The currently implemented learning rate
 // policies are as follows:
 //    - fixed: always return base_lr.
@@ -1200,17 +931,13 @@ void RMSPropSolver<Dtype>::ComputeUpdateValue(int param_id, Dtype rate) {
     break;
   default:
     LOG(FATAL) << "Unknown caffe mode: " << Caffe::mode();
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
 }
 
 INSTANTIATE_CLASS(Solver);
-<<<<<<< HEAD
-=======
 INSTANTIATE_CLASS(SGDSolver);
 INSTANTIATE_CLASS(NesterovSolver);
 INSTANTIATE_CLASS(AdaGradSolver);
 INSTANTIATE_CLASS(RMSPropSolver);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 }  // namespace caffe

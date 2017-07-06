@@ -4,22 +4,15 @@ TODO:
 */
 
 #include <stdint.h>
-<<<<<<< HEAD
-=======
 #include <string>
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <vector>
 
 #include "hdf5.h"
 #include "hdf5_hl.h"
 
-<<<<<<< HEAD
-#include "caffe/layers/hdf5_data_layer.hpp"
-=======
 #include "caffe/data_layers.hpp"
 #include "caffe/layer.hpp"
 #include "caffe/util/io.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 
@@ -27,11 +20,6 @@ template <typename Dtype>
 void HDF5DataLayer<Dtype>::Forward_gpu(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top) {
   const int batch_size = this->layer_param_.hdf5_data_param().batch_size();
-<<<<<<< HEAD
-  for (int i = 0; i < batch_size; ++i) {
-    while (Skip()) {
-      Next();
-=======
   for (int i = 0; i < batch_size; ++i, ++current_row_) {
     if (current_row_ == hdf_blobs_[0]->shape(0)) {
       if (num_files_ > 1) {
@@ -50,7 +38,6 @@ void HDF5DataLayer<Dtype>::Forward_gpu(const vector<Blob<Dtype>*>& bottom,
       current_row_ = 0;
       if (this->layer_param_.hdf5_data_param().shuffle())
         std::random_shuffle(data_permutation_.begin(), data_permutation_.end());
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     }
     for (int j = 0; j < this->layer_param_.top_size(); ++j) {
       int data_dim = top[j]->count() / top[j]->shape(0);
@@ -58,10 +45,6 @@ void HDF5DataLayer<Dtype>::Forward_gpu(const vector<Blob<Dtype>*>& bottom,
           &hdf_blobs_[j]->cpu_data()[data_permutation_[current_row_]
             * data_dim], &top[j]->mutable_gpu_data()[i * data_dim]);
     }
-<<<<<<< HEAD
-    Next();
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
 }
 

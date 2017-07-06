@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 #include <cstring>
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <vector>
 
 #include "gtest/gtest.h"
@@ -55,17 +52,6 @@ TYPED_TEST(BlobSimpleTest, TestReshape) {
   EXPECT_EQ(this->blob_->count(), 120);
 }
 
-<<<<<<< HEAD
-TYPED_TEST(BlobSimpleTest, TestReshapeZero) {
-  vector<int> shape(2);
-  shape[0] = 0;
-  shape[1] = 5;
-  this->blob_->Reshape(shape);
-  EXPECT_EQ(this->blob_->count(), 0);
-}
-
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 TYPED_TEST(BlobSimpleTest, TestLegacyBlobProtoShapeEquals) {
   BlobProto blob_proto;
 

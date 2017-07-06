@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-#ifdef USE_OPENCV
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <string>
 #include <vector>
 
@@ -10,13 +6,8 @@
 
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
-<<<<<<< HEAD
-#include "caffe/filler.hpp"
-#include "caffe/layers/data_layer.hpp"
-=======
 #include "caffe/data_layers.hpp"
 #include "caffe/filler.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include "caffe/proto/caffe.pb.h"
 #include "caffe/util/db.hpp"
 #include "caffe/util/io.hpp"
@@ -113,35 +104,6 @@ class DataLayerTest : public MultiDeviceTest<TypeParam> {
     }
   }
 
-<<<<<<< HEAD
-  void TestSkip() {
-    LayerParameter param;
-    param.set_phase(TRAIN);
-    DataParameter* data_param = param.mutable_data_param();
-    int batch_size = 5;
-    data_param->set_batch_size(batch_size);
-    data_param->set_source(filename_->c_str());
-    data_param->set_backend(backend_);
-    Caffe::set_solver_count(8);
-    for (int dev = 0; dev < Caffe::solver_count(); ++dev) {
-      Caffe::set_solver_rank(dev);
-      DataLayer<Dtype> layer(param);
-      layer.SetUp(blob_bottom_vec_, blob_top_vec_);
-      int label = dev;
-      for (int iter = 0; iter < 10; ++iter) {
-        layer.Forward(blob_bottom_vec_, blob_top_vec_);
-        for (int i = 0; i < batch_size; ++i) {
-          EXPECT_EQ(label % batch_size, blob_top_label_->cpu_data()[i]);
-          label += Caffe::solver_count();
-        }
-      }
-    }
-    Caffe::set_solver_count(1);
-    Caffe::set_solver_rank(0);
-  }
-
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   void TestReshape(DataParameter_DB backend) {
     const int num_inputs = 5;
     // Save data of varying shapes.
@@ -386,24 +348,12 @@ class DataLayerTest : public MultiDeviceTest<TypeParam> {
 
 TYPED_TEST_CASE(DataLayerTest, TestDtypesAndDevices);
 
-<<<<<<< HEAD
-#ifdef USE_LEVELDB
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 TYPED_TEST(DataLayerTest, TestReadLevelDB) {
   const bool unique_pixels = false;  // all pixels the same; images different
   this->Fill(unique_pixels, DataParameter_DB_LEVELDB);
   this->TestRead();
 }
 
-<<<<<<< HEAD
-TYPED_TEST(DataLayerTest, TestSkipLevelDB) {
-  this->Fill(false, DataParameter_DB_LEVELDB);
-  this->TestSkip();
-}
-
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 TYPED_TEST(DataLayerTest, TestReshapeLevelDB) {
   this->TestReshape(DataParameter_DB_LEVELDB);
 }
@@ -435,27 +385,13 @@ TYPED_TEST(DataLayerTest, TestReadCropTestLevelDB) {
   this->Fill(unique_pixels, DataParameter_DB_LEVELDB);
   this->TestReadCrop(TEST);
 }
-<<<<<<< HEAD
-#endif  // USE_LEVELDB
 
-#ifdef USE_LMDB
-=======
-
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 TYPED_TEST(DataLayerTest, TestReadLMDB) {
   const bool unique_pixels = false;  // all pixels the same; images different
   this->Fill(unique_pixels, DataParameter_DB_LMDB);
   this->TestRead();
 }
 
-<<<<<<< HEAD
-TYPED_TEST(DataLayerTest, TestSkipLMDB) {
-  this->Fill(false, DataParameter_DB_LMDB);
-  this->TestSkip();
-}
-
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 TYPED_TEST(DataLayerTest, TestReshapeLMDB) {
   this->TestReshape(DataParameter_DB_LMDB);
 }
@@ -488,10 +424,4 @@ TYPED_TEST(DataLayerTest, TestReadCropTestLMDB) {
   this->TestReadCrop(TEST);
 }
 
-<<<<<<< HEAD
-#endif  // USE_LMDB
 }  // namespace caffe
-#endif  // USE_OPENCV
-=======
-}  // namespace caffe
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
