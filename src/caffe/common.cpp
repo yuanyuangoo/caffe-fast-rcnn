@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 #include <boost/thread.hpp>
 #include <glog/logging.h>
 #include <cmath>
+=======
+#include <glog/logging.h>
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <cstdio>
 #include <ctime>
 
@@ -9,6 +13,7 @@
 
 namespace caffe {
 
+<<<<<<< HEAD
 // Make sure each thread can have different values.
 static boost::thread_specific_ptr<Caffe> thread_instance_;
 
@@ -18,6 +23,9 @@ Caffe& Caffe::Get() {
   }
   return *(thread_instance_.get());
 }
+=======
+shared_ptr<Caffe> Caffe::singleton_;
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 // random seeding
 int64_t cluster_seedgen(void) {
@@ -35,7 +43,11 @@ int64_t cluster_seedgen(void) {
 
   pid = getpid();
   s = time(NULL);
+<<<<<<< HEAD
   seed = std::abs(((s * 181) * ((pid - 83) * 359)) % 104729);
+=======
+  seed = abs(((s * 181) * ((pid - 83) * 359)) % 104729);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   return seed;
 }
 
@@ -52,8 +64,12 @@ void GlobalInit(int* pargc, char*** pargv) {
 #ifdef CPU_ONLY  // CPU-only Caffe.
 
 Caffe::Caffe()
+<<<<<<< HEAD
     : random_generator_(), mode_(Caffe::CPU),
       solver_count_(1), solver_rank_(0), multiprocess_(false) { }
+=======
+    : random_generator_(), mode_(Caffe::CPU) { }
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 Caffe::~Caffe() { }
 
@@ -70,6 +86,7 @@ void Caffe::DeviceQuery() {
   NO_GPU;
 }
 
+<<<<<<< HEAD
 bool Caffe::CheckDevice(const int device_id) {
   NO_GPU;
   return false;
@@ -79,6 +96,8 @@ int Caffe::FindDevice(const int start_id) {
   NO_GPU;
   return -1;
 }
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 class Caffe::RNG::Generator {
  public:
@@ -106,8 +125,12 @@ void* Caffe::RNG::generator() {
 
 Caffe::Caffe()
     : cublas_handle_(NULL), curand_generator_(NULL), random_generator_(),
+<<<<<<< HEAD
     mode_(Caffe::CPU),
     solver_count_(1), solver_rank_(0), multiprocess_(false) {
+=======
+    mode_(Caffe::CPU) {
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   // Try to create a cublas handler, and report an error if failed (but we will
   // keep the program running as one might just want to run CPU code).
   if (cublasCreate(&cublas_handle_) != CUBLAS_STATUS_SUCCESS) {
@@ -202,6 +225,7 @@ void Caffe::DeviceQuery() {
   return;
 }
 
+<<<<<<< HEAD
 bool Caffe::CheckDevice(const int device_id) {
   // This function checks the availability of GPU #device_id.
   // It attempts to create a context on the device by calling cudaFree(0).
@@ -235,6 +259,8 @@ int Caffe::FindDevice(const int start_id) {
   }
   return -1;
 }
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 class Caffe::RNG::Generator {
  public:

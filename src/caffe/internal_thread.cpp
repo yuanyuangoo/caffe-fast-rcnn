@@ -1,12 +1,17 @@
 #include <boost/thread.hpp>
+<<<<<<< HEAD
 #include <exception>
 
 #include "caffe/internal_thread.hpp"
 #include "caffe/util/math_functions.hpp"
+=======
+#include "caffe/internal_thread.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 
 InternalThread::~InternalThread() {
+<<<<<<< HEAD
   StopInternalThread();
 }
 
@@ -63,6 +68,39 @@ void InternalThread::StopInternalThread() {
       LOG(FATAL) << "Thread exception: " << e.what();
     }
   }
+=======
+  WaitForInternalThreadToExit();
+}
+
+bool InternalThread::is_started() const {
+  return thread_.get() != NULL && thread_->joinable();
+}
+
+
+bool InternalThread::StartInternalThread() {
+  if (!WaitForInternalThreadToExit()) {
+    return false;
+  }
+  try {
+    thread_.reset(
+        new boost::thread(&InternalThread::InternalThreadEntry, this));
+  } catch (...) {
+    return false;
+  }
+  return true;
+}
+
+/** Will not return until the internal thread has exited. */
+bool InternalThread::WaitForInternalThreadToExit() {
+  if (is_started()) {
+    try {
+      thread_->join();
+    } catch (...) {
+      return false;
+    }
+  }
+  return true;
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 }  // namespace caffe

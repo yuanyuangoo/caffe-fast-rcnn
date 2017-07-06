@@ -16,7 +16,10 @@
 
 #include "caffe/proto/caffe.pb.h"
 #include "caffe/util/db.hpp"
+<<<<<<< HEAD
 #include "caffe/util/format.hpp"
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 using caffe::Datum;
 using boost::scoped_ptr;
@@ -53,18 +56,31 @@ void convert_dataset(const string& input_folder, const string& output_folder,
   for (int fileid = 0; fileid < kCIFARTrainBatches; ++fileid) {
     // Open files
     LOG(INFO) << "Training Batch " << fileid + 1;
+<<<<<<< HEAD
     string batchFileName = input_folder + "/data_batch_"
       + caffe::format_int(fileid+1) + ".bin";
     std::ifstream data_file(batchFileName.c_str(),
+=======
+    snprintf(str_buffer, kCIFARImageNBytes, "/data_batch_%d.bin", fileid + 1);
+    std::ifstream data_file((input_folder + str_buffer).c_str(),
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
         std::ios::in | std::ios::binary);
     CHECK(data_file) << "Unable to open train file #" << fileid + 1;
     for (int itemid = 0; itemid < kCIFARBatchSize; ++itemid) {
       read_image(&data_file, &label, str_buffer);
       datum.set_label(label);
       datum.set_data(str_buffer, kCIFARImageNBytes);
+<<<<<<< HEAD
       string out;
       CHECK(datum.SerializeToString(&out));
       txn->Put(caffe::format_int(fileid * kCIFARBatchSize + itemid, 5), out);
+=======
+      int length = snprintf(str_buffer, kCIFARImageNBytes, "%05d",
+          fileid * kCIFARBatchSize + itemid);
+      string out;
+      CHECK(datum.SerializeToString(&out));
+      txn->Put(string(str_buffer, length), out);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     }
   }
   txn->Commit();
@@ -82,17 +98,27 @@ void convert_dataset(const string& input_folder, const string& output_folder,
     read_image(&data_file, &label, str_buffer);
     datum.set_label(label);
     datum.set_data(str_buffer, kCIFARImageNBytes);
+<<<<<<< HEAD
     string out;
     CHECK(datum.SerializeToString(&out));
     txn->Put(caffe::format_int(itemid, 5), out);
+=======
+    int length = snprintf(str_buffer, kCIFARImageNBytes, "%05d", itemid);
+    string out;
+    CHECK(datum.SerializeToString(&out));
+    txn->Put(string(str_buffer, length), out);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
   txn->Commit();
   test_db->Close();
 }
 
 int main(int argc, char** argv) {
+<<<<<<< HEAD
   FLAGS_alsologtostderr = 1;
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   if (argc != 4) {
     printf("This script converts the CIFAR dataset to the leveldb format used\n"
            "by caffe to perform classification.\n"

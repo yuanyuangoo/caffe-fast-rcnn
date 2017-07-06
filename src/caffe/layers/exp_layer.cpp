@@ -1,7 +1,16 @@
+<<<<<<< HEAD
 #include <vector>
 
 #include "caffe/layers/exp_layer.hpp"
 #include "caffe/util/math_functions.hpp"
+=======
+#include <algorithm>
+#include <vector>
+
+#include "caffe/layer.hpp"
+#include "caffe/util/math_functions.hpp"
+#include "caffe/vision_layers.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 
@@ -23,8 +32,12 @@ void ExpLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
   const Dtype input_scale = this->layer_param_.exp_param().scale();
   const Dtype input_shift = this->layer_param_.exp_param().shift();
   inner_scale_ = log_base * input_scale;
+<<<<<<< HEAD
   outer_scale_ = (input_shift == Dtype(0)) ? Dtype(1) :
      ( (base != Dtype(-1)) ? pow(base, input_shift) : exp(input_shift) );
+=======
+  outer_scale_ = (input_shift == Dtype(0)) ? Dtype(1) : pow(base, input_shift);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 template <typename Dtype>

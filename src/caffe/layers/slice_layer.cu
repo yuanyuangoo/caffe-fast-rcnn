@@ -1,7 +1,13 @@
 #include <vector>
 
+<<<<<<< HEAD
 #include "caffe/layers/slice_layer.hpp"
 #include "caffe/util/math_functions.hpp"
+=======
+#include "caffe/layer.hpp"
+#include "caffe/util/math_functions.hpp"
+#include "caffe/vision_layers.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 
@@ -27,7 +33,10 @@ __global__ void Slice(const int nthreads, const Dtype* in_data,
 template <typename Dtype>
 void SliceLayer<Dtype>::Forward_gpu(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top) {
+<<<<<<< HEAD
   if (top.size() == 1) { return; }
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   int offset_slice_axis = 0;
   const Dtype* bottom_data = bottom[0]->gpu_data();
   const int bottom_slice_axis = bottom[0]->shape(slice_axis_);
@@ -48,7 +57,11 @@ void SliceLayer<Dtype>::Forward_gpu(const vector<Blob<Dtype>*>& bottom,
 template <typename Dtype>
 void SliceLayer<Dtype>::Backward_gpu(const vector<Blob<Dtype>*>& top,
       const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom) {
+<<<<<<< HEAD
   if (!propagate_down[0] || top.size() == 1) { return; }
+=======
+  if (!propagate_down[0]) { return; }
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   int offset_slice_axis = 0;
   Dtype* bottom_diff = bottom[0]->mutable_gpu_diff();
   const int bottom_slice_axis = bottom[0]->shape(slice_axis_);

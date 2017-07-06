@@ -1,16 +1,26 @@
+<<<<<<< HEAD
 #ifndef CAFFE_SOLVER_HPP_
 #define CAFFE_SOLVER_HPP_
 #include <boost/function.hpp>
+=======
+#ifndef CAFFE_OPTIMIZATION_SOLVER_HPP_
+#define CAFFE_OPTIMIZATION_SOLVER_HPP_
+
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <string>
 #include <vector>
 
 #include "caffe/net.hpp"
+<<<<<<< HEAD
 #include "caffe/solver_factory.hpp"
 #include "caffe/util/benchmark.hpp"
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 
 /**
+<<<<<<< HEAD
   * @brief Enumeration of actions that a client of the Solver may request by
   * implementing the Solver's action request function, which a
   * client may optionally provide in order to request early termination
@@ -33,6 +43,8 @@ namespace caffe {
 typedef boost::function<SolverAction::Enum()> ActionCallback;
 
 /**
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
  * @brief An interface for classes that perform optimization on Net%s.
  *
  * Requires implementation of ApplyUpdate to compute a parameter update
@@ -46,12 +58,15 @@ class Solver {
   void Init(const SolverParameter& param);
   void InitTrainNet();
   void InitTestNets();
+<<<<<<< HEAD
 
   // Client of the Solver optionally may call this in order to set the function
   // that the solver uses to see what action it should take (e.g. snapshot or
   // exit training early).
   void SetActionFunction(ActionCallback func);
   SolverAction::Enum GetRequestedAction();
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   // The main entry of the solver function. In default, iter will be zero. Pass
   // in a non-zero iter number to resume training for a pre-trained net.
   virtual void Solve(const char* resume_file = NULL);
@@ -61,6 +76,7 @@ class Solver {
   // RestoreSolverStateFrom___ protected methods. You should implement these
   // methods to restore the state from the appropriate snapshot type.
   void Restore(const char* resume_file);
+<<<<<<< HEAD
   // The Solver::Snapshot function implements the basic snapshotting utility
   // that stores the learned net. You should implement the SnapshotSolverState()
   // function that produces a SolverState protocol buffer that needs to be
@@ -68,10 +84,14 @@ class Solver {
   void Snapshot();
   virtual ~Solver() {}
   inline const SolverParameter& param() const { return param_; }
+=======
+  virtual ~Solver() {}
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   inline shared_ptr<Net<Dtype> > net() { return net_; }
   inline const vector<shared_ptr<Net<Dtype> > >& test_nets() {
     return test_nets_;
   }
+<<<<<<< HEAD
   int iter() const { return iter_; }
 
   // Invoked at specific points during an iteration
@@ -93,10 +113,21 @@ class Solver {
    * @brief Returns the solver type.
    */
   virtual inline const char* type() const { return ""; }
+=======
+  int iter() { return iter_; }
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
  protected:
   // Make and apply the update value for the current iteration.
   virtual void ApplyUpdate() = 0;
+<<<<<<< HEAD
+=======
+  // The Solver::Snapshot function implements the basic snapshotting utility
+  // that stores the learned net. You should implement the SnapshotSolverState()
+  // function that produces a SolverState protocol buffer that needs to be
+  // written to disk together with the learned net.
+  void Snapshot();
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   string SnapshotFilename(const string extension);
   string SnapshotToBinaryProto();
   string SnapshotToHDF5();
@@ -107,13 +138,17 @@ class Solver {
   virtual void RestoreSolverStateFromHDF5(const string& state_file) = 0;
   virtual void RestoreSolverStateFromBinaryProto(const string& state_file) = 0;
   void DisplayOutputBlobs(const int net_id);
+<<<<<<< HEAD
   void UpdateSmoothedLoss(Dtype loss, int start_iter, int average_loss);
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
   SolverParameter param_;
   int iter_;
   int current_step_;
   shared_ptr<Net<Dtype> > net_;
   vector<shared_ptr<Net<Dtype> > > test_nets_;
+<<<<<<< HEAD
   vector<Callback*> callbacks_;
   vector<Dtype> losses_;
   Dtype smoothed_loss_;
@@ -135,3 +170,123 @@ class Solver {
 }  // namespace caffe
 
 #endif  // CAFFE_SOLVER_HPP_
+=======
+
+  DISABLE_COPY_AND_ASSIGN(Solver);
+};
+
+
+/**
+ * @brief Optimizes the parameters of a Net using
+ *        stochastic gradient descent (SGD) with momentum.
+ */
+template <typename Dtype>
+class SGDSolver : public Solver<Dtype> {
+ public:
+  explicit SGDSolver(const SolverParameter& param)
+      : Solver<Dtype>(param) { PreSolve(); }
+  explicit SGDSolver(const string& param_file)
+      : Solver<Dtype>(param_file) { PreSolve(); }
+
+  const vector<shared_ptr<Blob<Dtype> > >& history() { return history_; }
+
+ protected:
+  void PreSolve();
+  Dtype GetLearningRate();
+  virtual void ApplyUpdate();
+  virtual void Normalize(int param_id);
+  virtual void Regularize(int param_id);
+  virtual void ComputeUpdateValue(int param_id, Dtype rate);
+  virtual void ClipGradients();
+  virtual void SnapshotSolverState(const string& model_filename);
+  virtual void SnapshotSolverStateToBinaryProto(const string& model_filename);
+  virtual void SnapshotSolverStateToHDF5(const string& model_filename);
+  virtual void RestoreSolverStateFromHDF5(const string& state_file);
+  virtual void RestoreSolverStateFromBinaryProto(const string& state_file);
+  // history maintains the historical momentum data.
+  // update maintains update related data and is not needed in snapshots.
+  // temp maintains other information that might be needed in computation
+  //   of gradients/updates and is not needed in snapshots
+  vector<shared_ptr<Blob<Dtype> > > history_, update_, temp_;
+
+  DISABLE_COPY_AND_ASSIGN(SGDSolver);
+};
+
+template <typename Dtype>
+class NesterovSolver : public SGDSolver<Dtype> {
+ public:
+  explicit NesterovSolver(const SolverParameter& param)
+      : SGDSolver<Dtype>(param) {}
+  explicit NesterovSolver(const string& param_file)
+      : SGDSolver<Dtype>(param_file) {}
+
+ protected:
+  virtual void ComputeUpdateValue(int param_id, Dtype rate);
+
+  DISABLE_COPY_AND_ASSIGN(NesterovSolver);
+};
+
+template <typename Dtype>
+class AdaGradSolver : public SGDSolver<Dtype> {
+ public:
+  explicit AdaGradSolver(const SolverParameter& param)
+      : SGDSolver<Dtype>(param) { constructor_sanity_check(); }
+  explicit AdaGradSolver(const string& param_file)
+      : SGDSolver<Dtype>(param_file) { constructor_sanity_check(); }
+
+ protected:
+  virtual void ComputeUpdateValue(int param_id, Dtype rate);
+  void constructor_sanity_check() {
+    CHECK_EQ(0, this->param_.momentum())
+        << "Momentum cannot be used with AdaGrad.";
+  }
+
+  DISABLE_COPY_AND_ASSIGN(AdaGradSolver);
+};
+
+
+template <typename Dtype>
+class RMSPropSolver : public SGDSolver<Dtype> {
+ public:
+  explicit RMSPropSolver(const SolverParameter& param)
+      : SGDSolver<Dtype>(param) { constructor_sanity_check(); }
+  explicit RMSPropSolver(const string& param_file)
+      : SGDSolver<Dtype>(param_file) { constructor_sanity_check(); }
+
+ protected:
+  virtual void ComputeUpdateValue(int param_id, Dtype rate);
+  void constructor_sanity_check() {
+    CHECK_EQ(0, this->param_.momentum())
+        << "Momentum cannot be used with RMSProp.";
+    CHECK_GE(this->param_.rms_decay(), 0)
+        << "rms_decay should lie between 0 and 1.";
+    CHECK_LT(this->param_.rms_decay(), 1)
+        << "rms_decay should lie between 0 and 1.";
+  }
+
+  DISABLE_COPY_AND_ASSIGN(RMSPropSolver);
+};
+
+template <typename Dtype>
+Solver<Dtype>* GetSolver(const SolverParameter& param) {
+  SolverParameter_SolverType type = param.solver_type();
+
+  switch (type) {
+  case SolverParameter_SolverType_SGD:
+      return new SGDSolver<Dtype>(param);
+  case SolverParameter_SolverType_NESTEROV:
+      return new NesterovSolver<Dtype>(param);
+  case SolverParameter_SolverType_ADAGRAD:
+      return new AdaGradSolver<Dtype>(param);
+  case SolverParameter_SolverType_RMSPROP:
+      return new RMSPropSolver<Dtype>(param);
+  default:
+      LOG(FATAL) << "Unknown SolverType: " << type;
+  }
+  return (Solver<Dtype>*) NULL;
+}
+
+}  // namespace caffe
+
+#endif  // CAFFE_OPTIMIZATION_SOLVER_HPP_
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9

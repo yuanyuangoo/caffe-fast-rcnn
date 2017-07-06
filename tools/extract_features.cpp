@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+#include <stdio.h>  // for snprintf
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <string>
 #include <vector>
 
@@ -9,13 +13,22 @@
 #include "caffe/net.hpp"
 #include "caffe/proto/caffe.pb.h"
 #include "caffe/util/db.hpp"
+<<<<<<< HEAD
 #include "caffe/util/format.hpp"
 #include "caffe/util/io.hpp"
+=======
+#include "caffe/util/io.hpp"
+#include "caffe/vision_layers.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 using caffe::Blob;
 using caffe::Caffe;
 using caffe::Datum;
 using caffe::Net;
+<<<<<<< HEAD
+=======
+using boost::shared_ptr;
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 using std::string;
 namespace db = caffe::db;
 
@@ -40,7 +53,11 @@ int feature_extraction_pipeline(int argc, char** argv) {
     "  save_feature_dataset_name1[,name2,...]  num_mini_batches  db_type"
     "  [CPU/GPU] [DEVICE_ID=0]\n"
     "Note: you can extract multiple features in one pass by specifying"
+<<<<<<< HEAD
     " multiple feature blob names and dataset names separated by ','."
+=======
+    " multiple feature blob names and dataset names seperated by ','."
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     " The names cannot contain white space characters and the number of blobs"
     " and datasets must be equal.";
     return 1;
@@ -50,7 +67,11 @@ int feature_extraction_pipeline(int argc, char** argv) {
   arg_pos = num_required_args;
   if (argc > arg_pos && strcmp(argv[arg_pos], "GPU") == 0) {
     LOG(ERROR)<< "Using GPU";
+<<<<<<< HEAD
     int device_id = 0;
+=======
+    uint device_id = 0;
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     if (argc > arg_pos + 1) {
       device_id = atoi(argv[arg_pos + 1]);
       CHECK_GE(device_id, 0);
@@ -94,7 +115,11 @@ int feature_extraction_pipeline(int argc, char** argv) {
    }
    */
   std::string feature_extraction_proto(argv[++arg_pos]);
+<<<<<<< HEAD
   boost::shared_ptr<Net<Dtype> > feature_extraction_net(
+=======
+  shared_ptr<Net<Dtype> > feature_extraction_net(
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
       new Net<Dtype>(feature_extraction_proto, caffe::TEST));
   feature_extraction_net->CopyTrainedLayersFrom(pretrained_binary_proto);
 
@@ -118,6 +143,7 @@ int feature_extraction_pipeline(int argc, char** argv) {
 
   int num_mini_batches = atoi(argv[++arg_pos]);
 
+<<<<<<< HEAD
   std::vector<boost::shared_ptr<db::DB> > feature_dbs;
   std::vector<boost::shared_ptr<db::Transaction> > txns;
   const char* db_type = argv[++arg_pos];
@@ -139,6 +165,32 @@ int feature_extraction_pipeline(int argc, char** argv) {
     for (int i = 0; i < num_features; ++i) {
       const boost::shared_ptr<Blob<Dtype> > feature_blob =
         feature_extraction_net->blob_by_name(blob_names[i]);
+=======
+  std::vector<shared_ptr<db::DB> > feature_dbs;
+  std::vector<shared_ptr<db::Transaction> > txns;
+  const char* db_type = argv[++arg_pos];
+  for (size_t i = 0; i < num_features; ++i) {
+    LOG(INFO)<< "Opening dataset " << dataset_names[i];
+    shared_ptr<db::DB> db(db::GetDB(db_type));
+    db->Open(dataset_names.at(i), db::NEW);
+    feature_dbs.push_back(db);
+    shared_ptr<db::Transaction> txn(db->NewTransaction());
+    txns.push_back(txn);
+  }
+
+  LOG(ERROR)<< "Extacting Features";
+
+  Datum datum;
+  const int kMaxKeyStrLength = 100;
+  char key_str[kMaxKeyStrLength];
+  std::vector<Blob<float>*> input_vec;
+  std::vector<int> image_indices(num_features, 0);
+  for (int batch_index = 0; batch_index < num_mini_batches; ++batch_index) {
+    feature_extraction_net->Forward(input_vec);
+    for (int i = 0; i < num_features; ++i) {
+      const shared_ptr<Blob<Dtype> > feature_blob = feature_extraction_net
+          ->blob_by_name(blob_names[i]);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
       int batch_size = feature_blob->num();
       int dim_features = feature_blob->count() / batch_size;
       const Dtype* feature_blob_data;
@@ -153,11 +205,19 @@ int feature_extraction_pipeline(int argc, char** argv) {
         for (int d = 0; d < dim_features; ++d) {
           datum.add_float_data(feature_blob_data[d]);
         }
+<<<<<<< HEAD
         string key_str = caffe::format_int(image_indices[i], 10);
 
         string out;
         CHECK(datum.SerializeToString(&out));
         txns.at(i)->Put(key_str, out);
+=======
+        int length = snprintf(key_str, kMaxKeyStrLength, "%010d",
+            image_indices[i]);
+        string out;
+        CHECK(datum.SerializeToString(&out));
+        txns.at(i)->Put(std::string(key_str, length), out);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
         ++image_indices[i];
         if (image_indices[i] % 1000 == 0) {
           txns.at(i)->Commit();
@@ -181,3 +241,7 @@ int feature_extraction_pipeline(int argc, char** argv) {
   LOG(ERROR)<< "Successfully extracted the features!";
   return 0;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9

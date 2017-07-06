@@ -2,7 +2,10 @@
 #include "gtest/gtest.h"
 
 #include "caffe/internal_thread.hpp"
+<<<<<<< HEAD
 #include "caffe/util/math_functions.hpp"
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "caffe/test/test_caffe_main.hpp"
 
@@ -14,6 +17,7 @@ class InternalThreadTest : public ::testing::Test {};
 TEST_F(InternalThreadTest, TestStartAndExit) {
   InternalThread thread;
   EXPECT_FALSE(thread.is_started());
+<<<<<<< HEAD
   thread.StartInternalThread();
   EXPECT_TRUE(thread.is_started());
   thread.StopInternalThread();
@@ -49,5 +53,13 @@ TEST_F(InternalThreadTest, TestRandomSeed) {
   t3.StopInternalThread();
 }
 
+=======
+  EXPECT_TRUE(thread.StartInternalThread());
+  EXPECT_TRUE(thread.is_started());
+  EXPECT_TRUE(thread.WaitForInternalThreadToExit());
+  EXPECT_FALSE(thread.is_started());
+}
+
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }  // namespace caffe
 

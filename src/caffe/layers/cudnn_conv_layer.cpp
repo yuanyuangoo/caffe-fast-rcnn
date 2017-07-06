@@ -1,8 +1,18 @@
 #ifdef USE_CUDNN
+<<<<<<< HEAD
 #include <algorithm>
 #include <vector>
 
 #include "caffe/layers/cudnn_conv_layer.hpp"
+=======
+#include <vector>
+
+#include "caffe/filler.hpp"
+#include "caffe/layer.hpp"
+#include "caffe/util/im2col.hpp"
+#include "caffe/util/math_functions.hpp"
+#include "caffe/vision_layers.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 
@@ -21,6 +31,7 @@ void CuDNNConvolutionLayer<Dtype>::LayerSetUp(
   // Initialize CUDA streams and cuDNN.
   stream_         = new cudaStream_t[this->group_ * CUDNN_STREAMS_PER_GROUP];
   handle_         = new cudnnHandle_t[this->group_ * CUDNN_STREAMS_PER_GROUP];
+<<<<<<< HEAD
 
   // Initialize algorithm arrays
   fwd_algo_       = new cudnnConvolutionFwdAlgo_t[bottom.size()];
@@ -47,11 +58,16 @@ void CuDNNConvolutionLayer<Dtype>::LayerSetUp(
     workspace_bwd_data_sizes_[i] = 0;
     workspace_bwd_filter_sizes_[i] = 0;
   }
+=======
+  workspaceSizeInBytes = 0;
+  workspace = NULL;
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
   for (int g = 0; g < this->group_ * CUDNN_STREAMS_PER_GROUP; g++) {
     CUDA_CHECK(cudaStreamCreate(&stream_[g]));
     CUDNN_CHECK(cudnnCreate(&handle_[g]));
     CUDNN_CHECK(cudnnSetStream(handle_[g], stream_[g]));
+<<<<<<< HEAD
     workspace[g] = NULL;
   }
 
@@ -65,6 +81,19 @@ void CuDNNConvolutionLayer<Dtype>::LayerSetUp(
   cudnn::createFilterDesc<Dtype>(&filter_desc_,
       this->num_output_ / this->group_, this->channels_ / this->group_,
       kernel_h, kernel_w);
+=======
+  }
+
+  // Set the indexing parameters.
+  weight_offset_ = (this->num_output_ / this->group_)
+      * (this->channels_ / this->group_) * this->kernel_h_ * this->kernel_w_;
+  bias_offset_ = (this->num_output_ / this->group_);
+
+  // Create filter descriptor.
+  cudnn::createFilterDesc<Dtype>(&filter_desc_,
+      this->num_output_ / this->group_, this->channels_ / this->group_,
+      this->kernel_h_, this->kernel_w_);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
   // Create tensor descriptor(s) for data and corresponding convolution(s).
   for (int i = 0; i < bottom.size(); i++) {
@@ -91,6 +120,7 @@ template <typename Dtype>
 void CuDNNConvolutionLayer<Dtype>::Reshape(
     const vector<Blob<Dtype>*>& bottom, const vector<Blob<Dtype>*>& top) {
   ConvolutionLayer<Dtype>::Reshape(bottom, top);
+<<<<<<< HEAD
   CHECK_EQ(2, this->num_spatial_axes_)
       << "CuDNNConvolution input must have 2 spatial axes "
       << "(e.g., height and width). "
@@ -111,10 +141,17 @@ void CuDNNConvolutionLayer<Dtype>::Reshape(
   // Specify workspace limit for kernels directly until we have a
   // planning strategy and a rewrite of Caffe's GPU memory mangagement
   size_t workspace_limit_bytes = 8*1024*1024;
+=======
+  bottom_offset_ = (this->channels_ / this->group_)
+      * this->height_ * this->width_;
+  top_offset_ = (this->num_output_ / this->group_)
+      * this->height_out_ * this->width_out_;
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
   for (int i = 0; i < bottom.size(); i++) {
     cudnn::setTensor4dDesc<Dtype>(&bottom_descs_[i],
         this->num_,
+<<<<<<< HEAD
         this->channels_ / this->group_, height, width,
         this->channels_ * height * width,
         height * width, width, 1);
@@ -222,6 +259,23 @@ void CuDNNConvolutionLayer<Dtype>::Reshape(
     for (int g = 0; g < (this->group_ * CUDNN_STREAMS_PER_GROUP); g++) {
       workspace[g] = reinterpret_cast<char *>(workspaceData) + g*max_workspace;
     }
+=======
+        this->channels_ / this->group_,
+        this->height_, this->width_,
+        this->channels_ * this->height_ * this->width_,
+        this->height_ * this->width_,
+        this->width_, 1);
+    cudnn::setTensor4dDesc<Dtype>(&top_descs_[i],
+        this->num_,
+        this->num_output_ / this->group_,
+        this->height_out_, this->width_out_,
+        this->num_output_ * this->height_out_ * this->width_out_,
+        this->height_out_ * this->width_out_,
+        this->width_out_, 1);
+    cudnn::setConvolutionDesc<Dtype>(&conv_descs_[i], bottom_descs_[i],
+        filter_desc_, this->pad_h_, this->pad_w_,
+        this->stride_h_, this->stride_w_);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
 
   // Tensor descriptor for bias.
@@ -251,6 +305,7 @@ CuDNNConvolutionLayer<Dtype>::~CuDNNConvolutionLayer() {
     cudnnDestroy(handle_[g]);
   }
 
+<<<<<<< HEAD
   cudaFree(workspaceData);
   delete [] workspace;
   delete [] stream_;
@@ -261,6 +316,10 @@ CuDNNConvolutionLayer<Dtype>::~CuDNNConvolutionLayer() {
   delete [] workspace_fwd_sizes_;
   delete [] workspace_bwd_data_sizes_;
   delete [] workspace_bwd_filter_sizes_;
+=======
+  delete [] stream_;
+  delete [] handle_;
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 INSTANTIATE_CLASS(CuDNNConvolutionLayer);

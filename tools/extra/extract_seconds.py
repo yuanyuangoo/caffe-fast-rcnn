@@ -48,12 +48,16 @@ def extract_seconds(input_file, output_file):
     start_datetime = get_start_time(lines, log_created_year)
     assert start_datetime, 'Start time not found'
 
+<<<<<<< HEAD
     last_dt = start_datetime
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     out = open(output_file, 'w')
     for line in lines:
         line = line.strip()
         if line.find('Iteration') != -1:
             dt = extract_datetime_from_line(line, log_created_year)
+<<<<<<< HEAD
 
             # if it's another year
             if dt.month < last_dt.month:
@@ -61,6 +65,8 @@ def extract_seconds(input_file, output_file):
                 dt = extract_datetime_from_line(line, log_created_year)
             last_dt = dt
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
             elapsed_seconds = (dt - start_datetime).total_seconds()
             out.write('%f\n' % elapsed_seconds)
     out.close()

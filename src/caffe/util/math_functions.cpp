@@ -197,6 +197,7 @@ void caffe_sqr<double>(const int n, const double* a, double* y) {
 }
 
 template <>
+<<<<<<< HEAD
 void caffe_sqrt<float>(const int n, const float* a, float* y) {
   vsSqrt(n, a, y);
 }
@@ -207,6 +208,8 @@ void caffe_sqrt<double>(const int n, const double* a, double* y) {
 }
 
 template <>
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 void caffe_exp<float>(const int n, const float* a, float* y) {
   vsExp(n, a, y);
 }
@@ -359,6 +362,31 @@ template
 double caffe_cpu_dot<double>(const int n, const double* x, const double* y);
 
 template <>
+<<<<<<< HEAD
+=======
+int caffe_cpu_hamming_distance<float>(const int n, const float* x,
+                                  const float* y) {
+  int dist = 0;
+  for (int i = 0; i < n; ++i) {
+    dist += __builtin_popcount(static_cast<uint32_t>(x[i]) ^
+                               static_cast<uint32_t>(y[i]));
+  }
+  return dist;
+}
+
+template <>
+int caffe_cpu_hamming_distance<double>(const int n, const double* x,
+                                   const double* y) {
+  int dist = 0;
+  for (int i = 0; i < n; ++i) {
+    dist += __builtin_popcountl(static_cast<uint64_t>(x[i]) ^
+                                static_cast<uint64_t>(y[i]));
+  }
+  return dist;
+}
+
+template <>
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 float caffe_cpu_asum<float>(const int n, const float* x) {
   return cblas_sasum(n, x, 1);
 }

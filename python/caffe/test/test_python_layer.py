@@ -28,6 +28,7 @@ class ExceptionLayer(caffe.Layer):
     def setup(self, bottom, top):
         raise RuntimeError
 
+<<<<<<< HEAD
 class ParameterLayer(caffe.Layer):
     """A layer that just multiplies by ten"""
 
@@ -55,6 +56,8 @@ class PhaseLayer(caffe.Layer):
 
     def forward(self, bottom, top):
         top[0].data[()] = self.phase
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 def python_net_file():
     with tempfile.NamedTemporaryFile(mode='w+', delete=False) as f:
@@ -79,6 +82,7 @@ def exception_net_file():
         return f.name
 
 
+<<<<<<< HEAD
 def parameter_net_file():
     with tempfile.NamedTemporaryFile(mode='w+', delete=False) as f:
         f.write("""name: 'pythonnet' force_backward: true
@@ -99,6 +103,8 @@ def phase_net_file():
 
 @unittest.skipIf('Python' not in caffe.layer_type_list(),
     'Caffe built without Python layer support')
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 class TestPythonLayer(unittest.TestCase):
     def setUp(self):
         net_file = python_net_file()
@@ -131,6 +137,7 @@ class TestPythonLayer(unittest.TestCase):
         net_file = exception_net_file()
         self.assertRaises(RuntimeError, caffe.Net, net_file, caffe.TEST)
         os.remove(net_file)
+<<<<<<< HEAD
 
     def test_parameter(self):
         net_file = parameter_net_file()
@@ -166,3 +173,5 @@ class TestPythonLayer(unittest.TestCase):
         for phase in caffe.TRAIN, caffe.TEST:
             net = caffe.Net(net_file, phase)
             self.assertEqual(net.forward()['phase'], phase)
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9

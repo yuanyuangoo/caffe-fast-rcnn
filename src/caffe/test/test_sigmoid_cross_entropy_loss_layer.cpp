@@ -1,4 +1,9 @@
 #include <cmath>
+<<<<<<< HEAD
+=======
+#include <cstdlib>
+#include <cstring>
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <vector>
 
 #include "gtest/gtest.h"
@@ -6,7 +11,11 @@
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/filler.hpp"
+<<<<<<< HEAD
 #include "caffe/layers/sigmoid_cross_entropy_loss_layer.hpp"
+=======
+#include "caffe/vision_layers.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "caffe/test/test_caffe_main.hpp"
 #include "caffe/test/test_gradient_check_util.hpp"
@@ -116,6 +125,7 @@ TYPED_TEST(SigmoidCrossEntropyLossLayerTest, TestGradient) {
       this->blob_top_vec_, 0);
 }
 
+<<<<<<< HEAD
 TYPED_TEST(SigmoidCrossEntropyLossLayerTest, TestIgnoreGradient) {
   typedef typename TypeParam::Dtype Dtype;
   FillerParameter data_filler_param;
@@ -144,5 +154,7 @@ TYPED_TEST(SigmoidCrossEntropyLossLayerTest, TestIgnoreGradient) {
   }
 }
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 }  // namespace caffe

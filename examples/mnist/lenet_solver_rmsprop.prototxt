@@ -23,5 +23,9 @@ snapshot: 5000
 snapshot_prefix: "examples/mnist/lenet_rmsprop"
 # solver mode: CPU or GPU
 solver_mode: GPU
+<<<<<<< HEAD
 type: "RMSProp"
+=======
+solver_type: RMSPROP
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 rms_decay: 0.98

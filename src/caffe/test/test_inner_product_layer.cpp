@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+#include <cstring>
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <vector>
 
 #include "gtest/gtest.h"
@@ -5,7 +9,11 @@
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/filler.hpp"
+<<<<<<< HEAD
 #include "caffe/layers/inner_product_layer.hpp"
+=======
+#include "caffe/vision_layers.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "caffe/test/test_caffe_main.hpp"
 #include "caffe/test/test_gradient_check_util.hpp"
@@ -22,12 +30,16 @@ class InnerProductLayerTest : public MultiDeviceTest<TypeParam> {
  protected:
   InnerProductLayerTest()
       : blob_bottom_(new Blob<Dtype>(2, 3, 4, 5)),
+<<<<<<< HEAD
         blob_bottom_nobatch_(new Blob<Dtype>(1, 2, 3, 4)),
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
         blob_top_(new Blob<Dtype>()) {
     // fill the values
     FillerParameter filler_param;
     UniformFiller<Dtype> filler(filler_param);
     filler.Fill(this->blob_bottom_);
+<<<<<<< HEAD
     blob_top_vec_.push_back(blob_top_);
   }
   virtual ~InnerProductLayerTest() {
@@ -37,6 +49,13 @@ class InnerProductLayerTest : public MultiDeviceTest<TypeParam> {
   }
   Blob<Dtype>* const blob_bottom_;
   Blob<Dtype>* const blob_bottom_nobatch_;
+=======
+    blob_bottom_vec_.push_back(blob_bottom_);
+    blob_top_vec_.push_back(blob_top_);
+  }
+  virtual ~InnerProductLayerTest() { delete blob_bottom_; delete blob_top_; }
+  Blob<Dtype>* const blob_bottom_;
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   Blob<Dtype>* const blob_top_;
   vector<Blob<Dtype>*> blob_bottom_vec_;
   vector<Blob<Dtype>*> blob_top_vec_;
@@ -46,7 +65,10 @@ TYPED_TEST_CASE(InnerProductLayerTest, TestDtypesAndDevices);
 
 TYPED_TEST(InnerProductLayerTest, TestSetUp) {
   typedef typename TypeParam::Dtype Dtype;
+<<<<<<< HEAD
   this->blob_bottom_vec_.push_back(this->blob_bottom_);
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   LayerParameter layer_param;
   InnerProductParameter* inner_product_param =
       layer_param.mutable_inner_product_param();
@@ -60,6 +82,7 @@ TYPED_TEST(InnerProductLayerTest, TestSetUp) {
   EXPECT_EQ(this->blob_top_->channels(), 10);
 }
 
+<<<<<<< HEAD
 /** @brief TestSetUp while toggling transpose flag
  */
 TYPED_TEST(InnerProductLayerTest, TestSetUpTransposeFalse) {
@@ -211,6 +234,10 @@ TYPED_TEST(InnerProductLayerTest, TestForwardTranspose) {
 TYPED_TEST(InnerProductLayerTest, TestForwardNoBatch) {
   typedef typename TypeParam::Dtype Dtype;
   this->blob_bottom_vec_.push_back(this->blob_bottom_nobatch_);
+=======
+TYPED_TEST(InnerProductLayerTest, TestForward) {
+  typedef typename TypeParam::Dtype Dtype;
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   bool IS_VALID_CUDA = false;
 #ifndef CPU_ONLY
   IS_VALID_CUDA = CAFFE_TEST_CUDA_PROP.major >= 2;
@@ -241,7 +268,10 @@ TYPED_TEST(InnerProductLayerTest, TestForwardNoBatch) {
 
 TYPED_TEST(InnerProductLayerTest, TestGradient) {
   typedef typename TypeParam::Dtype Dtype;
+<<<<<<< HEAD
   this->blob_bottom_vec_.push_back(this->blob_bottom_);
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   bool IS_VALID_CUDA = false;
 #ifndef CPU_ONLY
   IS_VALID_CUDA = CAFFE_TEST_CUDA_PROP.major >= 2;
@@ -265,6 +295,7 @@ TYPED_TEST(InnerProductLayerTest, TestGradient) {
   }
 }
 
+<<<<<<< HEAD
 TYPED_TEST(InnerProductLayerTest, TestGradientTranspose) {
   typedef typename TypeParam::Dtype Dtype;
   this->blob_bottom_vec_.push_back(this->blob_bottom_);
@@ -388,4 +419,6 @@ TYPED_TEST(InnerProductLayerTest, TestBackwardTranspose) {
   }
 }
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }  // namespace caffe

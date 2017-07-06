@@ -1,8 +1,14 @@
 #include <cfloat>
 #include <vector>
 
+<<<<<<< HEAD
 #include "caffe/layers/eltwise_layer.hpp"
 #include "caffe/util/math_functions.hpp"
+=======
+#include "caffe/layer.hpp"
+#include "caffe/util/math_functions.hpp"
+#include "caffe/vision_layers.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 
@@ -31,9 +37,13 @@ template <typename Dtype>
 void EltwiseLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top) {
   for (int i = 1; i < bottom.size(); ++i) {
+<<<<<<< HEAD
     CHECK(bottom[0]->shape() == bottom[i]->shape())
         << "bottom[0]: " << bottom[0]->shape_string()
         << ", bottom[" << i << "]: " << bottom[i]->shape_string();
+=======
+    CHECK(bottom[i]->shape() == bottom[0]->shape());
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
   top[0]->ReshapeLike(*bottom[0]);
   // If max operation, we will initialize the vector index part.

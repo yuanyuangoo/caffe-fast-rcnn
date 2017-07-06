@@ -24,6 +24,7 @@ void Blob<Dtype>::Reshape(const vector<int>& shape) {
   CHECK_LE(shape.size(), kMaxBlobAxes);
   count_ = 1;
   shape_.resize(shape.size());
+<<<<<<< HEAD
   if (!shape_data_ || shape_data_->size() < shape.size() * sizeof(int)) {
     shape_data_.reset(new SyncedMemory(shape.size() * sizeof(int)));
   }
@@ -36,6 +37,13 @@ void Blob<Dtype>::Reshape(const vector<int>& shape) {
     count_ *= shape[i];
     shape_[i] = shape[i];
     shape_data[i] = shape[i];
+=======
+  for (int i = 0; i < shape.size(); ++i) {
+    CHECK_GE(shape[i], 0);
+    CHECK_LE(shape[i], INT_MAX / count_) << "blob size exceeds INT_MAX";
+    count_ *= shape[i];
+    shape_[i] = shape[i];
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
   if (count_ > capacity_) {
     capacity_ = count_;
@@ -75,12 +83,15 @@ Blob<Dtype>::Blob(const vector<int>& shape)
 }
 
 template <typename Dtype>
+<<<<<<< HEAD
 const int* Blob<Dtype>::gpu_shape() const {
   CHECK(shape_data_);
   return (const int*)shape_data_->gpu_data();
 }
 
 template <typename Dtype>
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 const Dtype* Blob<Dtype>::cpu_data() const {
   CHECK(data_);
   return (const Dtype*)data_->cpu_data();
@@ -89,12 +100,15 @@ const Dtype* Blob<Dtype>::cpu_data() const {
 template <typename Dtype>
 void Blob<Dtype>::set_cpu_data(Dtype* data) {
   CHECK(data);
+<<<<<<< HEAD
   // Make sure CPU and GPU sizes remain equal
   size_t size = count_ * sizeof(Dtype);
   if (data_->size() != size) {
     data_.reset(new SyncedMemory(size));
     diff_.reset(new SyncedMemory(size));
   }
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   data_->set_cpu_data(data);
 }
 
@@ -105,6 +119,7 @@ const Dtype* Blob<Dtype>::gpu_data() const {
 }
 
 template <typename Dtype>
+<<<<<<< HEAD
 void Blob<Dtype>::set_gpu_data(Dtype* data) {
   CHECK(data);
   // Make sure CPU and GPU sizes remain equal
@@ -117,6 +132,8 @@ void Blob<Dtype>::set_gpu_data(Dtype* data) {
 }
 
 template <typename Dtype>
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 const Dtype* Blob<Dtype>::cpu_diff() const {
   CHECK(diff_);
   return (const Dtype*)diff_->cpu_data();

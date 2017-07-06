@@ -9,6 +9,7 @@
 #include "caffe/common.hpp"
 #include "caffe/layer_factory.hpp"
 #include "caffe/proto/caffe.pb.h"
+<<<<<<< HEAD
 #include "caffe/util/math_functions.hpp"
 
 /**
@@ -16,6 +17,9 @@
  to avoid a boost/NVCC issues (#1009, #1010) on OSX.
  */
 namespace boost { class mutex; }
+=======
+#include "caffe/util/device_alternate.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 
@@ -291,7 +295,10 @@ class Layer {
     param_propagate_down_[param_id] = value;
   }
 
+<<<<<<< HEAD
   inline Phase phase() { return phase_; }
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
  protected:
   /** The protobuf that stores the layer parameters */
@@ -403,7 +410,10 @@ class Layer {
     }
   }
 
+<<<<<<< HEAD
  private:
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   DISABLE_COPY_AND_ASSIGN(Layer);
 };  // class Layer
 

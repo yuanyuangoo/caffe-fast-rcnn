@@ -1,14 +1,22 @@
 #include <vector>
 
+<<<<<<< HEAD
 #include "caffe/layers/reshape_layer.hpp"
+=======
+#include "caffe/common_layers.hpp"
+#include "caffe/layer.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 
 template <typename Dtype>
 void ReshapeLayer<Dtype>::LayerSetUp(const vector<Blob<Dtype>*>& bottom,
     const vector<Blob<Dtype>*>& top) {
+<<<<<<< HEAD
   CHECK_NE(top[0], bottom[0]) << this->type() << " Layer does not "
       "allow in-place computation.";
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   inferred_axis_ = -1;
   copy_axes_.clear();
   const BlobShape& top_blob_shape = this->layer_param_.reshape_param().shape();

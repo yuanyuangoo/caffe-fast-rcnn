@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+#include <cstring>
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <vector>
 
 #include "gtest/gtest.h"
@@ -5,7 +9,11 @@
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/filler.hpp"
+<<<<<<< HEAD
 #include "caffe/layers/deconv_layer.hpp"
+=======
+#include "caffe/vision_layers.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "caffe/test/test_caffe_main.hpp"
 #include "caffe/test/test_gradient_check_util.hpp"
@@ -57,8 +65,13 @@ TYPED_TEST(DeconvolutionLayerTest, TestSetup) {
   LayerParameter layer_param;
   ConvolutionParameter* convolution_param =
       layer_param.mutable_convolution_param();
+<<<<<<< HEAD
   convolution_param->add_kernel_size(3);
   convolution_param->add_stride(2);
+=======
+  convolution_param->set_kernel_size(3);
+  convolution_param->set_stride(2);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   convolution_param->set_num_output(4);
   this->blob_bottom_vec_.push_back(this->blob_bottom_2_);
   this->blob_top_vec_.push_back(this->blob_top_2_);
@@ -95,8 +108,13 @@ TYPED_TEST(DeconvolutionLayerTest, TestSimpleDeconvolution) {
   LayerParameter layer_param;
   ConvolutionParameter* convolution_param =
       layer_param.mutable_convolution_param();
+<<<<<<< HEAD
   convolution_param->add_kernel_size(3);
   convolution_param->add_stride(2);
+=======
+  convolution_param->set_kernel_size(3);
+  convolution_param->set_stride(2);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   convolution_param->set_num_output(4);
   convolution_param->mutable_weight_filler()->set_type("constant");
   convolution_param->mutable_weight_filler()->set_value(1);
@@ -143,8 +161,13 @@ TYPED_TEST(DeconvolutionLayerTest, TestGradient) {
       layer_param.mutable_convolution_param();
   this->blob_bottom_vec_.push_back(this->blob_bottom_2_);
   this->blob_top_vec_.push_back(this->blob_top_2_);
+<<<<<<< HEAD
   convolution_param->add_kernel_size(2);
   convolution_param->add_stride(1);
+=======
+  convolution_param->set_kernel_size(2);
+  convolution_param->set_stride(1);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   convolution_param->set_num_output(1);
   convolution_param->mutable_weight_filler()->set_type("gaussian");
   convolution_param->mutable_bias_filler()->set_type("gaussian");
@@ -154,6 +177,7 @@ TYPED_TEST(DeconvolutionLayerTest, TestGradient) {
       this->blob_top_vec_);
 }
 
+<<<<<<< HEAD
 TYPED_TEST(DeconvolutionLayerTest, TestNDAgainst2D) {
   typedef typename TypeParam::Dtype Dtype;
   const int kernel_h = 11;
@@ -301,4 +325,6 @@ TYPED_TEST(DeconvolutionLayerTest, TestGradient3D) {
       this->blob_top_vec_);
 }
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }  // namespace caffe

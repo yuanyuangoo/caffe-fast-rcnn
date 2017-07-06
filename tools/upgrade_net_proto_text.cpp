@@ -16,7 +16,10 @@ using std::ofstream;
 using namespace caffe;  // NOLINT(build/namespaces)
 
 int main(int argc, char** argv) {
+<<<<<<< HEAD
   FLAGS_alsologtostderr = 1;  // Print output to stderr (while still logging)
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   ::google::InitGoogleLogging(argv[0]);
   if (argc != 3) {
     LOG(ERROR) << "Usage: "
@@ -32,6 +35,10 @@ int main(int argc, char** argv) {
     return 2;
   }
   bool need_upgrade = NetNeedsUpgrade(net_param);
+<<<<<<< HEAD
+=======
+  bool need_data_upgrade = NetNeedsDataUpgrade(net_param);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   bool success = true;
   if (need_upgrade) {
     success = UpgradeNetAsNeeded(input_filename, &net_param);
@@ -43,9 +50,20 @@ int main(int argc, char** argv) {
     LOG(ERROR) << "File already in latest proto format: " << input_filename;
   }
 
+<<<<<<< HEAD
   // Save new format prototxt.
   WriteProtoToTextFile(net_param, argv[2]);
 
   LOG(INFO) << "Wrote upgraded NetParameter text proto to " << argv[2];
+=======
+  if (need_data_upgrade) {
+    UpgradeNetDataTransformation(&net_param);
+  }
+
+  // Save new format prototxt.
+  WriteProtoToTextFile(net_param, argv[2]);
+
+  LOG(ERROR) << "Wrote upgraded NetParameter text proto to " << argv[2];
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   return !success;
 }

@@ -10,6 +10,7 @@ Caffe network visualization: draw the NetParameter protobuffer.
 """
 
 from caffe.proto import caffe_pb2
+<<<<<<< HEAD
 
 """
 pydot is not supported under python 3 and pydot2 doesn't work properly.
@@ -20,6 +21,9 @@ try:
     import pydotplus as pydot
 except ImportError:
     import pydot
+=======
+import pydot
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 # Internal layer and blob styles.
 LAYER_STYLE_DEFAULT = {'shape': 'record',
@@ -49,7 +53,11 @@ def get_edge_label(layer):
 
     if layer.type == 'Data':
         edge_label = 'Batch ' + str(layer.data_param.batch_size)
+<<<<<<< HEAD
     elif layer.type == 'Convolution' or layer.type == 'Deconvolution':
+=======
+    elif layer.type == 'Convolution':
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
         edge_label = str(layer.convolution_param.num_output)
     elif layer.type == 'InnerProduct':
         edge_label = str(layer.inner_product_param.num_output)
@@ -83,7 +91,11 @@ def get_layer_label(layer, rankdir):
         # horizontal space is not; separate words with newlines
         separator = '\\n'
 
+<<<<<<< HEAD
     if layer.type == 'Convolution' or layer.type == 'Deconvolution':
+=======
+    if layer.type == 'Convolution':
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
         # Outer double quotes needed or else colon characters don't parse
         # properly
         node_label = '"%s%s(%s)%skernel size: %d%sstride: %d%spad: %d"' %\
@@ -91,11 +103,19 @@ def get_layer_label(layer, rankdir):
                       separator,
                       layer.type,
                       separator,
+<<<<<<< HEAD
                       layer.convolution_param.kernel_size[0] if len(layer.convolution_param.kernel_size) else 1,
                       separator,
                       layer.convolution_param.stride[0] if len(layer.convolution_param.stride) else 1,
                       separator,
                       layer.convolution_param.pad[0] if len(layer.convolution_param.pad) else 0)
+=======
+                      layer.convolution_param.kernel_size,
+                      separator,
+                      layer.convolution_param.stride,
+                      separator,
+                      layer.convolution_param.pad)
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     elif layer.type == 'Pooling':
         pooling_types_dict = get_pooling_types_dict()
         node_label = '"%s%s(%s %s)%skernel size: %d%sstride: %d%spad: %d"' %\
@@ -118,7 +138,11 @@ def choose_color_by_layertype(layertype):
     """Define colors for nodes based on the layer type.
     """
     color = '#6495ED'  # Default
+<<<<<<< HEAD
     if layertype == 'Convolution' or layertype == 'Deconvolution':
+=======
+    if layertype == 'Convolution':
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
         color = '#FF5050'
     elif layertype == 'Pooling':
         color = '#FF9900'
@@ -127,7 +151,11 @@ def choose_color_by_layertype(layertype):
     return color
 
 
+<<<<<<< HEAD
 def get_pydot_graph(caffe_net, rankdir, label_edges=True, phase=None):
+=======
+def get_pydot_graph(caffe_net, rankdir, label_edges=True):
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     """Create a data structure which represents the `caffe_net`.
 
     Parameters
@@ -137,20 +165,28 @@ def get_pydot_graph(caffe_net, rankdir, label_edges=True, phase=None):
         Direction of graph layout.
     label_edges : boolean, optional
         Label the edges (default is True).
+<<<<<<< HEAD
     phase : {caffe_pb2.Phase.TRAIN, caffe_pb2.Phase.TEST, None} optional
         Include layers from this network phase.  If None, include all layers.
         (the default is None)
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
     Returns
     -------
     pydot graph object
     """
+<<<<<<< HEAD
     pydot_graph = pydot.Dot(caffe_net.name if caffe_net.name else 'Net',
+=======
+    pydot_graph = pydot.Dot(caffe_net.name,
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
                             graph_type='digraph',
                             rankdir=rankdir)
     pydot_nodes = {}
     pydot_edges = []
     for layer in caffe_net.layer:
+<<<<<<< HEAD
         if phase is not None:
           included = False
           if len(layer.include) == 0:
@@ -164,6 +200,8 @@ def get_pydot_graph(caffe_net, rankdir, label_edges=True, phase=None):
             included = included and not layer_phase.phase == phase
           if not included:
             continue
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
         node_label = get_layer_label(layer, rankdir)
         node_name = "%s_%s" % (layer.name, layer.type)
         if (len(layer.bottom) == 1 and len(layer.top) == 1 and
@@ -202,7 +240,11 @@ def get_pydot_graph(caffe_net, rankdir, label_edges=True, phase=None):
     return pydot_graph
 
 
+<<<<<<< HEAD
 def draw_net(caffe_net, rankdir, ext='png', phase=None):
+=======
+def draw_net(caffe_net, rankdir, ext='png'):
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     """Draws a caffe net and returns the image string encoded using the given
     extension.
 
@@ -211,19 +253,29 @@ def draw_net(caffe_net, rankdir, ext='png', phase=None):
     caffe_net : a caffe.proto.caffe_pb2.NetParameter protocol buffer.
     ext : string, optional
         The image extension (the default is 'png').
+<<<<<<< HEAD
     phase : {caffe_pb2.Phase.TRAIN, caffe_pb2.Phase.TEST, None} optional
         Include layers from this network phase.  If None, include all layers.
         (the default is None)
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
     Returns
     -------
     string :
         Postscript representation of the graph.
     """
+<<<<<<< HEAD
     return get_pydot_graph(caffe_net, rankdir, phase=phase).create(format=ext)
 
 
 def draw_net_to_file(caffe_net, filename, rankdir='LR', phase=None):
+=======
+    return get_pydot_graph(caffe_net, rankdir).create(format=ext)
+
+
+def draw_net_to_file(caffe_net, filename, rankdir='LR'):
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     """Draws a caffe net, and saves it to file using the format given as the
     file extension. Use '.raw' to output raw text that you can manually feed
     to graphviz to draw graphs.
@@ -235,6 +287,7 @@ def draw_net_to_file(caffe_net, filename, rankdir='LR', phase=None):
         The path to a file where the networks visualization will be stored.
     rankdir : {'LR', 'TB', 'BT'}
         Direction of graph layout.
+<<<<<<< HEAD
     phase : {caffe_pb2.Phase.TRAIN, caffe_pb2.Phase.TEST, None} optional
         Include layers from this network phase.  If None, include all layers.
         (the default is None)
@@ -242,3 +295,9 @@ def draw_net_to_file(caffe_net, filename, rankdir='LR', phase=None):
     ext = filename[filename.rfind('.')+1:]
     with open(filename, 'wb') as fid:
         fid.write(draw_net(caffe_net, rankdir, ext, phase))
+=======
+    """
+    ext = filename[filename.rfind('.')+1:]
+    with open(filename, 'wb') as fid:
+        fid.write(draw_net(caffe_net, rankdir, ext))
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9

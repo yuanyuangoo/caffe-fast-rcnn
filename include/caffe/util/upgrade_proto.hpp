@@ -10,6 +10,7 @@ namespace caffe {
 // Return true iff the net is not the current version.
 bool NetNeedsUpgrade(const NetParameter& net_param);
 
+<<<<<<< HEAD
 // Check for deprecations and upgrade the NetParameter as needed.
 bool UpgradeNetAsNeeded(const string& param_file, NetParameter* param);
 
@@ -19,6 +20,8 @@ void ReadNetParamsFromTextFileOrDie(const string& param_file,
 void ReadNetParamsFromBinaryFileOrDie(const string& param_file,
                                       NetParameter* param);
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 // Return true iff any layer contains parameters specified using
 // deprecated V0LayerParameter.
 bool NetNeedsV0ToV1Upgrade(const NetParameter& net_param);
@@ -59,6 +62,7 @@ bool UpgradeV1LayerParameter(const V1LayerParameter& v1_layer_param,
 
 const char* UpgradeV1LayerType(const V1LayerParameter_LayerType type);
 
+<<<<<<< HEAD
 // Return true iff the Net contains input fields.
 bool NetNeedsInputUpgrade(const NetParameter& net_param);
 
@@ -82,6 +86,16 @@ bool UpgradeSolverAsNeeded(const string& param_file, SolverParameter* param);
 // Read parameters from a file into a SolverParameter proto message.
 void ReadSolverParamsFromTextFileOrDie(const string& param_file,
                                        SolverParameter* param);
+=======
+// Check for deprecations and upgrade the NetParameter as needed.
+bool UpgradeNetAsNeeded(const string& param_file, NetParameter* param);
+
+// Read parameters from a file into a NetParameter proto message.
+void ReadNetParamsFromTextFileOrDie(const string& param_file,
+                                    NetParameter* param);
+void ReadNetParamsFromBinaryFileOrDie(const string& param_file,
+                                      NetParameter* param);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 }  // namespace caffe
 

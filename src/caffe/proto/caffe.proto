@@ -63,12 +63,21 @@ message FillerParameter {
 
 message NetParameter {
   optional string name = 1; // consider giving the network a name
+<<<<<<< HEAD
   // DEPRECATED. See InputParameter. The input blobs to the network.
   repeated string input = 3;
   // DEPRECATED. See InputParameter. The shape of the input blobs.
   repeated BlobShape input_shape = 8;
 
   // 4D input dimensions -- deprecated.  Use "input_shape" instead.
+=======
+  // The input blobs to the network.
+  repeated string input = 3;
+  // The shape of the input blobs.
+  repeated BlobShape input_shape = 8;
+
+  // 4D input dimensions -- deprecated.  Use "shape" instead.
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   // If specified, for each input blob there should be four
   // values specifying the num, channels, height and width of the input blob.
   // Thus, there should be a total of (4 * #input) numbers.
@@ -98,7 +107,11 @@ message NetParameter {
 // NOTE
 // Update the next available ID when you add a new SolverParameter field.
 //
+<<<<<<< HEAD
 // SolverParameter next available ID: 42 (last added: layer_wise_reduce)
+=======
+// SolverParameter next available ID: 39 (last added: rms_decay)
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 message SolverParameter {
   //////////////////////////////////////////////////////////////////////////////
   // Specifying the train and test networks
@@ -128,7 +141,12 @@ message SolverParameter {
   // The states for the train/test nets. Must be unspecified or
   // specified once per net.
   //
+<<<<<<< HEAD
   // By default, train_state will have phase = TRAIN,
+=======
+  // By default, all states will have solver = true;
+  // train_state will have phase = TRAIN,
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   // and all test_state's will have phase = TEST.
   // Other defaults are set according to the NetState defaults.
   optional NetState train_state = 26;
@@ -208,6 +226,7 @@ message SolverParameter {
   // (and by default) initialize using a seed derived from the system clock.
   optional int64 random_seed = 20 [default = -1];
 
+<<<<<<< HEAD
   // type of the solver
   optional string type = 40 [default = "SGD"];
 
@@ -219,6 +238,22 @@ message SolverParameter {
   // RMSProp decay value
   // MeanSquare(t) = rms_decay*MeanSquare(t-1) + (1-rms_decay)*SquareGradient(t)
   optional float rms_decay = 38 [default = 0.99];
+=======
+  // Solver type
+  enum SolverType {
+    SGD = 0;
+    NESTEROV = 1;
+    ADAGRAD = 2;
+    RMSPROP = 3;
+  }
+  optional SolverType solver_type = 30 [default = SGD];
+  // numerical stability for AdaGrad
+  optional float delta = 31 [default = 1e-8];
+
+  // RMSProp decay value
+  // MeanSquare(t) = rms_decay*MeanSquare(t-1) + (1-rms_decay)*SquareGradient(t)
+  optional float rms_decay = 38;
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
   // If true, print information about the state of the net that may help with
   // debugging learning problems.
@@ -226,6 +261,7 @@ message SolverParameter {
 
   // If false, don't save a snapshot after training finishes.
   optional bool snapshot_after_train = 28 [default = true];
+<<<<<<< HEAD
 
   // DEPRECATED: old solver enum types, use string instead
   enum SolverType {
@@ -241,6 +277,8 @@ message SolverParameter {
 
   // Overlap compute and communication for data parallel training
   optional bool layer_wise_reduce = 41 [default = true];
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 // A message that stores the solver snapshots
@@ -308,7 +346,11 @@ message ParamSpec {
 // NOTE
 // Update the next available ID when you add a new LayerParameter field.
 //
+<<<<<<< HEAD
 // LayerParameter next available layer-specific ID: 147 (last added: recurrent_param)
+=======
+// LayerParameter next available layer-specific ID: 137 (last added: reduction_param)
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 message LayerParameter {
   optional string name = 1; // the layer name
   optional string type = 2; // the layer type
@@ -330,12 +372,16 @@ message LayerParameter {
   // The blobs containing the numeric parameters of the layer.
   repeated BlobProto blobs = 7;
 
+<<<<<<< HEAD
   // Specifies whether to backpropagate to each bottom. If unspecified,
   // Caffe will automatically infer whether each input needs backpropagation
   // to compute parameter gradients. If set to true for some inputs,
   // backpropagation to those inputs is forced; if set false for some inputs,
   // backpropagation to those inputs is skipped.
   //
+=======
+  // Specifies on which bottoms the backpropagation should be skipped.
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   // The size must be either 0 or equal to the number of bottoms.
   repeated bool propagate_down = 11;
 
@@ -362,18 +408,27 @@ message LayerParameter {
   // The default for the engine is set by the ENGINE switch at compile-time.
   optional AccuracyParameter accuracy_param = 102;
   optional ArgMaxParameter argmax_param = 103;
+<<<<<<< HEAD
   optional BatchNormParameter batch_norm_param = 139;
   optional BiasParameter bias_param = 141;
   optional ConcatParameter concat_param = 104;
   optional ContrastiveLossParameter contrastive_loss_param = 105;
   optional ConvolutionParameter convolution_param = 106;
   optional CropParameter crop_param = 144;
+=======
+  optional ConcatParameter concat_param = 104;
+  optional ContrastiveLossParameter contrastive_loss_param = 105;
+  optional ConvolutionParameter convolution_param = 106;
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   optional DataParameter data_param = 107;
   optional DropoutParameter dropout_param = 108;
   optional DummyDataParameter dummy_data_param = 109;
   optional EltwiseParameter eltwise_param = 110;
+<<<<<<< HEAD
   optional ELUParameter elu_param = 140;
   optional EmbedParameter embed_param = 137;
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   optional ExpParameter exp_param = 111;
   optional FlattenParameter flatten_param = 135;
   optional HDF5DataParameter hdf5_data_param = 112;
@@ -382,16 +437,23 @@ message LayerParameter {
   optional ImageDataParameter image_data_param = 115;
   optional InfogainLossParameter infogain_loss_param = 116;
   optional InnerProductParameter inner_product_param = 117;
+<<<<<<< HEAD
   optional InputParameter input_param = 143;
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   optional LogParameter log_param = 134;
   optional LRNParameter lrn_param = 118;
   optional MemoryDataParameter memory_data_param = 119;
   optional MVNParameter mvn_param = 120;
+<<<<<<< HEAD
   optional ParameterParameter parameter_param = 145;
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   optional PoolingParameter pooling_param = 121;
   optional PowerParameter power_param = 122;
   optional PReLUParameter prelu_param = 131;
   optional PythonParameter python_param = 130;
+<<<<<<< HEAD
   optional RecurrentParameter recurrent_param = 146;
   optional ReductionParameter reduction_param = 136;
   optional ReLUParameter relu_param = 123;
@@ -400,12 +462,21 @@ message LayerParameter {
   optional ScaleParameter scale_param = 142;
   optional SigmoidParameter sigmoid_param = 124;
   optional SmoothL1LossParameter smooth_l1_loss_param = 8266712;
+=======
+  optional ReductionParameter reduction_param = 136;
+  optional ReLUParameter relu_param = 123;
+  optional ReshapeParameter reshape_param = 133;
+  optional SigmoidParameter sigmoid_param = 124;
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   optional SoftmaxParameter softmax_param = 125;
   optional SPPParameter spp_param = 132;
   optional SliceParameter slice_param = 126;
   optional TanHParameter tanh_param = 127;
   optional ThresholdParameter threshold_param = 128;
+<<<<<<< HEAD
   optional TileParameter tile_param = 138;
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   optional WindowDataParameter window_data_param = 129;
 }
 
@@ -422,7 +493,11 @@ message TransformationParameter {
   optional uint32 crop_size = 3 [default = 0];
   // mean_file and mean_value cannot be specified at the same time
   optional string mean_file = 4;
+<<<<<<< HEAD
   // if specified can be repeated once (would subtract it from all the channels)
+=======
+  // if specified can be repeated once (would substract it from all the channels)
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   // or can be repeated the same number of times as channels
   // (would subtract them from the corresponding channel)
   repeated float mean_value = 5;
@@ -436,6 +511,7 @@ message TransformationParameter {
 message LossParameter {
   // If specified, ignore instances with the given label.
   optional int32 ignore_label = 1;
+<<<<<<< HEAD
   // How to normalize the loss for loss layers that aggregate across batches,
   // spatial dimensions, or other dimensions.  Currently only implemented in
   // SoftmaxWithLoss and SigmoidCrossEntropyLoss layers.
@@ -459,6 +535,11 @@ message LossParameter {
   // is not specified, then setting this to false will be equivalent to
   // normalization = BATCH_SIZE to be consistent with previous behavior.
   optional bool normalize = 2;
+=======
+  // If true, normalize each batch across all instances (including spatial
+  // dimesions, but not ignored instances); else, divide by batch size only.
+  optional bool normalize = 2 [default = true];
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 // Messages that store parameters used by individual layer types follow, in
@@ -485,11 +566,14 @@ message ArgMaxParameter {
   // If true produce pairs (argmax, maxval)
   optional bool out_max_val = 1 [default = false];
   optional uint32 top_k = 2 [default = 1];
+<<<<<<< HEAD
   // The axis along which to maximise -- may be negative to index from the
   // end (e.g., -1 for the last axis).
   // By default ArgMaxLayer maximizes over the flattened trailing dimensions
   // for each index of the first / num dimension.
   optional int32 axis = 3;
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 message ConcatParameter {
@@ -503,6 +587,7 @@ message ConcatParameter {
   optional uint32 concat_dim = 1 [default = 1];
 }
 
+<<<<<<< HEAD
 message BatchNormParameter {
   // If false, normalization is performed over the current mini-batch
   // and global statistics are accumulated (but not yet used) by a moving
@@ -557,6 +642,8 @@ message BiasParameter {
   optional FillerParameter filler = 3;
 }
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 message ContrastiveLossParameter {
   // margin for dissimilar pair
   optional float margin = 1 [default = 1.0];
@@ -572,6 +659,7 @@ message ContrastiveLossParameter {
 message ConvolutionParameter {
   optional uint32 num_output = 1; // The number of outputs for the layer
   optional bool bias_term = 2 [default = true]; // whether to have bias terms
+<<<<<<< HEAD
 
   // Pad, kernel size, and stride are all given as a single value for equal
   // dimensions in all spatial dimensions, or once per spatial dimension.
@@ -594,6 +682,20 @@ message ConvolutionParameter {
 
   optional uint32 group = 5 [default = 1]; // The group size for group conv
 
+=======
+  // Pad, kernel size, and stride are all given as a single value for equal
+  // dimensions in height and width or as Y, X pairs.
+  optional uint32 pad = 3 [default = 0]; // The padding size (equal in Y, X)
+  optional uint32 pad_h = 9 [default = 0]; // The padding height
+  optional uint32 pad_w = 10 [default = 0]; // The padding width
+  optional uint32 kernel_size = 4; // The kernel size (square)
+  optional uint32 kernel_h = 11; // The kernel height
+  optional uint32 kernel_w = 12; // The kernel width
+  optional uint32 group = 5 [default = 1]; // The group size for group conv
+  optional uint32 stride = 6 [default = 1]; // The stride (equal in Y, X)
+  optional uint32 stride_h = 13; // The stride height
+  optional uint32 stride_w = 14; // The stride width
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   optional FillerParameter weight_filler = 7; // The filler for the weight
   optional FillerParameter bias_filler = 8; // The filler for the bias
   enum Engine {
@@ -602,6 +704,7 @@ message ConvolutionParameter {
     CUDNN = 2;
   }
   optional Engine engine = 15 [default = DEFAULT];
+<<<<<<< HEAD
 
   // The axis to interpret as "channels" when performing convolution.
   // Preceding dimensions are treated as independent inputs;
@@ -638,6 +741,8 @@ message CropParameter {
   // axis).
   optional int32 axis = 1 [default = 2];
   repeated uint32 offset = 2;
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 message DataParameter {
@@ -653,7 +758,10 @@ message DataParameter {
   // to avoid all asynchronous sgd clients to start at the same point. The skip
   // point would be set as rand_skip * rand(0,1). Note that rand_skip should not
   // be larger than the number of keys in the database.
+<<<<<<< HEAD
   // DEPRECATED. Each solver accesses a different subset of the database.
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   optional uint32 rand_skip = 7 [default = 0];
   optional DB backend = 8 [default = LEVELDB];
   // DEPRECATED. See TransformationParameter. For data pre-processing, we can do
@@ -669,14 +777,20 @@ message DataParameter {
   optional bool mirror = 6 [default = false];
   // Force the encoded image to have 3 color channels
   optional bool force_encoded_color = 9 [default = false];
+<<<<<<< HEAD
   // Prefetch queue (Increase if data feeding bandwidth varies, within the
   // limit of device memory for GPU training)
   optional uint32 prefetch = 10 [default = 4];
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 message DropoutParameter {
   optional float dropout_ratio = 1 [default = 0.5]; // dropout ratio
+<<<<<<< HEAD
   optional bool scale_train = 2 [default = true];  // scale train or test phase
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 // DummyDataLayer fills any number of arbitrarily shaped blobs with random
@@ -712,6 +826,7 @@ message EltwiseParameter {
   optional bool stable_prod_grad = 3 [default = true];
 }
 
+<<<<<<< HEAD
 // Message that stores parameters used by ELULayer
 message ELUParameter {
   // Described in:
@@ -735,6 +850,8 @@ message EmbedParameter {
 }
 
 // Message that stores parameters used by ExpLayer
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 message ExpParameter {
   // ExpLayer computes outputs y = base ^ (shift + scale * x), for base > 0.
   // Or if base is set to the default (-1), base is set to e,
@@ -818,7 +935,10 @@ message ImageDataParameter {
 message InfogainLossParameter {
   // Specify the infogain matrix source.
   optional string source = 1;
+<<<<<<< HEAD
   optional int32 axis = 2 [default = 1]; // axis of prob
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 message InnerProductParameter {
@@ -831,6 +951,7 @@ message InnerProductParameter {
   // all preceding axes are retained in the output.
   // May be negative to index from the end (e.g., -1 for the last axis).
   optional int32 axis = 5 [default = 1];
+<<<<<<< HEAD
   // Specify whether to transpose the weight matrix or not.
   // If transpose == true, any operations will be performed on the transpose
   // of the weight matrix. The weight matrix itself is not going to be transposed
@@ -844,6 +965,8 @@ message InputParameter {
   // Define 1 shape to set the same shape for every top.
   // Define no shape to defer to reshaping manually.
   repeated BlobShape shape = 1;
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 // Message that stores parameters used by LogLayer
@@ -867,12 +990,15 @@ message LRNParameter {
   }
   optional NormRegion norm_region = 4 [default = ACROSS_CHANNELS];
   optional float k = 5 [default = 1.];
+<<<<<<< HEAD
   enum Engine {
     DEFAULT = 0;
     CAFFE = 1;
     CUDNN = 2;
   }
   optional Engine engine = 6 [default = DEFAULT];
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 message MemoryDataParameter {
@@ -893,10 +1019,13 @@ message MVNParameter {
   optional float eps = 3 [default = 1e-9];
 }
 
+<<<<<<< HEAD
 message ParameterParameter {
   optional BlobShape shape = 1;
 }
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 message PoolingParameter {
   enum PoolMethod {
     MAX = 0;
@@ -941,6 +1070,7 @@ message PythonParameter {
   // string, dictionary in Python dict format, JSON, etc. You may parse this
   // string in `setup` method and use it in `forward` and `backward`.
   optional string param_str = 3 [default = ''];
+<<<<<<< HEAD
   // DEPRECATED
   optional bool share_in_parallel = 4 [default = false];
 }
@@ -962,6 +1092,8 @@ message RecurrentParameter {
   // blobs.  The number of additional bottom/top blobs required depends on the
   // recurrent architecture -- e.g., 1 for RNNs, 2 for LSTMs.
   optional bool expose_hidden = 5 [default = false];
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 // Message that stores parameters used by ReductionLayer
@@ -1028,7 +1160,11 @@ message ReshapeParameter {
   //   reshape_param { shape { dim:  2  dim: 2  dim:  4 } }
   //   reshape_param { shape { dim:  0  dim: 2  dim:  4 } }
   //   reshape_param { shape { dim:  0  dim: 2  dim: -1 } }
+<<<<<<< HEAD
   //   reshape_param { shape { dim:  0  dim:-1  dim:  4 } }
+=======
+  //   reshape_param { shape { dim: -1  dim: 0  dim:  2 } }
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   //
   optional BlobShape shape = 1;
 
@@ -1073,6 +1209,7 @@ message ReshapeParameter {
   optional int32 num_axes = 3 [default = -1];
 }
 
+<<<<<<< HEAD
 // Message that stores parameters used by ROIPoolingLayer
 message ROIPoolingParameter {
   // Pad, kernel size, and stride are all given as a single value for equal
@@ -1121,6 +1258,8 @@ message ScaleParameter {
   optional FillerParameter bias_filler = 5;
 }
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 message SigmoidParameter {
   enum Engine {
     DEFAULT = 0;
@@ -1130,6 +1269,7 @@ message SigmoidParameter {
   optional Engine engine = 1 [default = DEFAULT];
 }
 
+<<<<<<< HEAD
 message SmoothL1LossParameter {
   // SmoothL1Loss(x) =
   //   0.5 * (sigma * x) ** 2    -- if x < 1.0 / sigma / sigma
@@ -1137,6 +1277,8 @@ message SmoothL1LossParameter {
   optional float sigma = 1 [default = 1];
 }
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 message SliceParameter {
   // The axis along which to slice -- may be negative to index from the end
   // (e.g., -1 for the last axis).
@@ -1172,6 +1314,7 @@ message TanHParameter {
   optional Engine engine = 1 [default = DEFAULT];
 }
 
+<<<<<<< HEAD
 // Message that stores parameters used by TileLayer
 message TileParameter {
   // The index of the axis to tile.
@@ -1182,6 +1325,8 @@ message TileParameter {
 }
 
 // Message that stores parameters used by ThresholdLayer
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 message ThresholdParameter {
   optional float threshold = 1 [default = 0]; // Strictly positive values
 }
@@ -1428,6 +1573,10 @@ message PReLUParameter {
 
   // Initial value of a_i. Default is a_i=0.25 for all i.
   optional FillerParameter filler = 1;
+<<<<<<< HEAD
   // Whether or not slope parameters are shared across channels.
+=======
+  // Whether or not slope paramters are shared across channels.
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   optional bool channel_shared = 2 [default = false];
 }

@@ -13,6 +13,7 @@
 namespace caffe {
 
 bool NetNeedsUpgrade(const NetParameter& net_param) {
+<<<<<<< HEAD
   return NetNeedsV0ToV1Upgrade(net_param) || NetNeedsV1ToV2Upgrade(net_param)
       || NetNeedsDataUpgrade(net_param) || NetNeedsInputUpgrade(net_param)
       || NetNeedsBatchNormUpgrade(net_param);
@@ -95,6 +96,9 @@ void ReadNetParamsFromBinaryFileOrDie(const string& param_file,
   CHECK(ReadProtoFromBinaryFile(param_file, param))
       << "Failed to parse NetParameter file: " << param_file;
   UpgradeNetAsNeeded(param_file, param);
+=======
+  return NetNeedsV0ToV1Upgrade(net_param) || NetNeedsV1ToV2Upgrade(net_param);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 bool NetNeedsV0ToV1Upgrade(const NetParameter& net_param) {
@@ -274,7 +278,11 @@ bool UpgradeV0LayerParameter(const V1LayerParameter& v0_layer_connection,
     }
     if (v0_layer_param.has_pad()) {
       if (type == "conv") {
+<<<<<<< HEAD
         layer_param->mutable_convolution_param()->add_pad(v0_layer_param.pad());
+=======
+        layer_param->mutable_convolution_param()->set_pad(v0_layer_param.pad());
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
       } else if (type == "pool") {
         layer_param->mutable_pooling_param()->set_pad(v0_layer_param.pad());
       } else {
@@ -284,7 +292,11 @@ bool UpgradeV0LayerParameter(const V1LayerParameter& v0_layer_connection,
     }
     if (v0_layer_param.has_kernelsize()) {
       if (type == "conv") {
+<<<<<<< HEAD
         layer_param->mutable_convolution_param()->add_kernel_size(
+=======
+        layer_param->mutable_convolution_param()->set_kernel_size(
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
             v0_layer_param.kernelsize());
       } else if (type == "pool") {
         layer_param->mutable_pooling_param()->set_kernel_size(
@@ -305,7 +317,11 @@ bool UpgradeV0LayerParameter(const V1LayerParameter& v0_layer_connection,
     }
     if (v0_layer_param.has_stride()) {
       if (type == "conv") {
+<<<<<<< HEAD
         layer_param->mutable_convolution_param()->add_stride(
+=======
+        layer_param->mutable_convolution_param()->set_stride(
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
             v0_layer_param.stride());
       } else if (type == "pool") {
         layer_param->mutable_pooling_param()->set_stride(
@@ -664,6 +680,7 @@ void UpgradeNetDataTransformation(NetParameter* net_param) {
   }
 }
 
+<<<<<<< HEAD
 bool UpgradeV1Net(const NetParameter& v1_net_param, NetParameter* net_param) {
   if (v1_net_param.layer_size() > 0) {
     LOG(FATAL) << "Refusing to upgrade inconsistent NetParameter input; "
@@ -673,6 +690,62 @@ bool UpgradeV1Net(const NetParameter& v1_net_param, NetParameter* net_param) {
         << "Manually switch the definition to 'layer' format to continue.";
   }
   bool is_fully_compatible = true;
+=======
+bool UpgradeNetAsNeeded(const string& param_file, NetParameter* param) {
+  bool success = true;
+  if (NetNeedsV0ToV1Upgrade(*param)) {
+    // NetParameter was specified using the old style (V0LayerParameter); try to
+    // upgrade it.
+    LOG(INFO) << "Attempting to upgrade input file specified using deprecated "
+              << "V0LayerParameter: " << param_file;
+    NetParameter original_param(*param);
+    if (!UpgradeV0Net(original_param, param)) {
+      success = false;
+      LOG(ERROR) << "Warning: had one or more problems upgrading "
+          << "V0NetParameter to NetParameter (see above); continuing anyway.";
+    } else {
+      LOG(INFO) << "Successfully upgraded file specified using deprecated "
+                << "V0LayerParameter";
+    }
+    LOG(WARNING) << "Note that future Caffe releases will not support "
+        << "V0NetParameter; use ./build/tools/upgrade_net_proto_text for "
+        << "prototxt and ./build/tools/upgrade_net_proto_binary for model "
+        << "weights upgrade this and any other net protos to the new format.";
+  }
+  // NetParameter uses old style data transformation fields; try to upgrade it.
+  if (NetNeedsDataUpgrade(*param)) {
+    LOG(INFO) << "Attempting to upgrade input file specified using deprecated "
+              << "transformation parameters: " << param_file;
+    UpgradeNetDataTransformation(param);
+    LOG(INFO) << "Successfully upgraded file specified using deprecated "
+              << "data transformation parameters.";
+    LOG(WARNING) << "Note that future Caffe releases will only support "
+                 << "transform_param messages for transformation fields.";
+  }
+  if (NetNeedsV1ToV2Upgrade(*param)) {
+    LOG(INFO) << "Attempting to upgrade input file specified using deprecated "
+              << "V1LayerParameter: " << param_file;
+    NetParameter original_param(*param);
+    if (!UpgradeV1Net(original_param, param)) {
+      success = false;
+      LOG(ERROR) << "Warning: had one or more problems upgrading "
+                 << "V1LayerParameter (see above); continuing anyway.";
+    } else {
+      LOG(INFO) << "Successfully upgraded file specified using deprecated "
+                << "V1LayerParameter";
+    }
+  }
+  return success;
+}
+
+bool UpgradeV1Net(const NetParameter& v1_net_param, NetParameter* net_param) {
+  bool is_fully_compatible = true;
+  if (v1_net_param.layer_size() > 0) {
+    LOG(ERROR) << "Input NetParameter to be upgraded already specifies 'layer' "
+               << "fields; these will be ignored for the upgrade.";
+    is_fully_compatible = false;
+  }
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   net_param->CopyFrom(v1_net_param);
   net_param->clear_layers();
   net_param->clear_layer();
@@ -959,6 +1032,7 @@ const char* UpgradeV1LayerType(const V1LayerParameter_LayerType type) {
   }
 }
 
+<<<<<<< HEAD
 bool NetNeedsInputUpgrade(const NetParameter& net_param) {
   return net_param.input_size() > 0;
 }
@@ -1101,6 +1175,20 @@ void ReadSolverParamsFromTextFileOrDie(const string& param_file,
   CHECK(ReadProtoFromTextFile(param_file, param))
       << "Failed to parse SolverParameter file: " << param_file;
   UpgradeSolverAsNeeded(param_file, param);
+=======
+void ReadNetParamsFromTextFileOrDie(const string& param_file,
+                                    NetParameter* param) {
+  CHECK(ReadProtoFromTextFile(param_file, param))
+      << "Failed to parse NetParameter file: " << param_file;
+  UpgradeNetAsNeeded(param_file, param);
+}
+
+void ReadNetParamsFromBinaryFileOrDie(const string& param_file,
+                                      NetParameter* param) {
+  CHECK(ReadProtoFromBinaryFile(param_file, param))
+      << "Failed to parse NetParameter file: " << param_file;
+  UpgradeNetAsNeeded(param_file, param);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 }  // namespace caffe

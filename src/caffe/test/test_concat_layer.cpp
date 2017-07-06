@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+#include <cstring>
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <vector>
 
 #include "gtest/gtest.h"
@@ -5,7 +9,11 @@
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/filler.hpp"
+<<<<<<< HEAD
 #include "caffe/layers/concat_layer.hpp"
+=======
+#include "caffe/vision_layers.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "caffe/test/test_caffe_main.hpp"
 #include "caffe/test/test_gradient_check_util.hpp"
@@ -98,6 +106,7 @@ TYPED_TEST(ConcatLayerTest, TestSetupChannelsNegativeIndexing) {
   EXPECT_EQ(this->blob_top_->width(), this->blob_bottom_0_->width());
 }
 
+<<<<<<< HEAD
 TYPED_TEST(ConcatLayerTest, TestForwardTrivial) {
   typedef typename TypeParam::Dtype Dtype;
   LayerParameter layer_param;
@@ -111,6 +120,8 @@ TYPED_TEST(ConcatLayerTest, TestForwardTrivial) {
   }
 }
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 TYPED_TEST(ConcatLayerTest, TestForwardNum) {
   typedef typename TypeParam::Dtype Dtype;
   LayerParameter layer_param;
@@ -166,6 +177,7 @@ TYPED_TEST(ConcatLayerTest, TestForwardChannels) {
   }
 }
 
+<<<<<<< HEAD
 TYPED_TEST(ConcatLayerTest, TestGradientTrivial) {
   typedef typename TypeParam::Dtype Dtype;
   LayerParameter layer_param;
@@ -176,6 +188,8 @@ TYPED_TEST(ConcatLayerTest, TestGradientTrivial) {
       this->blob_top_vec_);
 }
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 TYPED_TEST(ConcatLayerTest, TestGradientNum) {
   typedef typename TypeParam::Dtype Dtype;
   LayerParameter layer_param;
@@ -195,6 +209,7 @@ TYPED_TEST(ConcatLayerTest, TestGradientChannels) {
     this->blob_top_vec_);
 }
 
+<<<<<<< HEAD
 TYPED_TEST(ConcatLayerTest, TestGradientChannelsBottomOneOnly) {
   typedef typename TypeParam::Dtype Dtype;
   LayerParameter layer_param;
@@ -204,4 +219,6 @@ TYPED_TEST(ConcatLayerTest, TestGradientChannelsBottomOneOnly) {
     this->blob_top_vec_, 1);
 }
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }  // namespace caffe

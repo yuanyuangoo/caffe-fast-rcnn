@@ -9,7 +9,11 @@ namespace caffe {
 template <typename Dtype>
 void hdf5_load_nd_dataset_helper(
     hid_t file_id, const char* dataset_name_, int min_dim, int max_dim,
+<<<<<<< HEAD
     Blob<Dtype>* blob, bool reshape) {
+=======
+    Blob<Dtype>* blob) {
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   // Verify that the dataset exists.
   CHECK(H5LTfind_dataset(file_id, dataset_name_))
       << "Failed to find HDF5 dataset " << dataset_name_;
@@ -27,6 +31,7 @@ void hdf5_load_nd_dataset_helper(
   status = H5LTget_dataset_info(
       file_id, dataset_name_, dims.data(), &class_, NULL);
   CHECK_GE(status, 0) << "Failed to get dataset info for " << dataset_name_;
+<<<<<<< HEAD
   switch (class_) {
   case H5T_FLOAT:
     { LOG_FIRST_N(INFO, 1) << "Datatype class: H5T_FLOAT"; }
@@ -56,11 +61,15 @@ void hdf5_load_nd_dataset_helper(
     LOG(FATAL) << "Datatype class unknown";
   }
 
+=======
+  CHECK_EQ(class_, H5T_FLOAT) << "Expected float or double data";
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
   vector<int> blob_dims(dims.size());
   for (int i = 0; i < dims.size(); ++i) {
     blob_dims[i] = dims[i];
   }
+<<<<<<< HEAD
 
   if (reshape) {
     blob->Reshape(blob_dims);
@@ -81,13 +90,21 @@ void hdf5_load_nd_dataset_helper(
             << " target shape is " << blob->shape_string();
     }
   }
+=======
+  blob->Reshape(blob_dims);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 template <>
 void hdf5_load_nd_dataset<float>(hid_t file_id, const char* dataset_name_,
+<<<<<<< HEAD
         int min_dim, int max_dim, Blob<float>* blob, bool reshape) {
   hdf5_load_nd_dataset_helper(file_id, dataset_name_, min_dim, max_dim, blob,
                               reshape);
+=======
+        int min_dim, int max_dim, Blob<float>* blob) {
+  hdf5_load_nd_dataset_helper(file_id, dataset_name_, min_dim, max_dim, blob);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   herr_t status = H5LTread_dataset_float(
     file_id, dataset_name_, blob->mutable_cpu_data());
   CHECK_GE(status, 0) << "Failed to read float dataset " << dataset_name_;
@@ -95,9 +112,14 @@ void hdf5_load_nd_dataset<float>(hid_t file_id, const char* dataset_name_,
 
 template <>
 void hdf5_load_nd_dataset<double>(hid_t file_id, const char* dataset_name_,
+<<<<<<< HEAD
         int min_dim, int max_dim, Blob<double>* blob, bool reshape) {
   hdf5_load_nd_dataset_helper(file_id, dataset_name_, min_dim, max_dim, blob,
                               reshape);
+=======
+        int min_dim, int max_dim, Blob<double>* blob) {
+  hdf5_load_nd_dataset_helper(file_id, dataset_name_, min_dim, max_dim, blob);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   herr_t status = H5LTread_dataset_double(
     file_id, dataset_name_, blob->mutable_cpu_data());
   CHECK_GE(status, 0) << "Failed to read double dataset " << dataset_name_;

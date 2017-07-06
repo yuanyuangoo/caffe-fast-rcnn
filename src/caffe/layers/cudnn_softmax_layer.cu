@@ -1,9 +1,20 @@
 #ifdef USE_CUDNN
+<<<<<<< HEAD
+=======
+#include <algorithm>
+#include <cfloat>
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <vector>
 
 #include "thrust/device_vector.h"
 
+<<<<<<< HEAD
 #include "caffe/layers/cudnn_softmax_layer.hpp"
+=======
+#include "caffe/layer.hpp"
+#include "caffe/util/math_functions.hpp"
+#include "caffe/vision_layers.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 

@@ -6,7 +6,11 @@
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/filler.hpp"
+<<<<<<< HEAD
 #include "caffe/layers/eltwise_layer.hpp"
+=======
+#include "caffe/vision_layers.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "caffe/test/test_caffe_main.hpp"
 #include "caffe/test/test_gradient_check_util.hpp"
@@ -80,7 +84,11 @@ TYPED_TEST(EltwiseLayerTest, TestProd) {
   const Dtype* in_data_b = this->blob_bottom_b_->cpu_data();
   const Dtype* in_data_c = this->blob_bottom_c_->cpu_data();
   for (int i = 0; i < count; ++i) {
+<<<<<<< HEAD
     EXPECT_NEAR(data[i], in_data_a[i] * in_data_b[i] * in_data_c[i], 1e-4);
+=======
+    EXPECT_EQ(data[i], in_data_a[i] * in_data_b[i] * in_data_c[i]);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
 }
 
@@ -99,7 +107,11 @@ TYPED_TEST(EltwiseLayerTest, TestSum) {
   const Dtype* in_data_b = this->blob_bottom_b_->cpu_data();
   const Dtype* in_data_c = this->blob_bottom_c_->cpu_data();
   for (int i = 0; i < count; ++i) {
+<<<<<<< HEAD
     EXPECT_NEAR(data[i], in_data_a[i] + in_data_b[i] + in_data_c[i], 1e-4);
+=======
+    EXPECT_EQ(data[i], in_data_a[i] + in_data_b[i] + in_data_c[i]);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
 }
 

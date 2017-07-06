@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 #ifdef USE_OPENCV
 #include <opencv2/core/core.hpp>
 #endif  // USE_OPENCV
+=======
+#include <opencv2/core/core.hpp>
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include <string>
 #include <vector>
@@ -21,9 +25,13 @@ DataTransformer<Dtype>::DataTransformer(const TransformationParameter& param,
     CHECK_EQ(param_.mean_value_size(), 0) <<
       "Cannot specify mean_file and mean_value at the same time";
     const string& mean_file = param.mean_file();
+<<<<<<< HEAD
     if (Caffe::root_solver()) {
       LOG(INFO) << "Loading mean file from: " << mean_file;
     }
+=======
+    LOG(INFO) << "Loading mean file from: " << mean_file;
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     BlobProto blob_proto;
     ReadProtoFromBinaryFileOrDie(mean_file.c_str(), &blob_proto);
     data_mean_.FromProto(blob_proto);
@@ -126,6 +134,7 @@ void DataTransformer<Dtype>::Transform(const Datum& datum,
   }
 }
 
+<<<<<<< HEAD
 
 template<typename Dtype>
 void DataTransformer<Dtype>::Transform(const Datum& datum,
@@ -133,6 +142,13 @@ void DataTransformer<Dtype>::Transform(const Datum& datum,
   // If datum is encoded, decode and transform the cv::image.
   if (datum.encoded()) {
 #ifdef USE_OPENCV
+=======
+template<typename Dtype>
+void DataTransformer<Dtype>::Transform(const Datum& datum,
+                                       Blob<Dtype>* transformed_blob) {
+  // If datum is encoded, decoded and transform the cv::image.
+  if (datum.encoded()) {
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     CHECK(!(param_.force_color() && param_.force_gray()))
         << "cannot set both force_color and force_gray";
     cv::Mat cv_img;
@@ -144,9 +160,12 @@ void DataTransformer<Dtype>::Transform(const Datum& datum,
     }
     // Transform the cv::image into blob.
     return Transform(cv_img, transformed_blob);
+<<<<<<< HEAD
 #else
     LOG(FATAL) << "Encoded datum requires OpenCV; compile with USE_OPENCV.";
 #endif  // USE_OPENCV
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   } else {
     if (param_.force_color() || param_.force_gray()) {
       LOG(ERROR) << "force_color and force_gray only for encoded datum";
@@ -201,7 +220,10 @@ void DataTransformer<Dtype>::Transform(const vector<Datum> & datum_vector,
   }
 }
 
+<<<<<<< HEAD
 #ifdef USE_OPENCV
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 template<typename Dtype>
 void DataTransformer<Dtype>::Transform(const vector<cv::Mat> & mat_vector,
                                        Blob<Dtype>* transformed_blob) {
@@ -323,7 +345,10 @@ void DataTransformer<Dtype>::Transform(const cv::Mat& cv_img,
     }
   }
 }
+<<<<<<< HEAD
 #endif  // USE_OPENCV
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 template<typename Dtype>
 void DataTransformer<Dtype>::Transform(Blob<Dtype>* input_blob,
@@ -441,7 +466,10 @@ void DataTransformer<Dtype>::Transform(Blob<Dtype>* input_blob,
 template<typename Dtype>
 vector<int> DataTransformer<Dtype>::InferBlobShape(const Datum& datum) {
   if (datum.encoded()) {
+<<<<<<< HEAD
 #ifdef USE_OPENCV
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     CHECK(!(param_.force_color() && param_.force_gray()))
         << "cannot set both force_color and force_gray";
     cv::Mat cv_img;
@@ -453,10 +481,15 @@ vector<int> DataTransformer<Dtype>::InferBlobShape(const Datum& datum) {
     }
     // InferBlobShape using the cv::image.
     return InferBlobShape(cv_img);
+<<<<<<< HEAD
 #else
     LOG(FATAL) << "Encoded datum requires OpenCV; compile with USE_OPENCV.";
 #endif  // USE_OPENCV
   }
+=======
+  }
+
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   const int crop_size = param_.crop_size();
   const int datum_channels = datum.channels();
   const int datum_height = datum.height();
@@ -486,7 +519,10 @@ vector<int> DataTransformer<Dtype>::InferBlobShape(
   return shape;
 }
 
+<<<<<<< HEAD
 #ifdef USE_OPENCV
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 template<typename Dtype>
 vector<int> DataTransformer<Dtype>::InferBlobShape(const cv::Mat& cv_img) {
   const int crop_size = param_.crop_size();
@@ -517,7 +553,10 @@ vector<int> DataTransformer<Dtype>::InferBlobShape(
   shape[0] = num;
   return shape;
 }
+<<<<<<< HEAD
 #endif  // USE_OPENCV
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 template <typename Dtype>
 void DataTransformer<Dtype>::InitRand() {

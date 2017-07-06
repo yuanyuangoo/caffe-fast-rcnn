@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+#include <cstring>
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <vector>
 
 #include "gtest/gtest.h"

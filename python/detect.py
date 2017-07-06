@@ -46,7 +46,11 @@ def main(argv):
     parser.add_argument(
         "--model_def",
         default=os.path.join(pycaffe_dir,
+<<<<<<< HEAD
                 "../models/bvlc_reference_caffenet/deploy.prototxt"),
+=======
+                "../models/bvlc_reference_caffenet/deploy.prototxt.prototxt"),
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
         help="Model definition file."
     )
     parser.add_argument(

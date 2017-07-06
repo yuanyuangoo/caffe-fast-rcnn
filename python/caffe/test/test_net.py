@@ -3,7 +3,10 @@ import tempfile
 import os
 import numpy as np
 import six
+<<<<<<< HEAD
 from collections import OrderedDict
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 import caffe
 
@@ -25,11 +28,19 @@ def simple_net_file(num_output):
         bias_filler { type: 'constant' value: 2 } }
         param { decay_mult: 1 } param { decay_mult: 0 }
         }
+<<<<<<< HEAD
     layer { type: 'InnerProduct' name: 'ip' bottom: 'conv' top: 'ip_blob'
       inner_product_param { num_output: """ + str(num_output) + """
         weight_filler { type: 'gaussian' std: 2.5 }
         bias_filler { type: 'constant' value: -3 } } }
     layer { type: 'SoftmaxWithLoss' name: 'loss' bottom: 'ip_blob' bottom: 'label'
+=======
+    layer { type: 'InnerProduct' name: 'ip' bottom: 'conv' top: 'ip'
+      inner_product_param { num_output: """ + str(num_output) + """
+        weight_filler { type: 'gaussian' std: 2.5 }
+        bias_filler { type: 'constant' value: -3 } } }
+    layer { type: 'SoftmaxWithLoss' name: 'loss' bottom: 'ip' bottom: 'label'
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
       top: 'loss' }""")
     f.close()
     return f.name
@@ -60,6 +71,7 @@ class TestNet(unittest.TestCase):
         for bl in blobs:
             total += bl.data.sum() + bl.diff.sum()
 
+<<<<<<< HEAD
     def test_layer_dict(self):
         layer_dict = self.net.layer_dict
         self.assertEqual(list(layer_dict.keys()), list(self.net._layer_names))
@@ -67,10 +79,13 @@ class TestNet(unittest.TestCase):
             self.assertEqual(layer_dict[name].type,
                              self.net.layers[i].type)
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     def test_forward_backward(self):
         self.net.forward()
         self.net.backward()
 
+<<<<<<< HEAD
     def test_forward_start_end(self):
         conv_blob=self.net.blobs['conv'];
         ip_blob=self.net.blobs['ip_blob'];
@@ -119,10 +134,13 @@ class TestNet(unittest.TestCase):
         # Check that the diffs are now 0
         self.assertTrue((diff == 0).all())
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     def test_inputs_outputs(self):
         self.assertEqual(self.net.inputs, [])
         self.assertEqual(self.net.outputs, ['loss'])
 
+<<<<<<< HEAD
     def test_top_bottom_names(self):
         self.assertEqual(self.net.top_names,
                          OrderedDict([('data', ['data', 'label']),
@@ -135,22 +153,29 @@ class TestNet(unittest.TestCase):
                                       ('ip', ['conv']),
                                       ('loss', ['ip_blob', 'label'])]))
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     def test_save_and_read(self):
         f = tempfile.NamedTemporaryFile(mode='w+', delete=False)
         f.close()
         self.net.save(f.name)
         net_file = simple_net_file(self.num_output)
+<<<<<<< HEAD
         # Test legacy constructor
         #   should print deprecation warning
         caffe.Net(net_file, f.name, caffe.TRAIN)
         # Test named constructor
         net2 = caffe.Net(net_file, caffe.TRAIN, weights=f.name)
+=======
+        net2 = caffe.Net(net_file, f.name, caffe.TRAIN)
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
         os.remove(net_file)
         os.remove(f.name)
         for name in self.net.params:
             for i in range(len(self.net.params[name])):
                 self.assertEqual(abs(self.net.params[name][i].data
                     - net2.params[name][i].data).sum(), 0)
+<<<<<<< HEAD
 
     def test_save_hdf5(self):
         f = tempfile.NamedTemporaryFile(mode='w+', delete=False)
@@ -387,3 +412,5 @@ layer {
         net = caffe.Net(self.f.name, caffe.TEST, stages=['deploy'])
         self.check_net(net, ['pred'])
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9

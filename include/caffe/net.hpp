@@ -24,14 +24,19 @@ template <typename Dtype>
 class Net {
  public:
   explicit Net(const NetParameter& param);
+<<<<<<< HEAD
   explicit Net(const string& param_file, Phase phase,
       const int level = 0, const vector<string>* stages = NULL);
+=======
+  explicit Net(const string& param_file, Phase phase);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   virtual ~Net() {}
 
   /// @brief Initialize a network with a NetParameter.
   void Init(const NetParameter& param);
 
   /**
+<<<<<<< HEAD
    * @brief Run Forward and return the result.
    *
    */
@@ -42,6 +47,13 @@ class Net {
         << "will be removed in a future version. Use Forward().";
     return Forward(loss);
   }
+=======
+   * @brief Run Forward with the input Blob%s already fed separately.
+   *
+   * You can get the input blobs using input_blobs().
+   */
+  const vector<Blob<Dtype>*>& ForwardPrefilled(Dtype* loss = NULL);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
   /**
    * The From and To variants of Forward and Backward operate on the
@@ -54,9 +66,20 @@ class Net {
   Dtype ForwardFromTo(int start, int end);
   Dtype ForwardFrom(int start);
   Dtype ForwardTo(int end);
+<<<<<<< HEAD
   /// @brief DEPRECATED; set input blobs then use Forward() instead.
   const vector<Blob<Dtype>*>& Forward(const vector<Blob<Dtype>* > & bottom,
       Dtype* loss = NULL);
+=======
+  /// @brief Run forward using a set of bottom blobs, and return the result.
+  const vector<Blob<Dtype>*>& Forward(const vector<Blob<Dtype>* > & bottom,
+      Dtype* loss = NULL);
+  /**
+   * @brief Run forward using a serialized BlobProtoVector and return the
+   *        result as a serialized BlobProtoVector
+   */
+  string Forward(const string& input_blob_protos, Dtype* loss = NULL);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
   /**
    * @brief Zeroes out the diffs of all net parameters.
@@ -82,9 +105,15 @@ class Net {
    */
   void Reshape();
 
+<<<<<<< HEAD
   Dtype ForwardBackward() {
     Dtype loss;
     Forward(&loss);
+=======
+  Dtype ForwardBackward(const vector<Blob<Dtype>* > & bottom) {
+    Dtype loss;
+    Forward(bottom, &loss);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     Backward();
     return loss;
   }
@@ -149,6 +178,7 @@ class Net {
   inline const vector<vector<Blob<Dtype>*> >& top_vecs() const {
     return top_vecs_;
   }
+<<<<<<< HEAD
   /// @brief returns the ids of the top blobs of layer i
   inline const vector<int> & top_ids(int i) const {
     CHECK_GE(i, 0) << "Invalid layer id";
@@ -161,6 +191,8 @@ class Net {
     CHECK_LT(i, bottom_id_vecs_.size()) << "Invalid layer id";
     return bottom_id_vecs_[i];
   }
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   inline const vector<vector<bool> >& bottom_need_backward() const {
     return bottom_need_backward_;
   }
@@ -191,9 +223,12 @@ class Net {
     return param_names_index_;
   }
   inline const vector<int>& param_owners() const { return param_owners_; }
+<<<<<<< HEAD
   inline const vector<string>& param_display_names() const {
     return param_display_names_;
   }
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   /// @brief Input and output blob numbers
   inline int num_inputs() const { return net_input_blobs_.size(); }
   inline int num_outputs() const { return net_output_blobs_.size(); }
@@ -227,6 +262,7 @@ class Net {
   static bool StateMeetsRule(const NetState& state, const NetStateRule& rule,
       const string& layer_name);
 
+<<<<<<< HEAD
   // Invoked at specific points during an iteration
   class Callback {
    protected:
@@ -255,6 +291,11 @@ class Net {
  protected:
   // Helpers for Init.
   /// @brief Append a new top blob to the net.
+=======
+ protected:
+  // Helpers for Init.
+  /// @brief Append a new input or top blob to the net.
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   void AppendTop(const NetParameter& param, const int layer_id,
                  const int top_id, set<string>* available_blobs,
                  map<string, int>* blob_name_to_idx);
@@ -266,6 +307,11 @@ class Net {
   void AppendParam(const NetParameter& param, const int layer_id,
                    const int param_id);
 
+<<<<<<< HEAD
+=======
+  /// @brief Helper for displaying debug info in Forward about input Blobs.
+  void InputDebugInfo(const int layer_id);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   /// @brief Helper for displaying debug info in Forward.
   void ForwardDebugInfo(const int layer_id);
   /// @brief Helper for displaying debug info in Backward.
@@ -330,6 +376,7 @@ class Net {
   size_t memory_used_;
   /// Whether to compute and display debug info for the net.
   bool debug_info_;
+<<<<<<< HEAD
   // Callbacks
   vector<Callback*> before_forward_;
   vector<Callback*> after_forward_;
@@ -337,6 +384,10 @@ class Net {
   vector<Callback*> after_backward_;
 
 DISABLE_COPY_AND_ASSIGN(Net);
+=======
+
+  DISABLE_COPY_AND_ASSIGN(Net);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 };
 
 

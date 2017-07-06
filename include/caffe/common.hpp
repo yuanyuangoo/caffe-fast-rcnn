@@ -18,10 +18,13 @@
 
 #include "caffe/util/device_alternate.hpp"
 
+<<<<<<< HEAD
 // Convert macro to string
 #define STRINGIFY(m) #m
 #define AS_STRING(m) STRINGIFY(m)
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 // gflags 2.1 issue: namespace google was changed to gflags without warning.
 // Luckily we will be able to use GFLAGS_GFLAGS_H_ to detect if it is version
 // 2.1. If yes, we will add a temporary solution to redirect the namespace.
@@ -102,12 +105,21 @@ void GlobalInit(int* pargc, char*** pargv);
 class Caffe {
  public:
   ~Caffe();
+<<<<<<< HEAD
 
   // Thread local context for Caffe. Moved to common.cpp instead of
   // including boost/thread.hpp to avoid a boost/NVCC issues (#1009, #1010)
   // on OSX. Also fails on Linux with CUDA 7.0.18.
   static Caffe& Get();
 
+=======
+  inline static Caffe& Get() {
+    if (!singleton_.get()) {
+      singleton_.reset(new Caffe());
+    }
+    return *singleton_;
+  }
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   enum Brew { CPU, GPU };
 
   // This random number generator facade hides boost and CUDA rng
@@ -153,6 +165,7 @@ class Caffe {
   static void SetDevice(const int device_id);
   // Prints the current GPU status.
   static void DeviceQuery();
+<<<<<<< HEAD
   // Check if specified device is available
   static bool CheckDevice(const int device_id);
   // Search from start_id to the highest possible device ordinal,
@@ -166,6 +179,8 @@ class Caffe {
   inline static bool multiprocess() { return Get().multiprocess_; }
   inline static void set_multiprocess(bool val) { Get().multiprocess_ = val; }
   inline static bool root_solver() { return Get().solver_rank_ == 0; }
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
  protected:
 #ifndef CPU_ONLY
@@ -175,11 +190,15 @@ class Caffe {
   shared_ptr<RNG> random_generator_;
 
   Brew mode_;
+<<<<<<< HEAD
 
   // Parallel training
   int solver_count_;
   int solver_rank_;
   bool multiprocess_;
+=======
+  static shared_ptr<Caffe> singleton_;
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
  private:
   // The private constructor to avoid duplicate instantiation.

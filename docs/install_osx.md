@@ -1,5 +1,9 @@
 ---
+<<<<<<< HEAD
 title: "Installation: OS X"
+=======
+title: Installation: OS X
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 ---
 
 # OS X Installation

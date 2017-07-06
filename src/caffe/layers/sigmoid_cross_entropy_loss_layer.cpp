@@ -1,8 +1,17 @@
 #include <algorithm>
+<<<<<<< HEAD
 #include <vector>
 
 #include "caffe/layers/sigmoid_cross_entropy_loss_layer.hpp"
 #include "caffe/util/math_functions.hpp"
+=======
+#include <cfloat>
+#include <vector>
+
+#include "caffe/layer.hpp"
+#include "caffe/util/math_functions.hpp"
+#include "caffe/vision_layers.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 
@@ -15,6 +24,7 @@ void SigmoidCrossEntropyLossLayer<Dtype>::LayerSetUp(
   sigmoid_top_vec_.clear();
   sigmoid_top_vec_.push_back(sigmoid_output_.get());
   sigmoid_layer_->SetUp(sigmoid_bottom_vec_, sigmoid_top_vec_);
+<<<<<<< HEAD
 
   has_ignore_label_ =
     this->layer_param_.loss_param().has_ignore_label();
@@ -30,19 +40,25 @@ void SigmoidCrossEntropyLossLayer<Dtype>::LayerSetUp(
   } else {
     normalization_ = LossParameter_NormalizationMode_BATCH_SIZE;
   }
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 template <typename Dtype>
 void SigmoidCrossEntropyLossLayer<Dtype>::Reshape(
     const vector<Blob<Dtype>*>& bottom, const vector<Blob<Dtype>*>& top) {
   LossLayer<Dtype>::Reshape(bottom, top);
+<<<<<<< HEAD
   outer_num_ = bottom[0]->shape(0);  // batch size
   inner_num_ = bottom[0]->count(1);  // instance size: |output| == |target|
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   CHECK_EQ(bottom[0]->count(), bottom[1]->count()) <<
       "SIGMOID_CROSS_ENTROPY_LOSS layer inputs must have the same count.";
   sigmoid_layer_->Reshape(sigmoid_bottom_vec_, sigmoid_top_vec_);
 }
 
+<<<<<<< HEAD
 // TODO(shelhamer) loss normalization should be pulled up into LossLayer,
 // instead of duplicated here and in SoftMaxWithLossLayer
 template <typename Dtype>
@@ -75,6 +91,8 @@ Dtype SigmoidCrossEntropyLossLayer<Dtype>::get_normalizer(
   return std::max(Dtype(1.0), normalizer);
 }
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 template <typename Dtype>
 void SigmoidCrossEntropyLossLayer<Dtype>::Forward_cpu(
     const vector<Blob<Dtype>*>& bottom, const vector<Blob<Dtype>*>& top) {
@@ -82,6 +100,7 @@ void SigmoidCrossEntropyLossLayer<Dtype>::Forward_cpu(
   sigmoid_bottom_vec_[0] = bottom[0];
   sigmoid_layer_->Forward(sigmoid_bottom_vec_, sigmoid_top_vec_);
   // Compute the loss (negative log likelihood)
+<<<<<<< HEAD
   // Stable version of loss computation from input data
   const Dtype* input_data = bottom[0]->cpu_data();
   const Dtype* target = bottom[1]->cpu_data();
@@ -98,6 +117,19 @@ void SigmoidCrossEntropyLossLayer<Dtype>::Forward_cpu(
   }
   normalizer_ = get_normalizer(normalization_, valid_count);
   top[0]->mutable_cpu_data()[0] = loss / normalizer_;
+=======
+  const int count = bottom[0]->count();
+  const int num = bottom[0]->num();
+  // Stable version of loss computation from input data
+  const Dtype* input_data = bottom[0]->cpu_data();
+  const Dtype* target = bottom[1]->cpu_data();
+  Dtype loss = 0;
+  for (int i = 0; i < count; ++i) {
+    loss -= input_data[i] * (target[i] - (input_data[i] >= 0)) -
+        log(1 + exp(input_data[i] - 2 * input_data[i] * (input_data[i] >= 0)));
+  }
+  top[0]->mutable_cpu_data()[0] = loss / num;
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 template <typename Dtype>
@@ -111,10 +143,15 @@ void SigmoidCrossEntropyLossLayer<Dtype>::Backward_cpu(
   if (propagate_down[0]) {
     // First, compute the diff
     const int count = bottom[0]->count();
+<<<<<<< HEAD
+=======
+    const int num = bottom[0]->num();
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     const Dtype* sigmoid_output_data = sigmoid_output_->cpu_data();
     const Dtype* target = bottom[1]->cpu_data();
     Dtype* bottom_diff = bottom[0]->mutable_cpu_diff();
     caffe_sub(count, sigmoid_output_data, target, bottom_diff);
+<<<<<<< HEAD
     // Zero out gradient of ignored targets.
     if (has_ignore_label_) {
       for (int i = 0; i < count; ++i) {
@@ -127,11 +164,20 @@ void SigmoidCrossEntropyLossLayer<Dtype>::Backward_cpu(
     // Scale down gradient
     Dtype loss_weight = top[0]->cpu_diff()[0] / normalizer_;
     caffe_scal(count, loss_weight, bottom_diff);
+=======
+    // Scale down gradient
+    const Dtype loss_weight = top[0]->cpu_diff()[0];
+    caffe_scal(count, loss_weight / num, bottom_diff);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
 }
 
 #ifdef CPU_ONLY
+<<<<<<< HEAD
 STUB_GPU(SigmoidCrossEntropyLossLayer);
+=======
+STUB_GPU_BACKWARD(SigmoidCrossEntropyLossLayer, Backward);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #endif
 
 INSTANTIATE_CLASS(SigmoidCrossEntropyLossLayer);

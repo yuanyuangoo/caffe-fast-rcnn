@@ -1,14 +1,23 @@
 #include <string>
 #include <vector>
 
+<<<<<<< HEAD
 #include "hdf5.h"
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include "gtest/gtest.h"
 
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
+<<<<<<< HEAD
 #include "caffe/layers/hdf5_data_layer.hpp"
 #include "caffe/proto/caffe.pb.h"
+=======
+#include "caffe/filler.hpp"
+#include "caffe/proto/caffe.pb.h"
+#include "caffe/vision_layers.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "caffe/test/test_caffe_main.hpp"
 
@@ -30,7 +39,12 @@ class HDF5DataLayerTest : public MultiDeviceTest<TypeParam> {
     blob_top_vec_.push_back(blob_top_label2_);
 
     // Check out generate_sample_data.py in the same directory.
+<<<<<<< HEAD
     filename = new string(ABS_TEST_DATA_DIR "/sample_data_list.txt");
+=======
+    filename = new string(
+    CMAKE_SOURCE_DIR "caffe/test/test_data/sample_data_list.txt" CMAKE_EXT);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     LOG(INFO)<< "Using sample HDF5 data file " << filename;
   }
 
@@ -69,7 +83,11 @@ TYPED_TEST(HDF5DataLayerTest, TestRead) {
   int height = 6;
   int width = 5;
 
+<<<<<<< HEAD
   // Test that the layer setup gives correct parameters.
+=======
+  // Test that the layer setup got the correct parameters.
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   HDF5DataLayer<Dtype> layer(param);
   layer.SetUp(this->blob_bottom_vec_, this->blob_top_vec_);
   EXPECT_EQ(this->blob_top_data_->num(), batch_size);
@@ -132,6 +150,7 @@ TYPED_TEST(HDF5DataLayerTest, TestRead) {
   }
 }
 
+<<<<<<< HEAD
 TYPED_TEST(HDF5DataLayerTest, TestSkip) {
   typedef typename TypeParam::Dtype Dtype;
   LayerParameter param;
@@ -162,4 +181,6 @@ TYPED_TEST(HDF5DataLayerTest, TestSkip) {
   Caffe::set_solver_rank(0);
 }
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }  // namespace caffe

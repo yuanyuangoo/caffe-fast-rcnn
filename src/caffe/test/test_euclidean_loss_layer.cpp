@@ -1,4 +1,9 @@
 #include <cmath>
+<<<<<<< HEAD
+=======
+#include <cstdlib>
+#include <cstring>
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <vector>
 
 #include "gtest/gtest.h"
@@ -6,7 +11,11 @@
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/filler.hpp"
+<<<<<<< HEAD
 #include "caffe/layers/euclidean_loss_layer.hpp"
+=======
+#include "caffe/vision_layers.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "caffe/test/test_caffe_main.hpp"
 #include "caffe/test/test_gradient_check_util.hpp"
@@ -39,7 +48,11 @@ class EuclideanLossLayerTest : public MultiDeviceTest<TypeParam> {
 
   void TestForward() {
     // Get the loss without a specified objective weight -- should be
+<<<<<<< HEAD
     // equivalent to explicitly specifying a weight of 1.
+=======
+    // equivalent to explicitly specifiying a weight of 1.
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     LayerParameter layer_param;
     EuclideanLossLayer<Dtype> layer_weight_1(layer_param);
     layer_weight_1.SetUp(this->blob_bottom_vec_, this->blob_top_vec_);

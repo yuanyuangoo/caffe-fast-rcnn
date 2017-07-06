@@ -2,12 +2,18 @@
 #include <google/protobuf/io/coded_stream.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <google/protobuf/text_format.h>
+<<<<<<< HEAD
 #ifdef USE_OPENCV
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/highgui/highgui_c.h>
 #include <opencv2/imgproc/imgproc.hpp>
+<<<<<<< HEAD
 #endif  // USE_OPENCV
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <stdint.h>
 
 #include <algorithm>
@@ -69,7 +75,10 @@ void WriteProtoToBinaryFile(const Message& proto, const char* filename) {
   CHECK(proto.SerializeToOstream(&output));
 }
 
+<<<<<<< HEAD
 #ifdef USE_OPENCV
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 cv::Mat ReadImageToCVMat(const string& filename,
     const int height, const int width, const bool is_color) {
   cv::Mat cv_img;
@@ -101,7 +110,10 @@ cv::Mat ReadImageToCVMat(const string& filename,
 cv::Mat ReadImageToCVMat(const string& filename) {
   return ReadImageToCVMat(filename, 0, 0, true);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 // Do the file extension and encoding match?
 static bool matchExt(const std::string & fn,
                      std::string en) {
@@ -115,7 +127,10 @@ static bool matchExt(const std::string & fn,
     return true;
   return false;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 bool ReadImageToDatum(const string& filename, const int label,
     const int height, const int width, const bool is_color,
     const std::string & encoding, Datum* datum) {
@@ -140,7 +155,10 @@ bool ReadImageToDatum(const string& filename, const int label,
     return false;
   }
 }
+<<<<<<< HEAD
 #endif  // USE_OPENCV
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 bool ReadFileToDatum(const string& filename, const int label,
     Datum* datum) {
@@ -162,7 +180,10 @@ bool ReadFileToDatum(const string& filename, const int label,
   }
 }
 
+<<<<<<< HEAD
 #ifdef USE_OPENCV
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 cv::Mat DecodeDatumToCVMatNative(const Datum& datum) {
   cv::Mat cv_img;
   CHECK(datum.encoded()) << "Datum not encoded";
@@ -234,5 +255,10 @@ void CVMatToDatum(const cv::Mat& cv_img, Datum* datum) {
   }
   datum->set_data(buffer);
 }
+<<<<<<< HEAD
 #endif  // USE_OPENCV
+=======
+
+
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }  // namespace caffe

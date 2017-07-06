@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include <vector>
 
 #include "caffe/layers/sigmoid_cross_entropy_loss_layer.hpp"
@@ -71,6 +72,18 @@ void SigmoidCrossEntropyLossLayer<Dtype>::Forward_gpu(
   top[0]->mutable_cpu_data()[0] = loss / normalizer_;
 }
 
+=======
+#include <algorithm>
+#include <cfloat>
+#include <vector>
+
+#include "caffe/layer.hpp"
+#include "caffe/util/math_functions.hpp"
+#include "caffe/vision_layers.hpp"
+
+namespace caffe {
+
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 template <typename Dtype>
 void SigmoidCrossEntropyLossLayer<Dtype>::Backward_gpu(
     const vector<Blob<Dtype>*>& top, const vector<bool>& propagate_down,
@@ -82,11 +95,16 @@ void SigmoidCrossEntropyLossLayer<Dtype>::Backward_gpu(
   if (propagate_down[0]) {
     // First, compute the diff
     const int count = bottom[0]->count();
+<<<<<<< HEAD
+=======
+    const int num = bottom[0]->num();
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     const Dtype* sigmoid_output_data = sigmoid_output_->gpu_data();
     const Dtype* target = bottom[1]->gpu_data();
     Dtype* bottom_diff = bottom[0]->mutable_gpu_diff();
     caffe_copy(count, sigmoid_output_data, bottom_diff);
     caffe_gpu_axpy(count, Dtype(-1), target, bottom_diff);
+<<<<<<< HEAD
     // Zero out gradient of ignored targets.
     if (has_ignore_label_) {
       // NOLINT_NEXT_LINE(whitespace/operators)
@@ -100,5 +118,15 @@ void SigmoidCrossEntropyLossLayer<Dtype>::Backward_gpu(
 }
 
 INSTANTIATE_LAYER_GPU_FUNCS(SigmoidCrossEntropyLossLayer);
+=======
+    // Scale down gradient
+    const Dtype loss_weight = top[0]->cpu_diff()[0];
+    caffe_gpu_scal(count, loss_weight / num, bottom_diff);
+  }
+}
+
+INSTANTIATE_LAYER_GPU_BACKWARD(SigmoidCrossEntropyLossLayer);
+
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 }  // namespace caffe

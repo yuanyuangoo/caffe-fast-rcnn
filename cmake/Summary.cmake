@@ -101,7 +101,11 @@ function(caffe_print_configuration_summary)
   caffe_status("")
   caffe_status("******************* Caffe Configuration Summary *******************")
   caffe_status("General:")
+<<<<<<< HEAD
   caffe_status("  Version           :   ${CAFFE_TARGET_VERSION}")
+=======
+  caffe_status("  Version           :   ${Caffe_VERSION}")
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   caffe_status("  Git               :   ${Caffe_GIT_VERSION}")
   caffe_status("  System            :   ${CMAKE_SYSTEM_NAME}")
   caffe_status("  C++ compiler      :   ${CMAKE_CXX_COMPILER}")
@@ -114,11 +118,14 @@ function(caffe_print_configuration_summary)
   caffe_status("  BUILD_matlab      :   ${BUILD_matlab}")
   caffe_status("  BUILD_docs        :   ${BUILD_docs}")
   caffe_status("  CPU_ONLY          :   ${CPU_ONLY}")
+<<<<<<< HEAD
   caffe_status("  USE_OPENCV        :   ${USE_OPENCV}")
   caffe_status("  USE_LEVELDB       :   ${USE_LEVELDB}")
   caffe_status("  USE_LMDB          :   ${USE_LMDB}")
   caffe_status("  USE_NCCL          :   ${USE_NCCL}")
   caffe_status("  ALLOW_LMDB_NOLOCK :   ${ALLOW_LMDB_NOLOCK}")
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   caffe_status("")
   caffe_status("Dependencies:")
   caffe_status("  BLAS              : " APPLE THEN "Yes (vecLib)" ELSE "Yes (${BLAS})")
@@ -126,6 +133,7 @@ function(caffe_print_configuration_summary)
   caffe_status("  glog              :   Yes")
   caffe_status("  gflags            :   Yes")
   caffe_status("  protobuf          : " PROTOBUF_FOUND THEN "Yes (ver. ${PROTOBUF_VERSION})" ELSE "No" )
+<<<<<<< HEAD
   if(USE_LMDB)
     caffe_status("  lmdb              : " LMDB_FOUND THEN "Yes (ver. ${LMDB_VERSION})" ELSE "No")
   endif()
@@ -136,6 +144,12 @@ function(caffe_print_configuration_summary)
   if(USE_OPENCV)
     caffe_status("  OpenCV            :   Yes (ver. ${OpenCV_VERSION})")
   endif()
+=======
+  caffe_status("  lmdb              : " LMDB_FOUND THEN "Yes (ver. ${LMDB_VERSION})" ELSE "No")
+  caffe_status("  Snappy            : " SNAPPY_FOUND THEN "Yes (ver. ${Snappy_VERSION})" ELSE "No" )
+  caffe_status("  LevelDB           : " LEVELDB_FOUND THEN  "Yes (ver. ${LEVELDB_VERSION})" ELSE "No")
+  caffe_status("  OpenCV            :   Yes (ver. ${OpenCV_VERSION})")
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   caffe_status("  CUDA              : " HAVE_CUDA THEN "Yes (ver. ${CUDA_VERSION})" ELSE "No" )
   caffe_status("")
   if(HAVE_CUDA)
@@ -143,7 +157,11 @@ function(caffe_print_configuration_summary)
     caffe_status("  Target GPU(s)     :   ${CUDA_ARCH_NAME}" )
     caffe_status("  GPU arch(s)       :   ${NVCC_FLAGS_EXTRA_readable}")
     if(USE_CUDNN)
+<<<<<<< HEAD
       caffe_status("  cuDNN             : " HAVE_CUDNN THEN "Yes (ver. ${CUDNN_VERSION})" ELSE "Not found")
+=======
+      caffe_status("  cuDNN             : " HAVE_CUDNN THEN "Yes" ELSE "Not found")
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     else()
       caffe_status("  cuDNN             :   Disabled")
     endif()
@@ -176,3 +194,7 @@ function(caffe_print_configuration_summary)
   caffe_status("  Install path      :   ${CMAKE_INSTALL_PREFIX}")
   caffe_status("")
 endfunction()
+<<<<<<< HEAD
+=======
+
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9

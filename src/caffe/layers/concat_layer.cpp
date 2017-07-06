@@ -1,7 +1,13 @@
 #include <vector>
 
+<<<<<<< HEAD
 #include "caffe/layers/concat_layer.hpp"
 #include "caffe/util/math_functions.hpp"
+=======
+#include "caffe/layer.hpp"
+#include "caffe/util/math_functions.hpp"
+#include "caffe/vision_layers.hpp"
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 
@@ -47,16 +53,22 @@ void ConcatLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom,
   }
   top[0]->Reshape(top_shape);
   CHECK_EQ(bottom_count_sum, top[0]->count());
+<<<<<<< HEAD
   if (bottom.size() == 1) {
     top[0]->ShareData(*bottom[0]);
     top[0]->ShareDiff(*bottom[0]);
   }
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 template <typename Dtype>
 void ConcatLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top) {
+<<<<<<< HEAD
   if (bottom.size() == 1) { return; }
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   Dtype* top_data = top[0]->mutable_cpu_data();
   int offset_concat_axis = 0;
   const int top_concat_axis = top[0]->shape(concat_axis_);
@@ -76,11 +88,15 @@ void ConcatLayer<Dtype>::Forward_cpu(const vector<Blob<Dtype>*>& bottom,
 template <typename Dtype>
 void ConcatLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
       const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom) {
+<<<<<<< HEAD
   if (bottom.size() == 1) { return; }
+=======
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   const Dtype* top_diff = top[0]->cpu_diff();
   int offset_concat_axis = 0;
   const int top_concat_axis = top[0]->shape(concat_axis_);
   for (int i = 0; i < bottom.size(); ++i) {
+<<<<<<< HEAD
     const int bottom_concat_axis = bottom[i]->shape(concat_axis_);
     if (propagate_down[i]) {
       Dtype* bottom_diff = bottom[i]->mutable_cpu_diff();
@@ -89,6 +105,15 @@ void ConcatLayer<Dtype>::Backward_cpu(const vector<Blob<Dtype>*>& top,
             (n * top_concat_axis + offset_concat_axis) * concat_input_size_,
             bottom_diff + n * bottom_concat_axis * concat_input_size_);
       }
+=======
+    if (!propagate_down[i]) { continue; }
+    Dtype* bottom_diff = bottom[i]->mutable_cpu_diff();
+    const int bottom_concat_axis = bottom[i]->shape(concat_axis_);
+    for (int n = 0; n < num_concats_; ++n) {
+      caffe_copy(bottom_concat_axis * concat_input_size_, top_diff +
+          (n * top_concat_axis + offset_concat_axis) * concat_input_size_,
+          bottom_diff + n * bottom_concat_axis * concat_input_size_);
+>>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     }
     offset_concat_axis += bottom_concat_axis;
   }
