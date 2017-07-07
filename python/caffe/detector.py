@@ -35,11 +35,11 @@ class Detector(caffe.Net):
     def __init__(self, model_file, pretrained_file, mean=None,
                  input_scale=None, raw_scale=None, channel_swap=None,
                  context_pad=None):
-        caffe.Net.__init__(self, model_file, pretrained_file, caffe.TEST)
+        caffe2.Net.__init__(self, model_file, pretrained_file, caffe2.TEST)
 
         # configure pre-processing
         in_ = self.inputs[0]
-        self.transformer = caffe.io.Transformer(
+        self.transformer = caffe2.io.Transformer(
             {in_: self.blobs[in_].data.shape})
         self.transformer.set_transpose(in_, (2, 0, 1))
         if mean is not None:
@@ -71,7 +71,7 @@ class Detector(caffe.Net):
         # Extract windows.
         window_inputs = []
         for image_fname, windows in images_windows:
-            image = caffe.io.load_image(image_fname).astype(np.float32)
+            image = caffe2.io.load_image(image_fname).astype(np.float32)
             for window in windows:
                 window_inputs.append(self.crop(image, window))
 
@@ -83,7 +83,7 @@ class Detector(caffe.Net):
         for ix, window_in in enumerate(window_inputs):
             caffe_in[ix] = self.transformer.preprocess(in_, window_in)
         out = self.forward_all(**{in_: caffe_in})
-        predictions = out[self.outputs[0]].squeeze(axis=(2, 3))
+        predictions = out[self.outputs[0]]
 
         # Package predictions with images and windows.
         detections = []
@@ -172,7 +172,7 @@ class Detector(caffe.Net):
             # collect with context padding and place in input
             # with mean padding
             context_crop = im[box[0]:box[2], box[1]:box[3]]
-            context_crop = caffe.io.resize_image(context_crop, (crop_h, crop_w))
+            context_crop = caffe2.io.resize_image(context_crop, (crop_h, crop_w))
             crop = np.ones(self.crop_dims, dtype=np.float32) * self.crop_mean
             crop[pad_y:(pad_y + crop_h), pad_x:(pad_x + crop_w)] = context_crop
 

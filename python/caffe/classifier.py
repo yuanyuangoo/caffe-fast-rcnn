@@ -4,7 +4,9 @@ Classifier is an image classifier specialization of Net.
 """
 
 import numpy as np
-
+#caffe_ssd.python
+import sys  
+sys.path.insert(0,'./caffe_ssd/python')
 import caffe
 
 
@@ -23,11 +25,11 @@ class Classifier(caffe.Net):
     def __init__(self, model_file, pretrained_file, image_dims=None,
                  mean=None, input_scale=None, raw_scale=None,
                  channel_swap=None):
-        caffe.Net.__init__(self, model_file, pretrained_file, caffe.TEST)
+        caffe2.Net.__init__(self, model_file, pretrained_file, caffe2.TEST)
 
         # configure pre-processing
         in_ = self.inputs[0]
-        self.transformer = caffe.io.Transformer(
+        self.transformer = caffe2.io.Transformer(
             {in_: self.blobs[in_].data.shape})
         self.transformer.set_transpose(in_, (2, 0, 1))
         if mean is not None:
@@ -67,11 +69,11 @@ class Classifier(caffe.Net):
                            inputs[0].shape[2]),
                           dtype=np.float32)
         for ix, in_ in enumerate(inputs):
-            input_[ix] = caffe.io.resize_image(in_, self.image_dims)
+            input_[ix] = caffe2.io.resize_image(in_, self.image_dims)
 
         if oversample:
             # Generate center, corner, and mirrored crops.
-            input_ = caffe.io.oversample(input_, self.crop_dims)
+            input_ = caffe2.io.oversample(input_, self.crop_dims)
         else:
             # Take center crop.
             center = np.array(self.image_dims) / 2.0
@@ -79,6 +81,7 @@ class Classifier(caffe.Net):
                 -self.crop_dims / 2.0,
                 self.crop_dims / 2.0
             ])
+            crop = crop.astype(int)
             input_ = input_[:, crop[0]:crop[2], crop[1]:crop[3], :]
 
         # Classify
