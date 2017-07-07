@@ -5,7 +5,7 @@ from skimage.transform import resize
 
 try:
     # Python3 will most likely not be able to load protobuf
-    from .proto import caffe_pb2
+    from caffe.proto import caffe_pb2
 except:
     import sys
     if sys.version_info >= (3, 0):
@@ -46,7 +46,7 @@ def array_to_blobproto(arr, diff=None):
     return blob
 
 
-def arraylist_to_blobprotovector_str(arraylist):
+def arraylist_to_blobprotovecor_str(arraylist):
     """Converts a list of arrays to a serialized blobprotovec, which could be
     then passed to a network for processing.
     """
@@ -63,7 +63,7 @@ def blobprotovector_str_to_arraylist(str):
     return [blobproto_to_array(blob) for blob in vec.blobs]
 
 
-def array_to_datum(arr, label=None):
+def array_to_datum(arr, label=0):
     """Converts a 3-dimensional array to datum. If the array has dtype uint8,
     the output data will be encoded as a string. Otherwise, the output data
     will be stored in float format.
@@ -76,8 +76,7 @@ def array_to_datum(arr, label=None):
         datum.data = arr.tostring()
     else:
         datum.float_data.extend(arr.flat)
-    if label is not None:
-        datum.label = label
+    datum.label = label
     return datum
 
 
