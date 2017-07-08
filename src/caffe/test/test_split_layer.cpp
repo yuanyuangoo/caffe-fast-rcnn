@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-#include <cstring>
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <string>
 #include <vector>
 
@@ -11,15 +7,9 @@
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/filler.hpp"
-<<<<<<< HEAD
 #include "caffe/layers/split_layer.hpp"
 #include "caffe/proto/caffe.pb.h"
 #include "caffe/util/insert_splits.hpp"
-=======
-#include "caffe/proto/caffe.pb.h"
-#include "caffe/util/insert_splits.hpp"
-#include "caffe/vision_layers.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "caffe/test/test_caffe_main.hpp"
 #include "caffe/test/test_gradient_check_util.hpp"
@@ -896,8 +886,6 @@ TEST_F(SplitLayerInsertionTest, TestInsertionTwoTop) {
   this->RunInsertionTest(input_proto, expected_output_proto);
 }
 
-<<<<<<< HEAD
-=======
 TEST_F(SplitLayerInsertionTest, TestInputInsertion) {
   const string& input_proto =
       "name: 'TestNetwork' "
@@ -959,7 +947,6 @@ TEST_F(SplitLayerInsertionTest, TestInputInsertion) {
   this->RunInsertionTest(input_proto, expected_output_proto);
 }
 
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 TEST_F(SplitLayerInsertionTest, TestWithInPlace) {
   const string& input_proto =
       "name: 'TestNetwork' "

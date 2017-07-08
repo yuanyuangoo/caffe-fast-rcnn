@@ -1,9 +1,5 @@
 ---
-<<<<<<< HEAD
-title: "Installation: RHEL / Fedora / CentOS"
-=======
 title: Installation: RHEL / Fedora / CentOS
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 ---
 
 # RHEL / Fedora / CentOS Installation
@@ -19,11 +15,7 @@ title: Installation: RHEL / Fedora / CentOS
 **Remaining dependencies, if not found**
 
     # glog
-<<<<<<< HEAD
-    wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/google-glog/glog-0.3.3.tar.gz
-=======
     wget https://google-glog.googlecode.com/files/glog-0.3.3.tar.gz
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     tar zxvf glog-0.3.3.tar.gz
     cd glog-0.3.3
     ./configure

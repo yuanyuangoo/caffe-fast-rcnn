@@ -28,7 +28,6 @@ class ExceptionLayer(caffe.Layer):
     def setup(self, bottom, top):
         raise RuntimeError
 
-<<<<<<< HEAD
 class ParameterLayer(caffe.Layer):
     """A layer that just multiplies by ten"""
 
@@ -44,20 +43,6 @@ class ParameterLayer(caffe.Layer):
 
     def backward(self, top, propagate_down, bottom):
         self.blobs[0].diff[0] = 1
-
-class PhaseLayer(caffe.Layer):
-    """A layer for checking attribute `phase`"""
-
-    def setup(self, bottom, top):
-        pass
-
-    def reshape(self, bootom, top):
-        top[0].reshape()
-
-    def forward(self, bottom, top):
-        top[0].data[()] = self.phase
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 def python_net_file():
     with tempfile.NamedTemporaryFile(mode='w+', delete=False) as f:
@@ -82,7 +67,6 @@ def exception_net_file():
         return f.name
 
 
-<<<<<<< HEAD
 def parameter_net_file():
     with tempfile.NamedTemporaryFile(mode='w+', delete=False) as f:
         f.write("""name: 'pythonnet' force_backward: true
@@ -92,19 +76,9 @@ def parameter_net_file():
           """)
         return f.name
 
-def phase_net_file():
-    with tempfile.NamedTemporaryFile(mode='w+', delete=False) as f:
-        f.write("""name: 'pythonnet' force_backward: true
-        layer { type: 'Python' name: 'layer' top: 'phase'
-          python_param { module: 'test_python_layer' layer: 'PhaseLayer' } }
-          """)
-        return f.name
-
 
 @unittest.skipIf('Python' not in caffe.layer_type_list(),
     'Caffe built without Python layer support')
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 class TestPythonLayer(unittest.TestCase):
     def setUp(self):
         net_file = python_net_file()
@@ -137,7 +111,6 @@ class TestPythonLayer(unittest.TestCase):
         net_file = exception_net_file()
         self.assertRaises(RuntimeError, caffe.Net, net_file, caffe.TEST)
         os.remove(net_file)
-<<<<<<< HEAD
 
     def test_parameter(self):
         net_file = parameter_net_file()
@@ -167,11 +140,3 @@ class TestPythonLayer(unittest.TestCase):
         self.assertEqual(layer.blobs[0].data[0], 1)
 
         os.remove(net_file)
-
-    def test_phase(self):
-        net_file = phase_net_file()
-        for phase in caffe.TRAIN, caffe.TEST:
-            net = caffe.Net(net_file, phase)
-            self.assertEqual(net.forward()['phase'], phase)
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9

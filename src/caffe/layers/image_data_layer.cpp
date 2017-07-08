@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 #ifdef USE_OPENCV
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <opencv2/core/core.hpp>
 
 #include <fstream>  // NOLINT(readability/streams)
@@ -10,14 +7,9 @@
 #include <utility>
 #include <vector>
 
-<<<<<<< HEAD
 #include "caffe/data_transformer.hpp"
 #include "caffe/layers/base_data_layer.hpp"
 #include "caffe/layers/image_data_layer.hpp"
-=======
-#include "caffe/data_layers.hpp"
-#include "caffe/layer.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include "caffe/util/benchmark.hpp"
 #include "caffe/util/io.hpp"
 #include "caffe/util/math_functions.hpp"
@@ -27,11 +19,7 @@ namespace caffe {
 
 template <typename Dtype>
 ImageDataLayer<Dtype>::~ImageDataLayer<Dtype>() {
-<<<<<<< HEAD
   this->StopInternalThread();
-=======
-  this->JoinPrefetchThread();
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 template <typename Dtype>
@@ -49,40 +37,18 @@ void ImageDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
   const string& source = this->layer_param_.image_data_param().source();
   LOG(INFO) << "Opening file " << source;
   std::ifstream infile(source.c_str());
-<<<<<<< HEAD
-  string line;
-  size_t pos;
-  int label;
-  while (std::getline(infile, line)) {
-    pos = line.find_last_of(' ');
-    label = atoi(line.substr(pos + 1).c_str());
-    lines_.push_back(std::make_pair(line.substr(0, pos), label));
-  }
-
-  CHECK(!lines_.empty()) << "File is empty";
-
-=======
   string filename;
   int label;
   while (infile >> filename >> label) {
     lines_.push_back(std::make_pair(filename, label));
   }
 
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   if (this->layer_param_.image_data_param().shuffle()) {
     // randomly shuffle data
     LOG(INFO) << "Shuffling data";
     const unsigned int prefetch_rng_seed = caffe_rng_rand();
     prefetch_rng_.reset(new Caffe::RNG(prefetch_rng_seed));
     ShuffleImages();
-<<<<<<< HEAD
-  } else {
-    if (this->phase_ == TRAIN && Caffe::solver_rank() > 0 &&
-        this->layer_param_.image_data_param().rand_skip() == 0) {
-      LOG(WARNING) << "Shuffling or skipping recommended for multi-GPU";
-    }
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
   LOG(INFO) << "A total of " << lines_.size() << " images.";
 
@@ -106,15 +72,10 @@ void ImageDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
   const int batch_size = this->layer_param_.image_data_param().batch_size();
   CHECK_GT(batch_size, 0) << "Positive batch size required";
   top_shape[0] = batch_size;
-<<<<<<< HEAD
-  for (int i = 0; i < this->prefetch_.size(); ++i) {
-    this->prefetch_[i]->data_.Reshape(top_shape);
+  for (int i = 0; i < this->PREFETCH_COUNT; ++i) {
+    this->prefetch_[i].data_.Reshape(top_shape);
   }
   top[0]->Reshape(top_shape);
-=======
-  this->prefetch_data_.Reshape(top_shape);
-  top[0]->ReshapeLike(this->prefetch_data_);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
   LOG(INFO) << "output data size: " << top[0]->num() << ","
       << top[0]->channels() << "," << top[0]->height() << ","
@@ -122,13 +83,9 @@ void ImageDataLayer<Dtype>::DataLayerSetUp(const vector<Blob<Dtype>*>& bottom,
   // label
   vector<int> label_shape(1, batch_size);
   top[1]->Reshape(label_shape);
-<<<<<<< HEAD
-  for (int i = 0; i < this->prefetch_.size(); ++i) {
-    this->prefetch_[i]->label_.Reshape(label_shape);
+  for (int i = 0; i < this->PREFETCH_COUNT; ++i) {
+    this->prefetch_[i].label_.Reshape(label_shape);
   }
-=======
-  this->prefetch_label_.Reshape(label_shape);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }
 
 template <typename Dtype>
@@ -138,25 +95,15 @@ void ImageDataLayer<Dtype>::ShuffleImages() {
   shuffle(lines_.begin(), lines_.end(), prefetch_rng);
 }
 
-<<<<<<< HEAD
 // This function is called on prefetch thread
 template <typename Dtype>
 void ImageDataLayer<Dtype>::load_batch(Batch<Dtype>* batch) {
-=======
-// This function is used to create a thread that prefetches the data.
-template <typename Dtype>
-void ImageDataLayer<Dtype>::InternalThreadEntry() {
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   CPUTimer batch_timer;
   batch_timer.Start();
   double read_time = 0;
   double trans_time = 0;
   CPUTimer timer;
-<<<<<<< HEAD
   CHECK(batch->data_.count());
-=======
-  CHECK(this->prefetch_data_.count());
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   CHECK(this->transformed_data_.count());
   ImageDataParameter image_data_param = this->layer_param_.image_data_param();
   const int batch_size = image_data_param.batch_size();
@@ -173,21 +120,12 @@ void ImageDataLayer<Dtype>::InternalThreadEntry() {
   // Use data_transformer to infer the expected blob shape from a cv_img.
   vector<int> top_shape = this->data_transformer_->InferBlobShape(cv_img);
   this->transformed_data_.Reshape(top_shape);
-<<<<<<< HEAD
   // Reshape batch according to the batch_size.
   top_shape[0] = batch_size;
   batch->data_.Reshape(top_shape);
 
   Dtype* prefetch_data = batch->data_.mutable_cpu_data();
   Dtype* prefetch_label = batch->label_.mutable_cpu_data();
-=======
-  // Reshape prefetch_data according to the batch_size.
-  top_shape[0] = batch_size;
-  this->prefetch_data_.Reshape(top_shape);
-
-  Dtype* prefetch_data = this->prefetch_data_.mutable_cpu_data();
-  Dtype* prefetch_label = this->prefetch_label_.mutable_cpu_data();
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
   // datum scales
   const int lines_size = lines_.size();
@@ -201,11 +139,7 @@ void ImageDataLayer<Dtype>::InternalThreadEntry() {
     read_time += timer.MicroSeconds();
     timer.Start();
     // Apply transformations (mirror, crop...) to the image
-<<<<<<< HEAD
     int offset = batch->data_.offset(item_id);
-=======
-    int offset = this->prefetch_data_.offset(item_id);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     this->transformed_data_.set_cpu_data(prefetch_data + offset);
     this->data_transformer_->Transform(cv_img, &(this->transformed_data_));
     trans_time += timer.MicroSeconds();
@@ -232,7 +166,4 @@ INSTANTIATE_CLASS(ImageDataLayer);
 REGISTER_LAYER_CLASS(ImageData);
 
 }  // namespace caffe
-<<<<<<< HEAD
 #endif  // USE_OPENCV
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9

@@ -1,10 +1,6 @@
 # Contributors
 
-<<<<<<< HEAD
-Caffe is developed by a core set of BAIR members and the open-source community.
-=======
 Caffe is developed by a core set of BVLC members and the open-source community.
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 We thank all of our [contributors](https://github.com/BVLC/caffe/graphs/contributors)!
 

@@ -41,20 +41,13 @@ Currently, we will read the MNIST data from the lmdb we created earlier in the d
     layer {
       name: "mnist"
       type: "Data"
-<<<<<<< HEAD
       transform_param {
         scale: 0.00390625
       }
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
       data_param {
         source: "mnist_train_lmdb"
         backend: LMDB
         batch_size: 64
-<<<<<<< HEAD
-=======
-        scale: 0.00390625
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
       }
       top: "data"
       top: "label"
@@ -255,11 +248,7 @@ These messages tell you the details about each layer, its connections and its ou
     I1203 solver.cpp:36] Solver scaffolding done.
     I1203 solver.cpp:44] Solving LeNet
 
-<<<<<<< HEAD
-Based on the solver setting, we will print the training loss function every 100 iterations, and test the network every 500 iterations. You will see messages like this:
-=======
 Based on the solver setting, we will print the training loss function every 100 iterations, and test the network every 1000 iterations. You will see messages like this:
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
     I1203 solver.cpp:204] Iteration 100, lr = 0.00992565
     I1203 solver.cpp:66] Iteration 100, loss = 0.26044

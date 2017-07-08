@@ -14,8 +14,4 @@ snapshot: 10000
 snapshot_prefix: "examples/mnist/mnist_autoencoder_adagrad_train"
 # solver mode: CPU or GPU
 solver_mode: GPU
-<<<<<<< HEAD
 type: "AdaGrad"
-=======
-solver_type: ADAGRAD
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9

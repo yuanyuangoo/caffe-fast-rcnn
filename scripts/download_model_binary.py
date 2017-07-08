@@ -3,18 +3,10 @@ import os
 import sys
 import time
 import yaml
-<<<<<<< HEAD
-import hashlib
-import argparse
-
-from six.moves import urllib
-
-=======
 import urllib
 import hashlib
 import argparse
 
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 required_keys = ['caffemodel', 'caffemodel_url', 'sha1']
 
 
@@ -26,11 +18,7 @@ def reporthook(count, block_size, total_size):
     if count == 0:
         start_time = time.time()
         return
-<<<<<<< HEAD
     duration = (time.time() - start_time) or 0.01
-=======
-    duration = time.time() - start_time
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     progress_size = int(count * block_size)
     speed = int(progress_size / (1024 * duration))
     percent = int(count * block_size * 100 / total_size)
@@ -44,11 +32,7 @@ def parse_readme_frontmatter(dirname):
     with open(readme_filename) as f:
         lines = [line.strip() for line in f.readlines()]
     top = lines.index('---')
-<<<<<<< HEAD
     bottom = lines.index('---', top + 1)
-=======
-    bottom = lines[top + 1:].index('---')
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     frontmatter = yaml.load('\n'.join(lines[top + 1:bottom]))
     assert all(key in frontmatter for key in required_keys)
     return dirname, frontmatter
@@ -76,11 +60,7 @@ if __name__ == '__main__':
 
     # Closure-d function for checking SHA1.
     def model_checks_out(filename=model_filename, sha1=frontmatter['sha1']):
-<<<<<<< HEAD
-        with open(filename, 'rb') as f:
-=======
         with open(filename, 'r') as f:
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
             return hashlib.sha1(f.read()).hexdigest() == sha1
 
     # Check if model exists.
@@ -89,11 +69,7 @@ if __name__ == '__main__':
         sys.exit(0)
 
     # Download and verify model.
-<<<<<<< HEAD
-    urllib.request.urlretrieve(
-=======
     urllib.urlretrieve(
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
         frontmatter['caffemodel_url'], model_filename, reporthook)
     if not model_checks_out():
         print('ERROR: model did not download correctly! Run this again.')

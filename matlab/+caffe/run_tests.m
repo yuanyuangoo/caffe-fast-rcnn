@@ -11,12 +11,8 @@ caffe.reset_all();
 % put all test cases here
 results = [...
   run(caffe.test.test_net) ...
-<<<<<<< HEAD
   run(caffe.test.test_solver) ...
   run(caffe.test.test_io) ];
-=======
-  run(caffe.test.test_solver) ];
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 % reset caffe after testing
 caffe.reset_all();

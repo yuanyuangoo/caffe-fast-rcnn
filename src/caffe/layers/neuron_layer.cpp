@@ -1,11 +1,6 @@
 #include <vector>
 
-<<<<<<< HEAD
 #include "caffe/layers/neuron_layer.hpp"
-=======
-#include "caffe/layer.hpp"
-#include "caffe/vision_layers.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 

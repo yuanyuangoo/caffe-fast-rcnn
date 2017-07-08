@@ -1,21 +1,12 @@
-<<<<<<< HEAD
 #ifdef USE_OPENCV
 #include <opencv2/core/core.hpp>
 #endif  // USE_OPENCV
-=======
-#include <opencv2/core/core.hpp>
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include <string>
 #include <vector>
 
-<<<<<<< HEAD
 #include "caffe/filler.hpp"
 #include "caffe/layers/memory_data_layer.hpp"
-=======
-#include "caffe/data_layers.hpp"
-#include "caffe/filler.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "caffe/test/test_caffe_main.hpp"
 
@@ -124,10 +115,7 @@ TYPED_TEST(MemoryDataLayerTest, TestForward) {
   }
 }
 
-<<<<<<< HEAD
 #ifdef USE_OPENCV
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 TYPED_TEST(MemoryDataLayerTest, AddDatumVectorDefaultTransform) {
   typedef typename TypeParam::Dtype Dtype;
 
@@ -307,9 +295,5 @@ TYPED_TEST(MemoryDataLayerTest, TestSetBatchSize) {
     }
   }
 }
-<<<<<<< HEAD
 #endif  // USE_OPENCV
-=======
-
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }  // namespace caffe

@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 #ifdef USE_OPENCV
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/highgui/highgui_c.h>
@@ -424,7 +421,4 @@ TEST_F(IOTest, TestDecodeDatumToCVMatContentNative) {
 }
 
 }  // namespace caffe
-<<<<<<< HEAD
 #endif  // USE_OPENCV
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9

@@ -36,12 +36,6 @@ classdef Solver < handle
         self.test_nets(n) = caffe.Net(self.attributes.hNet_test_nets(n));
       end
     end
-<<<<<<< HEAD
-    function delete (self)
-      caffe_('delete_solver', self.hSolver_self);
-    end
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     function iter = iter(self)
       iter = caffe_('solver_get_iter', self.hSolver_self);
     end

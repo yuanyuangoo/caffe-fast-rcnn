@@ -1,16 +1,7 @@
-<<<<<<< HEAD
 #include <vector>
 
 #include "caffe/layers/reduction_layer.hpp"
 #include "caffe/util/math_functions.hpp"
-=======
-#include <cfloat>
-#include <vector>
-
-#include "caffe/layer.hpp"
-#include "caffe/util/math_functions.hpp"
-#include "caffe/vision_layers.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 

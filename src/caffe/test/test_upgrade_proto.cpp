@@ -1,25 +1,15 @@
-<<<<<<< HEAD
 #include <string>
 #include <vector>
 
 #include "boost/scoped_ptr.hpp"
-=======
-#include <cstring>
-#include <string>
-#include <vector>
-
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include "google/protobuf/text_format.h"
 #include "gtest/gtest.h"
 
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/layer.hpp"
-<<<<<<< HEAD
 #include "caffe/util/db.hpp"
 #include "caffe/util/io.hpp"
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include "caffe/util/upgrade_proto.hpp"
 
 #include "caffe/test/test_caffe_main.hpp"
@@ -2913,7 +2903,6 @@ TEST_F(NetUpgradeTest, TestUpgradeV1LayerType) {
       continue;  // Empty string isn't actually a valid layer type.
     }
     layer_param.set_type(v2_layer_type);
-<<<<<<< HEAD
     // Data layers expect a DB
     if (v2_layer_type == "Data") {
       #ifdef USE_LEVELDB
@@ -2932,14 +2921,11 @@ TEST_F(NetUpgradeTest, TestUpgradeV1LayerType) {
      continue;
     }
     #endif  // !USE_OPENCV
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     layer = LayerRegistry<float>::CreateLayer(layer_param);
     EXPECT_EQ(v2_layer_type, layer->type());
   }
 }
 
-<<<<<<< HEAD
 class SolverTypeUpgradeTest : public ::testing::Test {
  protected:
   void RunSolverTypeUpgradeTest(
@@ -3000,6 +2986,4 @@ TEST_F(SolverTypeUpgradeTest, TestSimple) {
   }
 }
 
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }  // NOLINT(readability/fn_size)  // namespace caffe

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #include <vector>
 
 #include "caffe/layers/dropout_layer.hpp"
@@ -6,21 +5,6 @@
 
 namespace caffe {
 
-=======
-#include <algorithm>
-#include <limits>
-#include <vector>
-
-#include "caffe/common.hpp"
-#include "caffe/layer.hpp"
-#include "caffe/syncedmem.hpp"
-#include "caffe/util/math_functions.hpp"
-#include "caffe/vision_layers.hpp"
-
-namespace caffe {
-
-
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 template <typename Dtype>
 __global__ void DropoutForward(const int n, const Dtype* in,
     const unsigned int* mask, const unsigned int threshold, const float scale,
@@ -42,7 +26,6 @@ void DropoutLayer<Dtype>::Forward_gpu(const vector<Blob<Dtype>*>& bottom,
     caffe_gpu_rng_uniform(count, mask);
     // set thresholds
     // NOLINT_NEXT_LINE(whitespace/operators)
-<<<<<<< HEAD
     if (scale_train_) {
       DropoutForward<Dtype><<<CAFFE_GET_BLOCKS(count), CAFFE_CUDA_NUM_THREADS>>>(
           count, bottom_data, mask, uint_thres_, scale_, top_data);
@@ -56,13 +39,6 @@ void DropoutLayer<Dtype>::Forward_gpu(const vector<Blob<Dtype>*>& bottom,
     if (!scale_train_) {
       caffe_gpu_scal<Dtype>(count, 1. / scale_, top_data);
     }
-=======
-    DropoutForward<Dtype><<<CAFFE_GET_BLOCKS(count), CAFFE_CUDA_NUM_THREADS>>>(
-        count, bottom_data, mask, uint_thres_, scale_, top_data);
-    CUDA_POST_KERNEL_CHECK;
-  } else {
-    caffe_copy(count, bottom_data, top_data);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
 }
 
@@ -87,7 +63,6 @@ void DropoutLayer<Dtype>::Backward_gpu(const vector<Blob<Dtype>*>& top,
           static_cast<const unsigned int*>(rand_vec_.gpu_data());
       const int count = bottom[0]->count();
       // NOLINT_NEXT_LINE(whitespace/operators)
-<<<<<<< HEAD
       if (scale_train_) {
         DropoutBackward<Dtype><<<CAFFE_GET_BLOCKS(count), CAFFE_CUDA_NUM_THREADS>>>(
             count, top_diff, mask, uint_thres_, scale_, bottom_diff);
@@ -101,22 +76,10 @@ void DropoutLayer<Dtype>::Backward_gpu(const vector<Blob<Dtype>*>& top,
       if (!scale_train_) {
         caffe_gpu_scal<Dtype>(top[0]->count(), 1. / scale_, bottom_diff);
       }
-=======
-      DropoutBackward<Dtype><<<CAFFE_GET_BLOCKS(count),
-        CAFFE_CUDA_NUM_THREADS>>>(
-          count, top_diff, mask, uint_thres_, scale_, bottom_diff);
-      CUDA_POST_KERNEL_CHECK;
-    } else {
-      caffe_copy(top[0]->count(), top_diff, bottom_diff);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     }
   }
 }
 
 INSTANTIATE_LAYER_GPU_FUNCS(DropoutLayer);
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }  // namespace caffe

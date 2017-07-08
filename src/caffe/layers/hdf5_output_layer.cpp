@@ -3,16 +3,8 @@
 #include "hdf5.h"
 #include "hdf5_hl.h"
 
-<<<<<<< HEAD
 #include "caffe/layers/hdf5_output_layer.hpp"
 #include "caffe/util/hdf5.hpp"
-=======
-#include "caffe/blob.hpp"
-#include "caffe/common.hpp"
-#include "caffe/layer.hpp"
-#include "caffe/util/hdf5.hpp"
-#include "caffe/vision_layers.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 

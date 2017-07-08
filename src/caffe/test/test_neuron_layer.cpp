@@ -1,8 +1,4 @@
 #include <algorithm>
-<<<<<<< HEAD
-=======
-#include <cstring>
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <vector>
 
 #include "google/protobuf/text_format.h"
@@ -11,7 +7,6 @@
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/filler.hpp"
-<<<<<<< HEAD
 
 #include "caffe/layers/absval_layer.hpp"
 #include "caffe/layers/bnll_layer.hpp"
@@ -32,9 +27,6 @@
 #include "caffe/layers/cudnn_sigmoid_layer.hpp"
 #include "caffe/layers/cudnn_tanh_layer.hpp"
 #endif
-=======
-#include "caffe/vision_layers.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "caffe/test/test_caffe_main.hpp"
 #include "caffe/test/test_gradient_check_util.hpp"
@@ -268,7 +260,6 @@ TYPED_TEST(NeuronLayerTest, TestReLUGradientWithNegativeSlope) {
       this->blob_top_vec_);
 }
 
-<<<<<<< HEAD
 TYPED_TEST(NeuronLayerTest, TestELU) {
   typedef typename TypeParam::Dtype Dtype;
   LayerParameter layer_param;
@@ -327,8 +318,6 @@ TYPED_TEST(NeuronLayerTest, TestELUasReLUGradient) {
       this->blob_top_vec_);
 }
 
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 TYPED_TEST(NeuronLayerTest, TestSigmoid) {
   typedef typename TypeParam::Dtype Dtype;
   LayerParameter layer_param;
@@ -405,29 +394,6 @@ TYPED_TEST(NeuronLayerTest, TestExpGradient) {
   this->TestExpGradient(kBase, kScale, kShift);
 }
 
-<<<<<<< HEAD
-TYPED_TEST(NeuronLayerTest, TestExpLayerWithShift) {
-  typedef typename TypeParam::Dtype Dtype;
-  // Test default base of "-1" -- should actually set base := e,
-  // with a non-zero shift
-  const Dtype kBase = -1;
-  const Dtype kScale = 1;
-  const Dtype kShift = 1;
-  this->TestExpForward(kBase, kScale, kShift);
-}
-
-TYPED_TEST(NeuronLayerTest, TestExpGradientWithShift) {
-  typedef typename TypeParam::Dtype Dtype;
-  // Test default base of "-1" -- should actually set base := e,
-  // with a non-zero shift
-  const Dtype kBase = -1;
-  const Dtype kScale = 1;
-  const Dtype kShift = 1;
-  this->TestExpGradient(kBase, kScale, kShift);
-}
-
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 TYPED_TEST(NeuronLayerTest, TestExpLayerBase2) {
   typedef typename TypeParam::Dtype Dtype;
   const Dtype kBase = 2;
@@ -805,21 +771,6 @@ TYPED_TEST(NeuronLayerTest, TestPReLUInPlace) {
   ip2.Backward(blob_middle_vec_2, propagate_down, blob_bottom_vec_2);
   // Check numbers
   for (int s = 0; s < blob_bottom_2->count(); ++s) {
-<<<<<<< HEAD
-    EXPECT_FLOAT_EQ(this->blob_bottom_->cpu_diff()[s],
-        blob_bottom_2->cpu_diff()[s]);
-  }
-  for (int s = 0; s < ip.blobs()[0]->count(); ++s) {
-    EXPECT_FLOAT_EQ(ip.blobs()[0]->cpu_diff()[s],
-        ip2.blobs()[0]->cpu_diff()[s]);
-  }
-  for (int s = 0; s < ip.blobs()[1]->count(); ++s) {
-    EXPECT_FLOAT_EQ(ip.blobs()[1]->cpu_diff()[s],
-        ip2.blobs()[1]->cpu_diff()[s]);
-  }
-  for (int s = 0; s < prelu.blobs()[0]->count(); ++s) {
-    EXPECT_FLOAT_EQ(prelu.blobs()[0]->cpu_diff()[s],
-=======
     EXPECT_EQ(this->blob_bottom_->cpu_diff()[s], blob_bottom_2->cpu_diff()[s]);
   }
   for (int s = 0; s < ip.blobs()[0]->count(); ++s) {
@@ -830,7 +781,6 @@ TYPED_TEST(NeuronLayerTest, TestPReLUInPlace) {
   }
   for (int s = 0; s < prelu.blobs()[0]->count(); ++s) {
     EXPECT_EQ(prelu.blobs()[0]->cpu_diff()[s],
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
         prelu2.blobs()[0]->cpu_diff()[s]);
   }
 }

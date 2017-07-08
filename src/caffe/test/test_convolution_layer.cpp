@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-#include <cstring>
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <vector>
 
 #include "gtest/gtest.h"
@@ -9,15 +5,11 @@
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/filler.hpp"
-<<<<<<< HEAD
 #include "caffe/layers/conv_layer.hpp"
 
 #ifdef USE_CUDNN
 #include "caffe/layers/cudnn_conv_layer.hpp"
 #endif
-=======
-#include "caffe/vision_layers.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "caffe/test/test_caffe_main.hpp"
 #include "caffe/test/test_gradient_check_util.hpp"
@@ -30,7 +22,6 @@ template <typename Dtype>
 void caffe_conv(const Blob<Dtype>* in, ConvolutionParameter* conv_param,
     const vector<shared_ptr<Blob<Dtype> > >& weights,
     Blob<Dtype>* out) {
-<<<<<<< HEAD
   const bool has_depth = (out->num_axes() == 5);
   if (!has_depth) { CHECK_EQ(4, out->num_axes()); }
   // Kernel size, stride, and pad
@@ -79,46 +70,11 @@ void caffe_conv(const Blob<Dtype>* in, ConvolutionParameter* conv_param,
   vector<int> out_offset(4 + has_depth);
   Dtype* out_data = out->mutable_cpu_data();
   for (int n = 0; n < out->shape(0); n++) {
-=======
-  // Kernel size, stride, and pad
-  int kernel_h, kernel_w;
-  if (conv_param->has_kernel_size()) {
-    kernel_h = kernel_w = conv_param->kernel_size();
-  } else {
-    kernel_h = conv_param->kernel_h();
-    kernel_w = conv_param->kernel_w();
-  }
-  int pad_h, pad_w;
-  if (!conv_param->has_pad_h()) {
-    pad_h = pad_w = conv_param->pad();
-  } else {
-    pad_h = conv_param->pad_h();
-    pad_w = conv_param->pad_w();
-  }
-  int stride_h, stride_w;
-  if (!conv_param->has_stride_h()) {
-    stride_h = stride_w = conv_param->stride();
-  } else {
-    stride_h = conv_param->stride_h();
-    stride_w = conv_param->stride_w();
-  }
-  // Groups
-  int groups = conv_param->group();
-  int o_g = out->channels() / groups;
-  int k_g = in->channels() / groups;
-  int o_head, k_head;
-  // Convolution
-  const Dtype* in_data = in->cpu_data();
-  const Dtype* weight_data = weights[0]->cpu_data();
-  Dtype* out_data = out->mutable_cpu_data();
-  for (int n = 0; n < out->num(); n++) {
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     for (int g = 0; g < groups; g++) {
       o_head = o_g * g;
       k_head = k_g * g;
       for (int o = 0; o < o_g; o++) {
         for (int k = 0; k < k_g; k++) {
-<<<<<<< HEAD
           for (int z = 0; z < (has_depth ? out->shape(2) : 1); z++) {
             for (int y = 0; y < out->shape(2 + has_depth); y++) {
               for (int x = 0; x < out->shape(3 + has_depth); x++) {
@@ -151,19 +107,6 @@ void caffe_conv(const Blob<Dtype>* in, ConvolutionParameter* conv_param,
                             * weights[0]->data_at(weight_offset);
                       }
                     }
-=======
-          for (int y = 0; y < out->height(); y++) {
-            for (int x = 0; x < out->width(); x++) {
-              for (int p = 0; p < kernel_h; p++) {
-                for (int q = 0; q < kernel_w; q++) {
-                  int in_y = y * stride_h - pad_h + p;
-                  int in_x = x * stride_w - pad_w + q;
-                  if (in_y >= 0 && in_y < in->height()
-                    && in_x >= 0 && in_x < in->width()) {
-                    out_data[out->offset(n, o + o_head, y, x)] +=
-                        in_data[in->offset(n, k + k_head, in_y, in_x)]
-                        * weight_data[weights[0]->offset(o + o_head, k, p, q)];
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
                   }
                 }
               }
@@ -176,7 +119,6 @@ void caffe_conv(const Blob<Dtype>* in, ConvolutionParameter* conv_param,
   // Bias
   if (conv_param->bias_term()) {
     const Dtype* bias_data = weights[1]->cpu_data();
-<<<<<<< HEAD
     for (int n = 0; n < out->shape(0); n++) {
       for (int o = 0; o < out->shape(1); o++) {
         for (int z = 0; z < (has_depth ? out->shape(2) : 1); z++) {
@@ -189,13 +131,6 @@ void caffe_conv(const Blob<Dtype>* in, ConvolutionParameter* conv_param,
               out_offset[3 + has_depth] = x;
               out_data[out->offset(out_offset)] += bias_data[o];
             }
-=======
-    for (int n = 0; n < out->num(); n++) {
-      for (int o = 0; o < out->channels(); o++) {
-        for (int y = 0; y < out->height(); y++) {
-          for (int x = 0; x < out->width(); x++) {
-            out_data[out->offset(n, o, y, x)] += bias_data[o];
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
           }
         }
       }
@@ -262,13 +197,8 @@ TYPED_TEST(ConvolutionLayerTest, TestSetup) {
   LayerParameter layer_param;
   ConvolutionParameter* convolution_param =
       layer_param.mutable_convolution_param();
-<<<<<<< HEAD
   convolution_param->add_kernel_size(3);
   convolution_param->add_stride(2);
-=======
-  convolution_param->set_kernel_size(3);
-  convolution_param->set_stride(2);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   convolution_param->set_num_output(4);
   this->blob_bottom_vec_.push_back(this->blob_bottom_2_);
   this->blob_top_vec_.push_back(this->blob_top_2_);
@@ -305,13 +235,8 @@ TYPED_TEST(ConvolutionLayerTest, TestSimpleConvolution) {
   LayerParameter layer_param;
   ConvolutionParameter* convolution_param =
       layer_param.mutable_convolution_param();
-<<<<<<< HEAD
   convolution_param->add_kernel_size(3);
   convolution_param->add_stride(2);
-=======
-  convolution_param->set_kernel_size(3);
-  convolution_param->set_stride(2);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   convolution_param->set_num_output(4);
   convolution_param->mutable_weight_filler()->set_type("gaussian");
   convolution_param->mutable_bias_filler()->set_type("constant");
@@ -339,7 +264,6 @@ TYPED_TEST(ConvolutionLayerTest, TestSimpleConvolution) {
   }
 }
 
-<<<<<<< HEAD
 TYPED_TEST(ConvolutionLayerTest, TestDilatedConvolution) {
   typedef typename TypeParam::Dtype Dtype;
   vector<int> bottom_shape;
@@ -516,20 +440,13 @@ TYPED_TEST(ConvolutionLayerTest, TestDilated3DConvolution) {
   }
 }
 
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 TYPED_TEST(ConvolutionLayerTest, Test1x1Convolution) {
   typedef typename TypeParam::Dtype Dtype;
   LayerParameter layer_param;
   ConvolutionParameter* convolution_param =
       layer_param.mutable_convolution_param();
-<<<<<<< HEAD
   convolution_param->add_kernel_size(1);
   convolution_param->add_stride(1);
-=======
-  convolution_param->set_kernel_size(1);
-  convolution_param->set_stride(1);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   convolution_param->set_num_output(4);
   convolution_param->mutable_weight_filler()->set_type("gaussian");
   convolution_param->mutable_bias_filler()->set_type("constant");
@@ -555,13 +472,8 @@ TYPED_TEST(ConvolutionLayerTest, TestSimpleConvolutionGroup) {
   LayerParameter layer_param;
   ConvolutionParameter* convolution_param =
       layer_param.mutable_convolution_param();
-<<<<<<< HEAD
   convolution_param->add_kernel_size(3);
   convolution_param->add_stride(2);
-=======
-  convolution_param->set_kernel_size(3);
-  convolution_param->set_stride(2);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   convolution_param->set_num_output(3);
   convolution_param->set_group(3);
   convolution_param->mutable_weight_filler()->set_type("gaussian");
@@ -599,13 +511,8 @@ TYPED_TEST(ConvolutionLayerTest, TestSobelConvolution) {
   LayerParameter layer_param;
   ConvolutionParameter* convolution_param =
       layer_param.mutable_convolution_param();
-<<<<<<< HEAD
   convolution_param->add_kernel_size(3);
   convolution_param->add_stride(2);
-=======
-  convolution_param->set_kernel_size(3);
-  convolution_param->set_stride(2);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   convolution_param->set_num_output(1);
   convolution_param->set_bias_term(false);
   shared_ptr<Layer<Dtype> > layer(
@@ -666,22 +573,11 @@ TYPED_TEST(ConvolutionLayerTest, TestSobelConvolution) {
   convolution_param->set_bias_term(false);
   layer.reset(new ConvolutionLayer<Dtype>(layer_param));
   layer->blobs().resize(1);
-<<<<<<< HEAD
   layer->blobs()[0].reset(new Blob<Dtype>(1, 1, 1, 3));
   Dtype* weights_2 = layer->blobs()[0]->mutable_cpu_data();
   weights_2[0] = -1;
   weights_2[1] =  0;
   weights_2[2] =  1;
-=======
-  layer->blobs()[0].reset(new Blob<Dtype>(1, 3, 1, 3));
-  Dtype* weights_2 = layer->blobs()[0]->mutable_cpu_data();
-  for (int c = 0; c < 3; ++c) {
-    int i = c * 3;  // 1 x 3 filter
-    weights_2[i +  0] = -1;
-    weights_2[i +  1] =  0;
-    weights_2[i +  2] =  1;
-  }
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   layer->SetUp(sep_blob_bottom_vec, sep_blob_top_vec);
   layer->Forward(sep_blob_bottom_vec, sep_blob_top_vec);
   // Test equivalence of full and separable filters.
@@ -692,7 +588,6 @@ TYPED_TEST(ConvolutionLayerTest, TestSobelConvolution) {
   }
 }
 
-<<<<<<< HEAD
 TYPED_TEST(ConvolutionLayerTest, TestNDAgainst2D) {
   typedef typename TypeParam::Dtype Dtype;
   const int kernel_h = 11;
@@ -800,7 +695,7 @@ TYPED_TEST(ConvolutionLayerTest, TestNDAgainst2D) {
   }
   ASSERT_EQ(backward_result_nd.count(), backward_result_2d.count());
   for (int i = 0; i < backward_result_2d.count(); ++i) {
-    EXPECT_FLOAT_EQ(backward_result_2d.cpu_diff()[i],
+    EXPECT_EQ(backward_result_2d.cpu_diff()[i],
               backward_result_nd.cpu_diff()[i]);
   }
   ASSERT_EQ(backward_weight_result_nd.count(),
@@ -811,8 +706,6 @@ TYPED_TEST(ConvolutionLayerTest, TestNDAgainst2D) {
   }
 }
 
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 TYPED_TEST(ConvolutionLayerTest, TestGradient) {
   typedef typename TypeParam::Dtype Dtype;
   LayerParameter layer_param;
@@ -820,7 +713,6 @@ TYPED_TEST(ConvolutionLayerTest, TestGradient) {
       layer_param.mutable_convolution_param();
   this->blob_bottom_vec_.push_back(this->blob_bottom_2_);
   this->blob_top_vec_.push_back(this->blob_top_2_);
-<<<<<<< HEAD
   convolution_param->add_kernel_size(3);
   convolution_param->add_stride(2);
   convolution_param->set_num_output(2);
@@ -875,10 +767,6 @@ TYPED_TEST(ConvolutionLayerTest, TestGradient3D) {
   }
   convolution_param->add_kernel_size(3);
   convolution_param->add_stride(2);
-=======
-  convolution_param->set_kernel_size(3);
-  convolution_param->set_stride(2);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   convolution_param->set_num_output(2);
   convolution_param->mutable_weight_filler()->set_type("gaussian");
   convolution_param->mutable_bias_filler()->set_type("gaussian");
@@ -895,13 +783,8 @@ TYPED_TEST(ConvolutionLayerTest, Test1x1Gradient) {
       layer_param.mutable_convolution_param();
   this->blob_bottom_vec_.push_back(this->blob_bottom_2_);
   this->blob_top_vec_.push_back(this->blob_top_2_);
-<<<<<<< HEAD
   convolution_param->add_kernel_size(1);
   convolution_param->add_stride(1);
-=======
-  convolution_param->set_kernel_size(1);
-  convolution_param->set_stride(1);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   convolution_param->set_num_output(2);
   convolution_param->mutable_weight_filler()->set_type("gaussian");
   convolution_param->mutable_bias_filler()->set_type("gaussian");
@@ -916,13 +799,8 @@ TYPED_TEST(ConvolutionLayerTest, TestGradientGroup) {
   LayerParameter layer_param;
   ConvolutionParameter* convolution_param =
       layer_param.mutable_convolution_param();
-<<<<<<< HEAD
   convolution_param->add_kernel_size(3);
   convolution_param->add_stride(2);
-=======
-  convolution_param->set_kernel_size(3);
-  convolution_param->set_stride(2);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   convolution_param->set_num_output(3);
   convolution_param->set_group(3);
   convolution_param->mutable_weight_filler()->set_type("gaussian");
@@ -984,13 +862,8 @@ TYPED_TEST(CuDNNConvolutionLayerTest, TestSetupCuDNN) {
   LayerParameter layer_param;
   ConvolutionParameter* convolution_param =
       layer_param.mutable_convolution_param();
-<<<<<<< HEAD
   convolution_param->add_kernel_size(3);
   convolution_param->add_stride(2);
-=======
-  convolution_param->set_kernel_size(3);
-  convolution_param->set_stride(2);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   convolution_param->set_num_output(4);
   this->blob_bottom_vec_.push_back(this->blob_bottom_2_);
   this->blob_top_vec_.push_back(this->blob_top_2_);
@@ -1026,13 +899,8 @@ TYPED_TEST(CuDNNConvolutionLayerTest, TestSimpleConvolutionCuDNN) {
   LayerParameter layer_param;
   ConvolutionParameter* convolution_param =
       layer_param.mutable_convolution_param();
-<<<<<<< HEAD
   convolution_param->add_kernel_size(3);
   convolution_param->add_stride(2);
-=======
-  convolution_param->set_kernel_size(3);
-  convolution_param->set_stride(2);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   convolution_param->set_num_output(4);
   convolution_param->mutable_weight_filler()->set_type("gaussian");
   convolution_param->mutable_bias_filler()->set_type("constant");
@@ -1064,13 +932,8 @@ TYPED_TEST(CuDNNConvolutionLayerTest, TestSimpleConvolutionGroupCuDNN) {
   LayerParameter layer_param;
   ConvolutionParameter* convolution_param =
       layer_param.mutable_convolution_param();
-<<<<<<< HEAD
   convolution_param->add_kernel_size(3);
   convolution_param->add_stride(2);
-=======
-  convolution_param->set_kernel_size(3);
-  convolution_param->set_stride(2);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   convolution_param->set_num_output(3);
   convolution_param->set_group(3);
   convolution_param->mutable_weight_filler()->set_type("gaussian");
@@ -1108,13 +971,8 @@ TYPED_TEST(CuDNNConvolutionLayerTest, TestSobelConvolutionCuDNN) {
   LayerParameter layer_param;
   ConvolutionParameter* convolution_param =
       layer_param.mutable_convolution_param();
-<<<<<<< HEAD
   convolution_param->add_kernel_size(3);
   convolution_param->add_stride(2);
-=======
-  convolution_param->set_kernel_size(3);
-  convolution_param->set_stride(2);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   convolution_param->set_num_output(1);
   convolution_param->set_bias_term(false);
   shared_ptr<Layer<TypeParam> > layer(
@@ -1175,22 +1033,11 @@ TYPED_TEST(CuDNNConvolutionLayerTest, TestSobelConvolutionCuDNN) {
   convolution_param->set_bias_term(false);
   layer.reset(new CuDNNConvolutionLayer<TypeParam>(layer_param));
   layer->blobs().resize(1);
-<<<<<<< HEAD
   layer->blobs()[0].reset(new Blob<TypeParam>(1, 1, 1, 3));
   TypeParam* weights_2 = layer->blobs()[0]->mutable_cpu_data();
   weights_2[0] = -1;
   weights_2[1] =  0;
   weights_2[2] =  1;
-=======
-  layer->blobs()[0].reset(new Blob<TypeParam>(1, 3, 1, 3));
-  TypeParam* weights_2 = layer->blobs()[0]->mutable_cpu_data();
-  for (int c = 0; c < 3; ++c) {
-    int i = c * 3;  // 1 x 3 filter
-    weights_2[i +  0] = -1;
-    weights_2[i +  1] =  0;
-    weights_2[i +  2] =  1;
-  }
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   layer->SetUp(sep_blob_bottom_vec, sep_blob_top_vec);
   layer->Forward(sep_blob_bottom_vec, sep_blob_top_vec);
   // Test equivalence of full and separable filters.
@@ -1207,13 +1054,8 @@ TYPED_TEST(CuDNNConvolutionLayerTest, TestGradientCuDNN) {
       layer_param.mutable_convolution_param();
   this->blob_bottom_vec_.push_back(this->blob_bottom_2_);
   this->blob_top_vec_.push_back(this->blob_top_2_);
-<<<<<<< HEAD
   convolution_param->add_kernel_size(3);
   convolution_param->add_stride(2);
-=======
-  convolution_param->set_kernel_size(3);
-  convolution_param->set_stride(2);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   convolution_param->set_num_output(2);
   convolution_param->mutable_weight_filler()->set_type("gaussian");
   convolution_param->mutable_bias_filler()->set_type("gaussian");
@@ -1227,13 +1069,8 @@ TYPED_TEST(CuDNNConvolutionLayerTest, TestGradientGroupCuDNN) {
   LayerParameter layer_param;
   ConvolutionParameter* convolution_param =
       layer_param.mutable_convolution_param();
-<<<<<<< HEAD
   convolution_param->add_kernel_size(3);
   convolution_param->add_stride(2);
-=======
-  convolution_param->set_kernel_size(3);
-  convolution_param->set_stride(2);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   convolution_param->set_num_output(3);
   convolution_param->set_group(3);
   convolution_param->mutable_weight_filler()->set_type("gaussian");

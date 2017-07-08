@@ -1,14 +1,8 @@
 #include <algorithm>
 #include <vector>
 
-<<<<<<< HEAD
 #include "caffe/layers/softmax_layer.hpp"
 #include "caffe/util/math_functions.hpp"
-=======
-#include "caffe/layer.hpp"
-#include "caffe/util/math_functions.hpp"
-#include "caffe/vision_layers.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 

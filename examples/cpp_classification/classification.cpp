@@ -1,26 +1,17 @@
 #include <caffe/caffe.hpp>
-<<<<<<< HEAD
 #ifdef USE_OPENCV
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #endif  // USE_OPENCV
 #include <algorithm>
-=======
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <iosfwd>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
-<<<<<<< HEAD
 #ifdef USE_OPENCV
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 using namespace caffe;  // NOLINT(build/namespaces)
 using std::string;
 
@@ -114,10 +105,7 @@ static std::vector<int> Argmax(const std::vector<float>& v, int N) {
 std::vector<Prediction> Classifier::Classify(const cv::Mat& img, int N) {
   std::vector<float> output = Predict(img);
 
-<<<<<<< HEAD
   N = std::min<int>(labels_.size(), N);
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   std::vector<int> maxN = Argmax(output, N);
   std::vector<Prediction> predictions;
   for (int i = 0; i < N; ++i) {
@@ -171,11 +159,7 @@ std::vector<float> Classifier::Predict(const cv::Mat& img) {
 
   Preprocess(img, &input_channels);
 
-<<<<<<< HEAD
-  net_->Forward();
-=======
   net_->ForwardPrefilled();
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
   /* Copy the output layer to a std::vector */
   Blob<float>* output_layer = net_->output_blobs()[0];
@@ -207,7 +191,6 @@ void Classifier::Preprocess(const cv::Mat& img,
   /* Convert the input image to the input image format of the network. */
   cv::Mat sample;
   if (img.channels() == 3 && num_channels_ == 1)
-<<<<<<< HEAD
     cv::cvtColor(img, sample, cv::COLOR_BGR2GRAY);
   else if (img.channels() == 4 && num_channels_ == 1)
     cv::cvtColor(img, sample, cv::COLOR_BGRA2GRAY);
@@ -215,15 +198,6 @@ void Classifier::Preprocess(const cv::Mat& img,
     cv::cvtColor(img, sample, cv::COLOR_BGRA2BGR);
   else if (img.channels() == 1 && num_channels_ == 3)
     cv::cvtColor(img, sample, cv::COLOR_GRAY2BGR);
-=======
-    cv::cvtColor(img, sample, CV_BGR2GRAY);
-  else if (img.channels() == 4 && num_channels_ == 1)
-    cv::cvtColor(img, sample, CV_BGRA2GRAY);
-  else if (img.channels() == 4 && num_channels_ == 3)
-    cv::cvtColor(img, sample, CV_BGRA2BGR);
-  else if (img.channels() == 1 && num_channels_ == 3)
-    cv::cvtColor(img, sample, CV_GRAY2BGR);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   else
     sample = img;
 
@@ -284,11 +258,8 @@ int main(int argc, char** argv) {
               << p.first << "\"" << std::endl;
   }
 }
-<<<<<<< HEAD
 #else
 int main(int argc, char** argv) {
   LOG(FATAL) << "This example requires OpenCV; compile with USE_OPENCV.";
 }
 #endif  // USE_OPENCV
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9

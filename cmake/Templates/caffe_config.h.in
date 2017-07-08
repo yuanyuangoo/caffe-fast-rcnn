@@ -4,14 +4,6 @@
 /* Binaries directory */
 #define BINARY_FOLDER "${PROJECT_BINARY_DIR}"
 
-<<<<<<< HEAD
-/* This is an absolute path so that we can run test from any build
- * directory */
-#define ABS_TEST_DATA_DIR "${PROJECT_SOURCE_DIR}/src/caffe/test/test_data/"
-
-/* Test device */
-#define CUDA_TEST_DEVICE ${CUDA_TEST_DEVICE}
-=======
 /* NVIDA Cuda */
 #cmakedefine HAVE_CUDA
 
@@ -38,4 +30,9 @@
 
 /* Matlab */
 #cmakedefine HAVE_MATLAB
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
+
+/* IO libraries */
+#cmakedefine USE_OPENCV
+#cmakedefine USE_LEVELDB
+#cmakedefine USE_LMDB
+#cmakedefine ALLOW_LMDB_NOLOCK

@@ -13,20 +13,12 @@ namespace caffe {
 template <typename Dtype>
 void hdf5_load_nd_dataset_helper(
     hid_t file_id, const char* dataset_name_, int min_dim, int max_dim,
-<<<<<<< HEAD
-    Blob<Dtype>* blob, bool reshape);
-=======
     Blob<Dtype>* blob);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 template <typename Dtype>
 void hdf5_load_nd_dataset(
     hid_t file_id, const char* dataset_name_, int min_dim, int max_dim,
-<<<<<<< HEAD
-    Blob<Dtype>* blob, bool reshape = false);
-=======
     Blob<Dtype>* blob);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 template <typename Dtype>
 void hdf5_save_nd_dataset(

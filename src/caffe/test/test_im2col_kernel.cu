@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-#include <cstring>
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <vector>
 
 #include "gtest/gtest.h"
@@ -9,13 +5,8 @@
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/filler.hpp"
-<<<<<<< HEAD
 #include "caffe/layers/im2col_layer.hpp"
 #include "caffe/util/im2col.hpp"
-=======
-#include "caffe/util/im2col.hpp"
-#include "caffe/vision_layers.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "caffe/test/test_caffe_main.hpp"
 
@@ -27,7 +18,6 @@ __global__ void im2col_gpu_kernel(const int n, const Dtype* data_im,
     const int height, const int width, const int kernel_h, const int kernel_w,
     const int pad_h, const int pad_w,
     const int stride_h, const int stride_w,
-<<<<<<< HEAD
     const int dilation_h, const int dilation_w,
     const int height_col, const int width_col,
     Dtype* data_col);
@@ -37,47 +27,33 @@ __global__ void im2col_nd_gpu_kernel(const int n, const Dtype* data_im,
     const int* im_shape, const int* col_shape,
     const int* kernel_shape, const int* pad, const int* stride,
     const int* dilation, Dtype* data_col);
-=======
-    const int height_col, const int width_col,
-    Dtype* data_col);
-
-extern cudaDeviceProp CAFFE_TEST_CUDA_PROP;
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 template <typename Dtype>
 class Im2colKernelTest : public GPUDeviceTest<Dtype> {
  protected:
   Im2colKernelTest()
         // big so launches > 1024 threads
-<<<<<<< HEAD
       : blob_bottom_(new Blob<Dtype>(5, 500, 15, 15)),
         blob_kernel_shape_(new Blob<int>()),
         blob_stride_(new Blob<int>()),
         blob_pad_(new Blob<int>()),
         blob_dilation_(new Blob<int>()),
-=======
-      : blob_bottom_(new Blob<Dtype>(5, 500, 10, 10)),
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
         blob_top_(new Blob<Dtype>()),
         blob_top_cpu_(new Blob<Dtype>()) {
     FillerParameter filler_param;
     GaussianFiller<Dtype> filler(filler_param);
     filler.Fill(this->blob_bottom_);
-<<<<<<< HEAD
     vector<int> dim_blob_shape(1, 2);
     blob_kernel_shape_->Reshape(dim_blob_shape);
     blob_stride_->Reshape(dim_blob_shape);
     blob_pad_->Reshape(dim_blob_shape);
     blob_dilation_->Reshape(dim_blob_shape);
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
     height_ = blob_bottom_->height();
     width_ = blob_bottom_->width();
     channels_ = blob_bottom_->channels();
     pad_ = 0;
     stride_ = 2;
-<<<<<<< HEAD
     dilation_ = 3;
     kernel_size_ = 3;
     height_col_ = (height_ + 2 * pad_ -
@@ -107,19 +83,6 @@ class Im2colKernelTest : public GPUDeviceTest<Dtype> {
   Blob<int>* const blob_stride_;
   Blob<int>* const blob_pad_;
   Blob<int>* const blob_dilation_;
-=======
-    kernel_size_ = 3;
-    height_col_ = (height_ + 2 * pad_ - kernel_size_) / stride_ + 1;
-    width_col_ = (width_ + 2 * pad_ - kernel_size_) / stride_ + 1;
-  }
-
-  virtual ~Im2colKernelTest() {
-      delete blob_bottom_;
-      delete blob_top_;
-      delete blob_top_cpu_;
-  }
-
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   Blob<Dtype>* const blob_bottom_;
   Blob<Dtype>* const blob_top_;
   Blob<Dtype>* const blob_top_cpu_;
@@ -128,10 +91,7 @@ class Im2colKernelTest : public GPUDeviceTest<Dtype> {
   int channels_;
   int pad_;
   int stride_;
-<<<<<<< HEAD
   int dilation_;
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   int kernel_size_;
   int height_col_;
   int width_col_;
@@ -139,11 +99,7 @@ class Im2colKernelTest : public GPUDeviceTest<Dtype> {
 
 TYPED_TEST_CASE(Im2colKernelTest, TestDtypes);
 
-<<<<<<< HEAD
 TYPED_TEST(Im2colKernelTest, Test2D) {
-=======
-TYPED_TEST(Im2colKernelTest, TestGPU) {
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   // Reshape the blobs to correct size for im2col output
   this->blob_top_->Reshape(this->blob_bottom_->num(),
           this->channels_ * this->kernel_size_ * this->kernel_size_,
@@ -164,11 +120,7 @@ TYPED_TEST(Im2colKernelTest, TestGPU) {
     im2col_cpu(this->blob_bottom_->cpu_data() + this->blob_bottom_->offset(n),
       this->channels_, this->height_, this->width_,
       this->kernel_size_, this->kernel_size_, this->pad_, this->pad_,
-<<<<<<< HEAD
       this->stride_, this->stride_, this->dilation_, this->dilation_,
-=======
-      this->stride_, this->stride_,
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
       cpu_data + this->blob_top_cpu_->offset(n));
   }
 
@@ -185,10 +137,7 @@ TYPED_TEST(Im2colKernelTest, TestGPU) {
         num_kernels, bottom_data + this->blob_bottom_->offset(n),
         this->height_, this->width_, this->kernel_size_, this->kernel_size_,
         this->pad_, this->pad_, this->stride_, this->stride_,
-<<<<<<< HEAD
         this->dilation_, this->dilation_,
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
         this->height_col_, this->width_col_,
         top_data + this->blob_top_->offset(n));
       CUDA_POST_KERNEL_CHECK;
@@ -206,7 +155,6 @@ TYPED_TEST(Im2colKernelTest, TestGPU) {
   }
 }
 
-<<<<<<< HEAD
 TYPED_TEST(Im2colKernelTest, TestND) {
   // Reshape the blobs to correct size for im2col output
   this->blob_top_->Reshape(this->blob_bottom_->num(),
@@ -262,6 +210,4 @@ TYPED_TEST(Im2colKernelTest, TestND) {
   }
 }
 
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 }  // namespace caffe

@@ -1,10 +1,6 @@
 /**
  * @brief A layer factory that allows one to register layers.
-<<<<<<< HEAD
- * During runtime, registered layers can be called by passing a LayerParameter
-=======
  * During runtime, registered layers could be called by passing a LayerParameter
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
  * protobuffer to the CreateLayer function:
  *
  *     LayerRegistry<Dtype>::CreateLayer(param);
@@ -45,15 +41,10 @@
 
 #include <map>
 #include <string>
-<<<<<<< HEAD
 #include <vector>
 
 #include "caffe/common.hpp"
 #include "caffe/layer.hpp"
-=======
-
-#include "caffe/common.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include "caffe/proto/caffe.pb.h"
 
 namespace caffe {
@@ -82,7 +73,6 @@ class LayerRegistry {
 
   // Get a layer using a LayerParameter.
   static shared_ptr<Layer<Dtype> > CreateLayer(const LayerParameter& param) {
-<<<<<<< HEAD
     if (Caffe::root_solver()) {
       LOG(INFO) << "Creating layer " << param.name();
     }
@@ -103,22 +93,11 @@ class LayerRegistry {
     return layer_types;
   }
 
-=======
-    LOG(INFO) << "Creating layer " << param.name();
-    const string& type = param.type();
-    CreatorRegistry& registry = Registry();
-    CHECK_EQ(registry.count(type), 1) << "Unknown layer type: " << type
-        << " (known types: " << LayerTypeList() << ")";
-    return registry[type](param);
-  }
-
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
  private:
   // Layer registry should never be instantiated - everything is done with its
   // static variables.
   LayerRegistry() {}
 
-<<<<<<< HEAD
   static string LayerTypeListString() {
     vector<string> layer_types = LayerTypeList();
     string layer_types_str;
@@ -130,19 +109,6 @@ class LayerRegistry {
       layer_types_str += *iter;
     }
     return layer_types_str;
-=======
-  static string LayerTypeList() {
-    CreatorRegistry& registry = Registry();
-    string layer_types;
-    for (typename CreatorRegistry::iterator iter = registry.begin();
-         iter != registry.end(); ++iter) {
-      if (iter != registry.begin()) {
-        layer_types += ", ";
-      }
-      layer_types += iter->first;
-    }
-    return layer_types;
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   }
 };
 

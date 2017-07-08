@@ -1,8 +1,4 @@
 #include <algorithm>
-<<<<<<< HEAD
-=======
-#include <cstring>
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 #include <vector>
 
 #include "gtest/gtest.h"
@@ -10,16 +6,12 @@
 #include "caffe/blob.hpp"
 #include "caffe/common.hpp"
 #include "caffe/filler.hpp"
-<<<<<<< HEAD
 #include "caffe/layers/lrn_layer.hpp"
 
 #ifdef USE_CUDNN
 #include "caffe/layers/cudnn_lcn_layer.hpp"
 #include "caffe/layers/cudnn_lrn_layer.hpp"
 #endif
-=======
-#include "caffe/vision_layers.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 #include "caffe/test/test_caffe_main.hpp"
 #include "caffe/test/test_gradient_check_util.hpp"
@@ -258,7 +250,6 @@ TYPED_TEST(LRNLayerTest, TestGradientWithinChannel) {
       this->blob_top_vec_);
 }
 
-<<<<<<< HEAD
 #ifdef USE_CUDNN
 template <typename Dtype>
 class CuDNNLRNLayerTest : public GPUDeviceTest<Dtype> {
@@ -455,7 +446,5 @@ TYPED_TEST(CuDNNLRNLayerTest, TestGradientAcrossChannelsLargeRegionCuDNN) {
 }
 
 #endif
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 }  // namespace caffe

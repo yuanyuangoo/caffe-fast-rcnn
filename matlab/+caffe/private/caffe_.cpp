@@ -44,11 +44,7 @@ void mxCHECK_FILE_EXIST(const char* file) {
 // The pointers to caffe::Solver and caffe::Net instances
 static vector<shared_ptr<Solver<float> > > solvers_;
 static vector<shared_ptr<Net<float> > > nets_;
-<<<<<<< HEAD
-// init_key is generated at the beginning and every time you call reset
-=======
 // init_key is generated at the beginning and everytime you call reset
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 static double init_key = static_cast<double>(caffe_rng_rand());
 
 /** -----------------------------------------------------------------
@@ -192,33 +188,15 @@ static void get_solver(MEX_ARGS) {
       "Usage: caffe_('get_solver', solver_file)");
   char* solver_file = mxArrayToString(prhs[0]);
   mxCHECK_FILE_EXIST(solver_file);
-<<<<<<< HEAD
   SolverParameter solver_param;
   ReadSolverParamsFromTextFileOrDie(solver_file, &solver_param);
   shared_ptr<Solver<float> > solver(
       SolverRegistry<float>::CreateSolver(solver_param));
-=======
-  shared_ptr<Solver<float> > solver(new caffe::SGDSolver<float>(solver_file));
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   solvers_.push_back(solver);
   plhs[0] = ptr_to_handle<Solver<float> >(solver.get());
   mxFree(solver_file);
 }
 
-<<<<<<< HEAD
-// Usage: caffe_('delete_solver', hSolver)
-static void delete_solver(MEX_ARGS) {
-  mxCHECK(nrhs == 1 && mxIsStruct(prhs[0]),
-      "Usage: caffe_('delete_solver', hSolver)");
-  Solver<float>* solver = handle_to_ptr<Solver<float> >(prhs[0]);
-  solvers_.erase(std::remove_if(solvers_.begin(), solvers_.end(),
-      [solver] (const shared_ptr< Solver<float> > &solverPtr) {
-      return solverPtr.get() == solver;
-  }), solvers_.end());
-}
-
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 // Usage: caffe_('solver_get_attr', hSolver)
 static void solver_get_attr(MEX_ARGS) {
   mxCHECK(nrhs == 1 && mxIsStruct(prhs[0]),
@@ -293,20 +271,6 @@ static void get_net(MEX_ARGS) {
   mxFree(phase_name);
 }
 
-<<<<<<< HEAD
-// Usage: caffe_('delete_solver', hSolver)
-static void delete_net(MEX_ARGS) {
-  mxCHECK(nrhs == 1 && mxIsStruct(prhs[0]),
-      "Usage: caffe_('delete_solver', hNet)");
-  Net<float>* net = handle_to_ptr<Net<float> >(prhs[0]);
-  nets_.erase(std::remove_if(nets_.begin(), nets_.end(),
-      [net] (const shared_ptr< Net<float> > &netPtr) {
-      return netPtr.get() == net;
-  }), nets_.end());
-}
-
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 // Usage: caffe_('net_get_attr', hNet)
 static void net_get_attr(MEX_ARGS) {
   mxCHECK(nrhs == 1 && mxIsStruct(prhs[0]),
@@ -517,7 +481,6 @@ static void read_mean(MEX_ARGS) {
   mxFree(mean_proto_file);
 }
 
-<<<<<<< HEAD
 // Usage: caffe_('write_mean', mean_data, mean_proto_file)
 static void write_mean(MEX_ARGS) {
   mxCHECK(nrhs == 2 && mxIsSingle(prhs[0]) && mxIsChar(prhs[1]),
@@ -548,8 +511,6 @@ static void version(MEX_ARGS) {
   plhs[0] = mxCreateString(AS_STRING(CAFFE_VERSION));
 }
 
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 /** -----------------------------------------------------------------
  ** Available commands.
  **/
@@ -561,20 +522,12 @@ struct handler_registry {
 static handler_registry handlers[] = {
   // Public API functions
   { "get_solver",         get_solver      },
-<<<<<<< HEAD
-  { "delete_solver",      delete_solver   },
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   { "solver_get_attr",    solver_get_attr },
   { "solver_get_iter",    solver_get_iter },
   { "solver_restore",     solver_restore  },
   { "solver_solve",       solver_solve    },
   { "solver_step",        solver_step     },
   { "get_net",            get_net         },
-<<<<<<< HEAD
-  { "delete_net",         delete_net      },
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   { "net_get_attr",       net_get_attr    },
   { "net_forward",        net_forward     },
   { "net_backward",       net_backward    },
@@ -595,11 +548,8 @@ static handler_registry handlers[] = {
   { "get_init_key",       get_init_key    },
   { "reset",              reset           },
   { "read_mean",          read_mean       },
-<<<<<<< HEAD
   { "write_mean",         write_mean      },
   { "version",            version         },
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   // The end.
   { "END",                NULL            },
 };

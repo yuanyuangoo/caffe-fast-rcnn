@@ -1,13 +1,7 @@
 #include <vector>
 
-<<<<<<< HEAD
 #include "caffe/layers/concat_layer.hpp"
 #include "caffe/util/math_functions.hpp"
-=======
-#include "caffe/layer.hpp"
-#include "caffe/util/math_functions.hpp"
-#include "caffe/vision_layers.hpp"
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 namespace caffe {
 
@@ -33,10 +27,7 @@ __global__ void Concat(const int nthreads, const Dtype* in_data,
 template <typename Dtype>
 void ConcatLayer<Dtype>::Forward_gpu(const vector<Blob<Dtype>*>& bottom,
       const vector<Blob<Dtype>*>& top) {
-<<<<<<< HEAD
   if (bottom.size() == 1) { return; }
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   Dtype* top_data = top[0]->mutable_gpu_data();
   int offset_concat_axis = 0;
   const int top_concat_axis = top[0]->shape(concat_axis_);
@@ -57,16 +48,12 @@ void ConcatLayer<Dtype>::Forward_gpu(const vector<Blob<Dtype>*>& bottom,
 template <typename Dtype>
 void ConcatLayer<Dtype>::Backward_gpu(const vector<Blob<Dtype>*>& top,
       const vector<bool>& propagate_down, const vector<Blob<Dtype>*>& bottom) {
-<<<<<<< HEAD
   if (bottom.size() == 1) { return; }
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
   const Dtype* top_diff = top[0]->gpu_diff();
   int offset_concat_axis = 0;
   const int top_concat_axis = top[0]->shape(concat_axis_);
   const bool kForward = false;
   for (int i = 0; i < bottom.size(); ++i) {
-<<<<<<< HEAD
     const int bottom_concat_axis = bottom[i]->shape(concat_axis_);
     if (propagate_down[i]) {
       Dtype* bottom_diff = bottom[i]->mutable_gpu_diff();
@@ -77,17 +64,6 @@ void ConcatLayer<Dtype>::Backward_gpu(const vector<Blob<Dtype>*>& top,
           nthreads, top_diff, kForward, num_concats_, concat_input_size_,
           top_concat_axis, bottom_concat_axis, offset_concat_axis, bottom_diff);
     }
-=======
-    if (!propagate_down[i]) { continue; }
-    Dtype* bottom_diff = bottom[i]->mutable_gpu_diff();
-    const int bottom_concat_axis = bottom[i]->shape(concat_axis_);
-    const int bottom_concat_size = bottom_concat_axis * concat_input_size_;
-    const int nthreads = bottom_concat_size * num_concats_;
-    Concat<Dtype>  // NOLINT_NEXT_LINE(whitespace/operators)
-        <<<CAFFE_GET_BLOCKS(nthreads), CAFFE_CUDA_NUM_THREADS>>>(
-        nthreads, top_diff, kForward, num_concats_, concat_input_size_,
-        top_concat_axis, bottom_concat_axis, offset_concat_axis, bottom_diff);
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     offset_concat_axis += bottom_concat_axis;
   }
 }

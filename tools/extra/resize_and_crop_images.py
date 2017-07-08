@@ -101,11 +101,7 @@ class ResizeCropImagesMapper(mapreducer.BasicMapper):
         yield value, FLAGS.output_folder
 
 mapreducer.REGISTER_DEFAULT_MAPPER(ResizeCropImagesMapper)
-<<<<<<< HEAD
-mapreducer.REGISTER_DEFAULT_REDUCER(mapreducer.NoPassReducer)
-=======
 
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 mapreducer.REGISTER_DEFAULT_READER(mapreducer.FileReader)
 mapreducer.REGISTER_DEFAULT_WRITER(mapreducer.FileWriter)
  

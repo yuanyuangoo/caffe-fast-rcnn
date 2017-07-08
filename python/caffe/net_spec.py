@@ -1,11 +1,7 @@
 """Python net specification.
 
 This module provides a way to write nets directly in Python, using a natural,
-<<<<<<< HEAD
 functional style. See examples/pycaffe/caffenet.py for an example.
-=======
-functional style. See examples/python_nets/caffenet.py for an example.
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
 
 Currently this works as a thin wrapper around the Python protobuf interface,
 with layers and parameters automatically generated for the "layers" and
@@ -36,11 +32,7 @@ def param_name_dict():
     # get all parameter names (typically underscore case) and corresponding
     # type names (typically camel case), which contain the layer names
     # (note that not all parameters correspond to layers, but we'll ignore that)
-<<<<<<< HEAD
-    param_names = [f.name for f in layer.DESCRIPTOR.fields if f.name.endswith('_param')]
-=======
     param_names = [s for s in dir(layer) if s.endswith('_param')]
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     param_type_names = [type(getattr(layer, s)).__name__ for s in param_names]
     # strip the final '_param' or 'Parameter'
     param_names = [s[:-len('_param')] for s in param_names]
@@ -64,7 +56,6 @@ def to_proto(*tops):
 def assign_proto(proto, name, val):
     """Assign a Python object to a protobuf message, based on the Python
     type (in recursive fashion). Lists become repeated fields/messages, dicts
-<<<<<<< HEAD
     become messages, and other types are assigned directly. For convenience,
     repeated fields whose values are not lists are converted to single-element
     lists; e.g., `my_repeated_int_field=3` is converted to
@@ -73,10 +64,6 @@ def assign_proto(proto, name, val):
     is_repeated_field = hasattr(getattr(proto, name), 'extend')
     if is_repeated_field and not isinstance(val, list):
         val = [val]
-=======
-    become messages, and other types are assigned directly."""
-
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     if isinstance(val, list):
         if isinstance(val[0], dict):
             for item in val:
@@ -116,13 +103,6 @@ class Function(object):
 
     def __init__(self, type_name, inputs, params):
         self.type_name = type_name
-<<<<<<< HEAD
-        for index, input in enumerate(inputs):
-            if not isinstance(input, Top):
-                raise TypeError('%s input %d is not a Top (type is %s)' %
-                                (type_name, index, type(input)))
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
         self.inputs = inputs
         self.params = params
         self.ntop = self.params.get('ntop', 1)
@@ -195,15 +175,6 @@ class NetSpec(object):
     def __getattr__(self, name):
         return self.tops[name]
 
-<<<<<<< HEAD
-    def __setitem__(self, key, value):
-        self.__setattr__(key, value)
-
-    def __getitem__(self, item):
-        return self.__getattr__(item)
-
-=======
->>>>>>> 28a579eaf0668850705598b3075b8969f22226d9
     def to_proto(self):
         names = {v: k for k, v in six.iteritems(self.tops)}
         autonames = Counter()
